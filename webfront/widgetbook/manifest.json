@@ -1,0 +1,8 @@
+{
+  "name": "Meridian UI Widgetbook",
+  "short_name": "Meridian",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#e9eef2",
+  "theme_color": "#0a62cc"
+}
