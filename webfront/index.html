@@ -6,7 +6,12 @@
   <meta name="description" content="Meridian UI is the shared Flutter design system for Northspline, CrossProton, Mimameidr, and Nibluma. Explore its tokens, brands, and components.">
   <meta name="theme-color" content="#e9eef2">
   <title>Meridian UI | A shared Flutter design system</title>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Meridian UI | A shared Flutter design system">
+  <meta property="og:description" content="Tokens, brands, and Flutter components shared by Northspline, CrossProton, Mimameidr, and Nibluma.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/meridian-32.png">
+  <link rel="apple-touch-icon" href="icons/meridian-180.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,6 +21,8 @@
     <nav aria-label="Main navigation">
       <a href="#principles">Principles</a>
       <a href="#components">Components</a>
+      <a href="#live">Live</a>
+      <a href="#tokens">Tokens</a>
       <a href="#brands">Brands</a>
       <a class="nav-cta" href="widgetbook/">Open Widgetbook <span aria-hidden="true">↗</span></a>
     </nav>
@@ -27,7 +34,7 @@
         <h1>One language.<br><em>Many places.</em></h1>
         <p class="lead">Meridian is the Flutter design system behind Northspline, CrossProton, Mimameidr, and Nibluma. A common set of tokens and controls, tuned to each app's character.</p>
         <div class="hero-actions"><a class="button primary" href="widgetbook/">Explore components <span aria-hidden="true">↗</span></a><a class="text-link" href="#principles">How Meridian works <span aria-hidden="true">↓</span></a></div>
-        <div class="hero-meta"><span>4 brands</span><i></i><span>Light + dark</span><i></i><span>Desktop + touch</span></div>
+        <div class="hero-meta"><span>4 brands</span><i></i><span>236 icons</span><i></i><span>Light + dark</span><i></i><span>Desktop + touch</span></div>
       </div>
       <div class="hero-art" aria-label="Illustration of a Meridian interface with navigation, cards, and controls" role="img">
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
@@ -35,17 +42,199 @@
           <div class="window-top"><span class="window-dots"><b></b><b></b><b></b></span><span class="window-title">MERIDIAN / WORKSPACE</span><span class="window-end">⌘ K</span></div>
           <div class="preview-body">
             <aside class="preview-side"><span class="side-heading">WORKSPACE</span><span class="side-item active"><span class="side-icon">◈</span> Overview</span><span class="side-item"><span class="side-icon">▤</span> Projects</span><span class="side-item"><span class="side-icon">◎</span> Activity</span><span class="side-heading second">LIBRARY</span><span class="side-item"><span class="side-icon">◇</span> Components</span><span class="side-item"><span class="side-icon">◉</span> Tokens</span><span class="side-footer"><span class="avatar">M</span> Meridian UI</span></aside>
-            <div class="preview-content"><div class="preview-heading"><div><small>GOOD MORNING</small><strong>A clearer way to build.</strong></div><span class="preview-plus">＋ New project</span></div><div class="preview-cards"><div class="preview-card feature-card"><small>YOUR WORKSPACE</small><span class="feature-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><strong>Everything in its place.</strong><p>A calm surface for the work that matters.</p></div><div class="preview-card side-card"><small>RECENT ACTIVITY</small><span class="activity-line"><b class="dot blue"></b><span></span><em></em></span><span class="activity-line"><b class="dot orange"></b><span></span><em></em></span><span class="activity-line"><b class="dot green"></b><span></span><em></em></span><span class="activity-line"><b class="dot blue"></b><span></span><em></em></span></div></div><div class="preview-lower"><div class="preview-card lower-card"><small>PROJECTS</small><div class="lower-row"><span class="tile">◈</span><span><b>Northspline</b><br>Desktop workspace</span><span class="tag">Active</span></div><div class="lower-row"><span class="tile amber">✦</span><span><b>Mimameidr</b><br>Notes &amp; ideas</span><span class="tag">Active</span></div></div></div></div>
+            <div class="preview-content"><div class="preview-heading"><div><small>GOOD MORNING</small><strong>A clearer way to build.</strong></div><span class="preview-plus">＋ New project</span></div><div class="preview-cards"><div class="preview-card feature-card"><small>YOUR WORKSPACE</small><span class="feature-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><strong>Everything in its place.</strong><p>A calm surface for the work that matters.</p></div><div class="preview-card side-card"><small>RECENT ACTIVITY</small><span class="activity-line"><b class="dot blue"></b><span></span><em></em></span><span class="activity-line"><b class="dot orange"></b><span></span><em></em></span><span class="activity-line"><b class="dot green"></b><span></span><em></em></span><span class="activity-line"><b class="dot blue"></b><span></span><em></em></span></div></div><div class="preview-lower"><div class="preview-card lower-card"><small>PROJECTS</small><div class="lower-row"><span class="tile">◈</span><span><b>Northspline</b><br>Desktop workspace</span><span class="tag">Active</span></div><div class="lower-row"><span class="tile amber">✦</span><span><b>Mimameidr</b><br>Process explorer</span><span class="tag">Active</span></div></div></div></div>
           </div>
         </div>
         <div class="floating-token"><span class="token-swatch"></span><span><small>ACCENT / INTENT</small><b>#0A62CC</b></span></div>
       </div>
     </section>
-    <section class="principles section" id="principles"><div class="section-intro"><p class="eyebrow">01 / PRINCIPLES</p><h2>Designed to make<br><em>room for the work.</em></h2><p>Meridian began with Northspline's desktop interface. The shared system keeps its underlying decisions consistent while letting each product set its own tone.</p></div><div class="principle-grid"><article><span class="principle-number">01</span><div class="principle-symbol island-symbol"><span></span><span></span></div><h3>Islands on a ground</h3><p>Work lives on distinct surfaces over a tinted canvas. Structure comes from placement and weight.</p></article><article><span class="principle-number">02</span><div class="principle-symbol accent-symbol"><span></span></div><h3>Accent means intent</h3><p>One accent marks the active choice, the main action, and keyboard focus.</p></article><article><span class="principle-number">03</span><div class="principle-symbol focus-symbol"><span></span><span></span></div><h3>Focus has a place</h3><p>Pointer, keyboard, and touch states are part of each control, with touch targets sized for fingers.</p></article></div></section>
-    <section class="components section" id="components"><div class="section-top"><div><p class="eyebrow">02 / THE LIBRARY</p><h2>Built once.<br><em>Ready to use.</em></h2></div><p>Buttons, inputs, navigation, feedback, containers, data, and document controls share the same token system. Open Widgetbook to inspect live states across brands, themes, and densities.</p></div><div class="component-stage"><div class="component-label"><span>COMPONENT STUDY</span><span>01 / ACTIONS + INPUTS</span></div><div class="component-demo"><div class="demo-head"><div><small>PROJECT SETTINGS</small><h3>Make it yours.</h3><p>A few familiar controls, with Meridian's quieter rhythm.</p></div><span class="demo-status"><i></i> All changes saved</span></div><div class="demo-form"><div class="demo-field"><label for="demo-name">Project name</label><input id="demo-name" type="text" value="Northern lights" aria-label="Example project name"></div><div class="demo-field"><label for="demo-type">Workspace</label><select id="demo-type" aria-label="Example workspace"><option>Personal workspace</option><option>Team workspace</option></select></div></div><div class="demo-divider"></div><div class="demo-setting"><span><b>Automatic updates</b><small>Keep this workspace current in the background.</small></span><span class="demo-switch" aria-hidden="true"><i></i></span></div><div class="demo-footer"><span>Changes are saved locally.</span><a href="widgetbook/" class="demo-button">Explore in Widgetbook <span aria-hidden="true">↗</span></a></div></div></div><div class="component-note"><span class="note-line"></span> OPEN WIDGETBOOK TO TRY THE FLUTTER WIDGETS.</div></section>
-    <section class="brands section" id="brands"><div class="section-top"><div><p class="eyebrow">03 / BRANDS</p><h2>A shared core.<br><em>Four signatures.</em></h2></div><p>Each brand brings its own accent, typography, and density. The same components follow along without a second widget library.</p></div><div class="brand-grid"><article class="brand-card north"><div class="brand-mark">N</div><span class="brand-index">01 / NORTHSPLINE</span><h3>Polar blue.</h3><p>Desktop Git with a clear, cool focus.</p><div class="brand-palette"><i></i><i></i><i></i><i></i></div></article><article class="brand-card cross"><div class="brand-mark">C</div><span class="brand-index">02 / CROSSPROTON</span><h3>Violet precision.</h3><p>Private work with a violet accent.</p><div class="brand-palette"><i></i><i></i><i></i><i></i></div></article><article class="brand-card mima"><div class="brand-mark">M</div><span class="brand-index">03 / MIMAMEIDR</span><h3>Ideas in blue.</h3><p>Clear blue for notes and thought.</p><div class="brand-palette"><i></i><i></i><i></i><i></i></div></article><article class="brand-card nibluma"><div class="brand-mark">N</div><span class="brand-index">04 / NIBLUMA</span><h3>Space to write.</h3><p>Paper and ink over a calm canvas.</p><div class="brand-palette"><i></i><i></i><i></i><i></i></div></article></div></section>
+    <section class="principles section" id="principles"><div class="section-intro"><p class="eyebrow">01 / PRINCIPLES</p><h2>Designed to make<br><em>room for the work.</em></h2><p>Meridian began with Northspline's desktop interface. The shared system keeps its underlying decisions consistent while letting each product set its own tone.</p></div><div class="principle-grid"><article><span class="principle-number">01</span><div class="principle-symbol island-symbol"><span></span><span></span></div><h3>Islands on a ground</h3><p>Work lives on distinct surfaces over a tinted canvas. Structure comes from placement and weight.</p></article><article><span class="principle-number">02</span><div class="principle-symbol accent-symbol"><span></span></div><h3>Accent means intent</h3><p>One accent marks the active choice, the main action, and keyboard focus.</p></article><article><span class="principle-number">03</span><div class="principle-symbol focus-symbol"><span></span><span></span></div><h3>Focus has a place</h3><p>Pointer, keyboard, and touch states are part of each control, with touch targets sized for fingers.</p></article><article><span class="principle-number">04</span><div class="principle-symbol weight-symbol"><span></span><span></span><span></span></div><h3>Weight before size</h3><p>Hierarchy comes from weight and colour. Desktop text stays between 11 and 17 pixels, so dense screens remain calm.</p></article><article><span class="principle-number">05</span><div class="principle-symbol contrast-symbol"><span>Aa</span><span>Aa</span></div><h3>Contrast is checked</h3><p>The token generator fails when text, an icon, a control edge, or the focus ring drops below its contrast floor in any brand or theme.</p></article><article><span class="principle-number">06</span><div class="principle-symbol motion-symbol"><span></span><span></span><span></span></div><h3>Motion explains</h3><p>Durations, curves, and springs are tokens. Every animation has a reduced-motion fallback.</p></article></div></section>
+    <section class="components section" id="components"><div class="section-top"><div><p class="eyebrow">02 / THE LIBRARY</p><h2>Built once.<br><em>Ready to use.</em></h2></div><p>Buttons, inputs, navigation, feedback, containers, data, and document controls share the same token system. Open Widgetbook to inspect live states across brands, themes, and densities.</p></div><div class="component-stage"><div class="component-label"><span>COMPONENT STUDY</span><span>01 / ACTIONS + INPUTS</span></div><div class="component-demo"><div class="demo-head"><div><small>PROJECT SETTINGS</small><h3>Make it yours.</h3><p>A few familiar controls, with Meridian's quieter rhythm.</p></div><span class="demo-status"><i></i> All changes saved</span></div><div class="demo-form"><div class="demo-field"><label for="demo-name">Project name</label><input id="demo-name" type="text" value="Northern lights" aria-label="Example project name"></div><div class="demo-field"><label for="demo-type">Workspace</label><select id="demo-type" aria-label="Example workspace"><option>Personal workspace</option><option>Team workspace</option></select></div></div><div class="demo-divider"></div><div class="demo-setting"><span><b>Automatic updates</b><small>Keep this workspace current in the background.</small></span><span class="demo-switch" aria-hidden="true"><i></i></span></div><div class="demo-footer"><span>Changes are saved locally.</span><a href="widgetbook/" class="demo-button">Explore in Widgetbook <span aria-hidden="true">↗</span></a></div></div></div><div class="component-note"><span class="note-line"></span> OPEN WIDGETBOOK TO TRY THE FLUTTER WIDGETS.</div>
+      <div class="catalogue" aria-label="Component groups">
+        <article class="catalogue-card">
+          <h3>Foundation</h3>
+          <ul><li>Colours</li><li>Typography</li><li>Shape and space</li><li>Icons</li><li>Interaction</li></ul>
+          <a href="widgetbook/#/?path=foundation/colours/tokens">Open foundation <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="catalogue-card">
+          <h3>Actions</h3>
+          <ul><li>Button</li><li>Icon button</li><li>Toolbar button</li><li>Floating button</li></ul>
+          <a href="widgetbook/#/?path=actions/button/playground">Open actions <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="catalogue-card">
+          <h3>Inputs</h3>
+          <ul><li>Text field</li><li>Checkbox</li><li>Switch</li><li>Radio</li><li>Segmented</li><li>Slider</li><li>Select</li><li>Color swatch</li><li>Calendar</li><li>Drop zone</li><li>Suggestions</li></ul>
+          <a href="widgetbook/#/?path=inputs/text-field/playground">Open inputs <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="catalogue-card">
+          <h3>Navigation</h3>
+          <ul><li>List row</li><li>Sidebar rows</li><li>Tabs</li><li>App bar</li><li>Pagination</li><li>Selection bar</li></ul>
+          <a href="widgetbook/#/?path=navigation/list-row/playground">Open navigation <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="catalogue-card">
+          <h3>Display</h3>
+          <ul><li>Avatar</li><li>Count</li><li>Chip</li><li>Status dot</li><li>Keycap</li><li>Middle ellipsis</li></ul>
+          <a href="widgetbook/#/?path=display/chip/playground">Open display <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="catalogue-card">
+          <h3>Feedback</h3>
+          <ul><li>Banner</li><li>Toast</li><li>Progress bar</li><li>Meter</li><li>Spinner</li><li>Skeleton</li><li>Empty state</li><li>Busy overlay</li></ul>
+          <a href="widgetbook/#/?path=feedback/banner/playground">Open feedback <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="catalogue-card">
+          <h3>Containers</h3>
+          <ul><li>Island</li><li>Dialog</li><li>Sheet</li><li>Menu</li><li>Popover</li><li>Panel</li><li>Disclosure</li><li>Settings</li><li>Drawer</li></ul>
+          <a href="widgetbook/#/?path=containers/island/playground">Open containers <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="catalogue-card">
+          <h3>Data and window</h3>
+          <ul><li>Property list</li><li>Column header</li><li>Resize handle</li><li>Status bar</li></ul>
+          <a href="widgetbook/#/?path=data-and-window/column-header/sortable-table">Open data and window <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="catalogue-card">
+          <h3>Documents</h3>
+          <ul><li>Canvas</li><li>Paper</li><li>Tool dock</li></ul>
+          <a href="widgetbook/#/?path=documents/tool-dock/playground">Open documents <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="catalogue-card">
+          <h3>Motion</h3>
+          <ul><li>Swap</li><li>Rolling number</li><li>Reveal</li><li>Shake</li><li>Pulse</li><li>Entrance</li></ul>
+          <a href="widgetbook/#/?path=motion/swap/playground">Open motion <span aria-hidden="true">↗</span></a>
+        </article>
+      </div>
+    </section>
+    <section class="live section" id="live">
+      <div class="section-top"><div><p class="eyebrow">03 / LIVE</p><h2>The real widgets.<br><em>In this page.</em></h2></div><p>This is the Flutter library itself, running in your browser. Pick a component, a brand, and a theme. In Widgetbook, knobs expose each property.</p></div>
+      <div class="live-stage">
+        <div class="live-controls">
+          <div class="live-group" role="group" aria-label="Component">
+            <button type="button" data-path="actions/button/ranks" aria-pressed="true">Buttons</button>
+            <button type="button" data-path="inputs/segmented/playground" aria-pressed="false">Segmented</button>
+            <button type="button" data-path="navigation/list-row/selection-and-metadata" aria-pressed="false">List</button>
+            <button type="button" data-path="navigation/tabs/playground" aria-pressed="false">Tabs</button>
+            <button type="button" data-path="feedback/banner/tones" aria-pressed="false">Banners</button>
+            <button type="button" data-path="containers/settings/group-and-rows" aria-pressed="false">Settings</button>
+            <button type="button" data-path="data-and-window/column-header/sortable-table" aria-pressed="false">Table</button>
+            <button type="button" data-path="foundation/icons/library" aria-pressed="false">Icons</button>
+          </div>
+          <div class="live-group" role="group" aria-label="Brand">
+            <button type="button" data-brand="Northspline" aria-pressed="true">Northspline</button>
+            <button type="button" data-brand="CrossProton" aria-pressed="false">CrossProton</button>
+            <button type="button" data-brand="Mimameidr" aria-pressed="false">Mimameidr</button>
+            <button type="button" data-brand="Nibluma" aria-pressed="false">Nibluma</button>
+          </div>
+          <div class="live-group" role="group" aria-label="Theme">
+            <button type="button" data-theme="light" aria-pressed="true">Light</button>
+            <button type="button" data-theme="dark" aria-pressed="false">Dark</button>
+          </div>
+        </div>
+        <div class="live-frame" id="live-frame">
+          <div class="live-placeholder">
+            <p>The preview downloads the Flutter engine, a few megabytes.</p>
+            <button type="button" class="button primary" id="live-start" hidden>Load the live preview</button>
+            <a class="text-link" id="live-link" href="widgetbook/#/?path=actions/button/ranks">Open it in Widgetbook <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="tokens section" id="tokens">
+      <div class="section-top"><div><p class="eyebrow">04 / TOKENS</p><h2>One source.<br><em>Every surface.</em></h2></div><p>Colour, type, spacing, shape, and motion live in one token file. A generator writes the Dart constants and the design documentation from it.</p></div>
+      <div class="token-grid">
+        <article class="token-card">
+          <h3>Surfaces and ink</h3>
+          <p>Light values shown. Each token has a dark counterpart.</p>
+          <ul class="swatches">
+            <li><i style="background:#e8ecee"></i><b>ground</b><code>#E8ECEE</code></li>
+            <li><i style="background:#fff"></i><b>pane</b><code>#FFFFFF</code></li>
+            <li><i style="background:#f6f8f9"></i><b>pane-alt</b><code>#F6F8F9</code></li>
+            <li><i style="background:#dce2e5"></i><b>canvas</b><code>#DCE2E5</code></li>
+            <li><i style="background:#0f1b21"></i><b>ink</b><code>#0F1B21</code></li>
+            <li><i style="background:#52616a"></i><b>ink-muted</b><code>#52616A</code></li>
+            <li><i style="background:#8795a0"></i><b>ink-faint</b><code>#8795A0</code></li>
+            <li><i style="background:#c3ccd1"></i><b>line-strong</b><code>#C3CCD1</code></li>
+          </ul>
+        </article>
+        <article class="token-card">
+          <h3>Status</h3>
+          <p>Shared by every brand, so a warning looks the same in each app.</p>
+          <ul class="swatches">
+            <li><i style="background:#16733a"></i><b>success</b><code>#16733A</code></li>
+            <li><i style="background:#9a5b00"></i><b>warning</b><code>#9A5B00</code></li>
+            <li><i style="background:#b03a08"></i><b>attention</b><code>#B03A08</code></li>
+            <li><i style="background:#b42318"></i><b>danger</b><code>#B42318</code></li>
+          </ul>
+          <h3 class="token-sub">Series</h3>
+          <p>Eight categorical colours for charts, labels, and avatars.</p>
+          <div class="series" role="img" aria-label="Eight series colours: blue, teal, amber, orange, pink, violet, cyan, and green"><i style="background:#1f6fd6"></i><i style="background:#0b8a7a"></i><i style="background:#b26a00"></i><i style="background:#d4521e"></i><i style="background:#c7306b"></i><i style="background:#7a55d3"></i><i style="background:#0784a8"></i><i style="background:#5d8a12"></i></div>
+        </article>
+        <article class="token-card">
+          <h3>Type scale</h3>
+          <p>Desktop sizes. Touch density uses a larger scale.</p>
+          <ul class="type-scale">
+            <li><code>display 26 / 600</code><span style="font-size:26px;font-weight:600;letter-spacing:-.015em">Open a mailbox</span></li>
+            <li><code>title 17 / 600</code><span style="font-size:17px;font-weight:600">Delete 3 notebooks</span></li>
+            <li><code>heading 15 / 600</code><span style="font-size:15px;font-weight:600">Quarterly report draft</span></li>
+            <li><code>body 13 / 400</code><span style="font-size:13px">Recover the connection after a disconnect</span></li>
+            <li><code>label 12 / 500</code><span style="font-size:12px;font-weight:500">Display name</span></li>
+            <li><code>caption 11 / 500</code><span style="font-size:11px;font-weight:500">Edited 2 hours ago</span></li>
+          </ul>
+        </article>
+        <article class="token-card">
+          <h3>Density</h3>
+          <p>A brand picks its density. Row height in pixels:</p>
+          <div class="densities">
+            <div><span class="density-rows" style="--row:24px"><i></i><i></i><i></i></span><b>compact</b><code>24</code></div>
+            <div><span class="density-rows" style="--row:28px"><i></i><i></i><i></i></span><b>regular</b><code>28</code></div>
+            <div><span class="density-rows" style="--row:32px"><i></i><i></i><i></i></span><b>comfortable</b><code>32</code></div>
+            <div><span class="density-rows" style="--row:48px"><i></i><i></i><i></i></span><b>touch</b><code>48</code></div>
+          </div>
+        </article>
+      </div>
+      <div class="facts">
+        <div><b>236</b><span>Lucide icons, one version</span></div>
+        <div><b>10</b><span>spacing steps, 2 to 48 px</span></div>
+        <div><b>48 px</b><span>minimum touch target</span></div>
+        <div><b>2 px</b><span>focus ring on every control</span></div>
+      </div>
+    </section>
+    <section class="brands section" id="brands"><div class="section-top"><div><p class="eyebrow">05 / BRANDS</p><h2>A shared core.<br><em>Four signatures.</em></h2></div><p>Each brand brings its own accent, typography, and density. The same components follow along without a second widget library.</p></div><div class="brand-grid"><article class="brand-card north"><div class="brand-mark">N</div><span class="brand-index">01 / NORTHSPLINE</span><h3>Polar blue.</h3><p>Desktop Git with a clear, cool focus.</p><dl><dt>Accent</dt><dd>#0A62CC</dd><dt>Density</dt><dd>regular</dd><dt>Type</dt><dd>Platform face</dd></dl><div class="brand-palette"><i></i><i></i><i></i><i></i></div></article><article class="brand-card cross"><div class="brand-mark">C</div><span class="brand-index">02 / CROSSPROTON</span><h3>Violet precision.</h3><p>Private mail with a violet accent.</p><dl><dt>Accent</dt><dd>#6D4AFF</dd><dt>Density</dt><dd>regular</dd><dt>Type</dt><dd>Inter</dd></dl><div class="brand-palette"><i></i><i></i><i></i><i></i></div></article><article class="brand-card mima"><div class="brand-mark">M</div><span class="brand-index">03 / MIMAMEIDR</span><h3>Signal blue.</h3><p>A process explorer where data leads.</p><dl><dt>Accent</dt><dd>#2E69E6</dd><dt>Density</dt><dd>compact</dd><dt>Type</dt><dd>Geist</dd></dl><div class="brand-palette"><i></i><i></i><i></i><i></i></div></article><article class="brand-card nibluma"><div class="brand-mark">N</div><span class="brand-index">04 / NIBLUMA</span><h3>Space to write.</h3><p>Notebooks with paper, ink, and petrol.</p><dl><dt>Accent</dt><dd>#0B6477</dd><dt>Density</dt><dd>touch</dd><dt>Type</dt><dd>Literata</dd></dl><div class="brand-palette"><i></i><i></i><i></i><i></i></div></article></div></section>
+    <section class="code section" id="code">
+      <div class="section-top"><div><p class="eyebrow">06 / IN CODE</p><h2>A theme,<br><em>then widgets.</em></h2></div><p>An app chooses its brand once. Widgets read colours, type, and spacing from the theme, so no screen names a colour itself.</p></div>
+      <div class="code-grid">
+        <figure><figcaption>Apply a brand</figcaption><pre tabindex="0"><code>MaterialApp(
+  theme: buildMeridianTheme(
+    brand: MeridianBrands.northspline,
+    brightness: Brightness.light,
+  ),
+  darkTheme: buildMeridianTheme(
+    brand: MeridianBrands.northspline,
+    brightness: Brightness.dark,
+  ),
+  home: const MeridianGround(
+    child: InboxScreen(),
+  ),
+);</code></pre></figure>
+        <figure><figcaption>Build from primitives</figcaption><pre tabindex="0"><code>MeridianIsland(
+  title: 'Inbox',
+  child: MeridianListRow(
+    title: 'Quarterly report draft',
+    subtitle: 'Anna Berg',
+    meta: '09:41',
+    selected: true,
+    onTap: open,
+  ),
+);</code></pre></figure>
+        <figure><figcaption>Read tokens from the theme</figcaption><pre tabindex="0"><code>final m = context.meridian;
+
+Text('Inbox', style: m.text.bodyStrong);
+ColoredBox(color: m.colors.paneAlt);
+BorderRadius.circular(m.radius.lg);
+const SizedBox(width: MeridianSpace.space4);</code></pre></figure>
+      </div>
+    </section>
     <section class="closing"><p class="eyebrow">SEE IT IN CONTEXT</p><h2>Every detail,<br><em>ready to inspect.</em></h2><p>Browse isolated Flutter components, switch brands and themes, and try the controls yourself.</p><a class="button light" href="widgetbook/">Open Widgetbook <span aria-hidden="true">↗</span></a></section>
   </main>
   <footer><a class="wordmark" href="#top"><span class="mark" aria-hidden="true"><span></span></span>meridian<span class="wordmark-ui">/ui</span></a><p>Shared design for Devmil Flutter apps.</p><a href="widgetbook/">Component browser ↗</a></footer>
+  <script src="site.js" defer></script>
 </body>
 </html>
