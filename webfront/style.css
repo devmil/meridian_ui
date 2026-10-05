@@ -195,12 +195,12 @@ button:focus-visible{outline:2px solid #0a62cc;outline-offset:2px}
 .brands{background:#fff}
 .brand-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .brand-card{border-radius:11px;padding:23px;min-height:258px;position:relative;overflow:hidden;min-width:0}
-.brand-card.north{background:#fbeee9}
+.brand-card.north{background:#e8f2fa}
 .brand-card.cross{background:#f0edff}
 .brand-card.mima{background:#e6f4ed}
 .brand-card.nibluma{background:#e8f3f3}
 .brand-mark{width:37px;height:37px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:18px;margin-bottom:36px;background:#0a62cc;color:#fff}
-.north .brand-mark{background:#c8421f}
+.north .brand-mark{background:#056cb3}
 .cross .brand-mark{background:#6d4aff}
 .mima .brand-mark{background:#0e7c59}
 .nibluma .brand-mark{background:#0b6477}
@@ -215,7 +215,7 @@ button:focus-visible{outline:2px solid #0a62cc;outline-offset:2px}
 .brand-palette i:nth-child(2){opacity:.65}
 .brand-palette i:nth-child(3){opacity:.4}
 .brand-palette i:nth-child(4){opacity:.2}
-.north .brand-palette i{background:#c8421f}
+.north .brand-palette i{background:#056cb3}
 .cross .brand-palette i{background:#6d4aff}
 .mima .brand-palette i{background:#0e7c59}
 .nibluma .brand-palette i{background:#0b6477}
@@ -317,7 +317,7 @@ h1 em,h2 em{color:#6aaeff}
 .component-stage{background:#1d3b4d;border-color:#36566a}
 .component-demo{background:#f9fbfc;color:#14242b}
 .component-label,.component-note{color:#a8becc}
-.brand-card.north{background:#4a2a22}
+.brand-card.north{background:#183a52}
 .brand-card.cross{background:#352c55}
 .brand-card.mima{background:#173d30}
 .brand-card.nibluma{background:#294039}
