@@ -349,6 +349,6 @@ footer a:last-child{color:#bdcfd9}
 }
 
 
-.brand-card.crossveil{background:#ececf1}
-.crossveil .brand-mark,.crossveil .brand-palette i{background:#5145e5}
-@media (prefers-color-scheme:dark){.brand-card.crossveil{background:#221d5c}}
+.brand-card.shotlama{background:#ececf1}
+.shotlama .brand-mark,.shotlama .brand-palette i{background:#5145e5}
+@media (prefers-color-scheme:dark){.brand-card.shotlama{background:#221d5c}}
