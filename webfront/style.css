@@ -354,3 +354,6 @@ footer a:last-child{color:#bdcfd9}
 .brand-card.shotlama{background:#f8eaf3}
 .shotlama .brand-mark,.shotlama .brand-palette i{background:#b8338f}
 @media (prefers-color-scheme:dark){.brand-card.shotlama{background:#45213a}}
+.brand-card.vaultlama{background:#efecf8}
+.vaultlama .brand-mark,.vaultlama .brand-palette i{background:#463878}
+@media (prefers-color-scheme:dark){.brand-card.vaultlama{background:#241e38}}
