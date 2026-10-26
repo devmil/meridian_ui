@@ -141,7 +141,7 @@ class MeridianTextField extends StatefulWidget {
   final ScrollController? scrollController;
   final SpellCheckConfiguration? spellCheckConfiguration;
 
-  /// Overrides the single-line control height, for a field that leads a
+  /// Minimum single-line control height, for a field that leads a
   /// form (a composer's subject line). Multi-line fields size to their
   /// lines.
   final double? height;
@@ -331,6 +331,20 @@ class _MeridianTextFieldState extends State<MeridianTextField>
             : small && !density.isTouch
             ? text.caption
             : text.body);
+    // The editable line uses the ambient scaler even with small chrome.
+    final line = TextPainter(
+      text: TextSpan(text: 'Mg', style: baseStyle),
+      textDirection: Directionality.of(context),
+      textScaler: MediaQuery.textScalerOf(context),
+      maxLines: 1,
+    )..layout();
+    final lineHeight = line.height;
+    line.dispose();
+    final singleLineHeight = math.max(
+      widget.height ??
+          (small ? density.controlSmallExtent : density.controlExtent),
+      lineHeight.ceilToDouble() + MeridianLayout.hairline * 2,
+    );
     final radius = BorderRadius.circular(meridian.radius.md);
     final well = plain
         ? meridianClear(colors.pane)
@@ -344,10 +358,7 @@ class _MeridianTextFieldState extends State<MeridianTextField>
       curve: _focusChanged
           ? MeridianDurations.quickCurve
           : MeridianDurations.hoverCurve,
-      height: area
-          ? null
-          : widget.height ??
-                (small ? density.controlSmallExtent : density.controlExtent),
+      height: area ? null : singleLineHeight,
       constraints: BoxConstraints(
         minWidth: widget.width ?? MeridianLayout.textFieldMinWidth,
       ),

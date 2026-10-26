@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.17.2 - 2026-11-05
+
+- Single-line `MeridianTextField` grows to fit its scaled editable line and
+  borders. Density and explicit heights are minimums; small numeric fields
+  remain readable at 200% text. Add scale coverage and a playground knob.
+
 ## 1.17.1 - 2026-10-30
 
 - `showMeridianDialog` handles Escape on the dialog route's focus scope, so

@@ -1000,33 +1000,44 @@ Widget _textFieldPlayground(BuildContext context) {
   final readOnly = context.knobs.boolean(label: 'Read only');
   final enabled = context.enabledKnob();
   final underlay = context.knobs.boolean(label: 'Underlay');
+  final scale = context.knobs.double.slider(
+    label: 'Text scale',
+    initialValue: 1,
+    min: 1,
+    max: 2,
+  );
   return preview(
-    MeridianTextField(
-      label: label,
-      showLabel: showLabel,
-      placeholder: placeholder,
-      variant: variant,
-      size: size,
-      icon: icon,
-      trailingText: trailingText,
-      message: message,
-      error: error,
-      monospace: monospace,
-      obscureText: obscure,
-      readOnly: readOnly,
-      enabled: enabled,
-      // A mark under the first line, kept clear of the selection colour.
-      underlay: underlay
-          ? Align(
-              alignment: Alignment.topCenter,
-              child: SizedBox(
-                height: MeridianTheme.of(context).text.body.fontSize! * 1.5,
-                child: ColoredBox(
-                  color: MeridianTheme.of(context).colors.attentionBg,
+    MediaQuery(
+      data: MediaQuery.of(
+        context,
+      ).copyWith(textScaler: TextScaler.linear(scale)),
+      child: MeridianTextField(
+        label: label,
+        showLabel: showLabel,
+        placeholder: placeholder,
+        variant: variant,
+        size: size,
+        icon: icon,
+        trailingText: trailingText,
+        message: message,
+        error: error,
+        monospace: monospace,
+        obscureText: obscure,
+        readOnly: readOnly,
+        enabled: enabled,
+        // A mark under the first line, kept clear of the selection colour.
+        underlay: underlay
+            ? Align(
+                alignment: Alignment.topCenter,
+                child: SizedBox(
+                  height: MeridianTheme.of(context).text.body.fontSize! * 1.5,
+                  child: ColoredBox(
+                    color: MeridianTheme.of(context).colors.attentionBg,
+                  ),
                 ),
-              ),
-            )
-          : null,
+              )
+            : null,
+      ),
     ),
     maxWidth: 420,
   );
