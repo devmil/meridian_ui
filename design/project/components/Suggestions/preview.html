@@ -1,0 +1,25 @@
+<!-- @dsCard group="Inputs" height=230 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Suggestions · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo col pane' },
+  h(M.TextField, { label: 'Base branch', value: 'fea', icon: 'git-branch', width: 280 }),
+  h(M.Suggestions, { width: 280, items: [
+    { type: 'header', label: 'Local branches' },
+    { label: 'feature/search', hint: 'ahead 3', icon: 'git-branch', highlighted: true },
+    { label: 'feature/offline-sync', icon: 'git-branch' },
+    { type: 'header', label: 'Remote branches' },
+    { label: 'origin/feature/search', hint: 'origin', icon: 'cloud' },
+  ] }),
+  h(M.Suggestions, { width: 280, items: [
+    { label: 'Ada Lovelace', hint: 'ada@example.com', avatar: 'Ada Lovelace', highlighted: true },
+    { label: 'Charles Babbage', hint: 'charles@example.com', avatar: 'Charles Babbage' },
+  ] })));
+</script>
+</body>
+</html>

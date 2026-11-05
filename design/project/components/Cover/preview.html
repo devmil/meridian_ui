@@ -1,0 +1,38 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Meridian · cover</title>
+<style>
+  html, body { margin: 0; background: var(--ground); }
+  .cover { position: relative; width: 960px; height: 288px; overflow: hidden; background: var(--ground); }
+  .cover svg { position: absolute; left: 0; top: 0; }
+  .brand { fill: var(--brand); } .accent { fill: var(--accent); } .soft { fill: var(--accent-soft); } .edge { fill: var(--line-strong); }
+  .row { fill: var(--ink-faint); } .sel { fill: var(--accent); } .row-on-accent { fill: var(--on-accent-muted); }
+  .r-xl { rx: var(--radius-xl); } .r-lg { rx: var(--radius-lg); } .r-sm { rx: var(--radius-sm); }
+  .name { position: absolute; left: 40px; bottom: 64px; margin: 0; font-family: var(--font-sans); font-size: 88px; line-height: 0.92; font-weight: 600; letter-spacing: -0.015em; color: var(--ink); }
+  .tag { position: absolute; left: 42px; bottom: 36px; max-width: 440px; margin: 0; font-family: var(--font-sans); font-size: 14px; line-height: 20px; color: var(--ink-muted); }
+</style></head>
+<body>
+<div class="cover">
+  <!--
+    blocks: brand slab 168x240 (radius-xl), accent-soft island 168x120 and accent island 168x114 (radius-lg), line-strong slab 160x240 bleeding off the right edge (radius-xl) for relief; gutters space-3 (6px)
+    arrangement: islands on a ground — one tall slab with two stacked islands and a slab bleeding right, the way Meridian windows compose
+    pattern: list rows inside the islands, size-row pitch 28 with 20px bars at radius-sm, one row solid accent — "focus is a place": the focused island's selection is the only solid accent
+    scales: space-3 gutter, space-8 inset, size-row pitch, radius-sm / radius-lg / radius-xl
+  -->
+  <svg width="960" height="288" viewBox="0 0 960 288" aria-hidden="true">
+    <rect class="brand r-xl" x="480" y="24" width="168" height="240"/>
+    <rect class="soft r-lg" x="654" y="24" width="168" height="120"/>
+    <rect class="row r-sm" x="666" y="36" width="144" height="20"/>
+    <rect class="sel r-sm" x="666" y="64" width="144" height="20"/>
+    <rect class="row r-sm" x="666" y="92" width="112" height="20"/>
+    <rect class="accent r-lg" x="654" y="150" width="168" height="114"/>
+    <rect class="row-on-accent r-sm" x="666" y="162" width="96" height="20"/>
+    <rect class="row-on-accent r-sm" x="666" y="190" width="128" height="20"/>
+    <rect class="edge r-xl" x="828" y="24" width="160" height="240"/>
+  </svg>
+  <h1 class="name">Meridian</h1>
+  <p class="tag">Islands on a ground, one accent spent on intent.</p>
+</div>
+</body>
+</html>

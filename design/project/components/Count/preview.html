@@ -1,0 +1,14 @@
+<!-- @dsCard group="Display" height=60 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Count · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo pane' },
+  h(M.Count, null, '3'), h(M.Count, { tone: 'accent' }, '12'), h(M.Count, { tone: 'attention' }, '2'), h(M.Count, { tone: 'danger' }, '1'), h(M.Count, { tone: 'quiet' }, '480')));
+</script>
+</body>
+</html>

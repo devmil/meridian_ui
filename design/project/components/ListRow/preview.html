@@ -1,0 +1,19 @@
+<!-- @dsCard group="Navigation" height=230 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ListRow · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo col' },
+  h(M.Island, { title: 'Inbox', subtitle: '3 of 1,204', focused: true, actions: [h(M.IconButton, { key: 1, icon: 'list-filter', label: 'Filter', size: 'sm' })] },
+    h('div', { className: 'mr-list' },
+      h(M.ListRow, { avatar: 'Anna Berg', title: 'Anna Berg', subtitle: 'Quarterly report draft', meta: '09:41', emphasized: true, actions: [{ icon: 'archive', label: 'Archive' }, { icon: 'trash-2', label: 'Delete' }] }),
+      h(M.ListRow, { avatar: 'Proton', title: 'Proton', subtitle: 'Your security key was added', meta: '08:12', state: 'focused' }),
+      h(M.ListRow, { avatar: 'Jonas Weber', title: 'Jonas Weber', subtitle: 'Re: Mimameidr beta 14', meta: 'Yesterday' }),
+      h(M.ListRow, { icon: 'cpu', title: 'flutter_tester', subtitle: 'PID 4812', meta: '0.0%', dimmed: true })))));
+</script>
+</body>
+</html>

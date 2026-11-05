@@ -1,0 +1,16 @@
+<!-- @dsCard group="Containers" height=300 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Sheet · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo', style: { padding: 0 } }, h('div', { className: 'mr-phone mr-touch', style: { height: 300, display: 'flex', flexDirection: 'column' } },
+  h('div', { className: 'mr-sheetwrap', style: { flex: 1 } }, h(M.Sheet, { title: 'Pen', actions: h(M.Button, { variant: 'quiet' }, 'Done') },
+    h('div', { className: 'mr-row' }, h('span', { style: { width: 90 } }, 'Width'), h(M.Slider, { label: 'Stroke width', value: 0.3, width: 180 })),
+    h(M.Segmented, { label: 'Tool', expand: true, value: 'pen', options: [{ value: 'pen', label: 'Pen', icon: 'pen-line' }, { value: 'marker', label: 'Marker', icon: 'highlighter' }, { value: 'eraser', label: 'Eraser', icon: 'eraser' }] }))))));
+</script>
+</body>
+</html>

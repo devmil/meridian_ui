@@ -1,0 +1,14 @@
+<!-- @dsCard group="Feedback" height=265 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>EmptyState · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo col' }, h(M.Island, { title: 'Search results' },
+  h(M.EmptyState, { icon: 'text-search', title: 'No messages match “invoice 2025”', action: h(M.Button, null, 'Search all folders') }, 'Try fewer words or search all folders.'))));
+</script>
+</body>
+</html>

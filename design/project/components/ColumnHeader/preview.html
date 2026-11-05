@@ -1,0 +1,18 @@
+<!-- @dsCard group="Data" height=90 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>ColumnHeader · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo col pane', style: { alignItems: 'stretch' } },
+  h('div', { className: 'mr-colheads' },
+    h(M.ColumnHeader, { width: 220 }, 'Name'),
+    h(M.ColumnHeader, { width: 80, end: true }, 'PID'),
+    h(M.ColumnHeader, { width: 80, end: true, sort: 'desc' }, 'CPU'),
+    h(M.ColumnHeader, { width: 96, end: true }, 'Memory'))));
+</script>
+</body>
+</html>

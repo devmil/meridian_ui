@@ -1,0 +1,241 @@
+{
+  "name": "Meridian",
+  "version": 1,
+  "meta": {
+    "source": "Meridian 1.0, generalized from GitLama Meridian 3.0. tokens/meridian.tokens.json is the single source for the shared core; each app adds a brand file under tokens/brands/.",
+    "themes": "light first; a token without a dark value inherits light",
+    "neutrals": "A brand may replace the neutral tokens (NEUTRAL_KEYS in tool/generate.py: surfaces, canvas, scrim, ink, lines, control edge) with its own family under `neutrals` in its brand file. Status, series and shadows stay shared; every contrast floor is checked against the brand's own neutrals."
+  },
+  "color": {
+    "themes": [
+      {"id": "light", "name": "Light"},
+      {"id": "dark", "name": "Dark"}
+    ],
+    "tokens": [
+      {"name": "ground", "value": {"light": "#E8ECEE", "dark": "#0B151A"}, "usage": "The window or screen canvas behind islands. Chrome (sidebar, toolbar, tab strip, mobile app bar) sits straight on it."},
+      {"name": "ground-hover", "value": {"light": "#DCE2E5", "dark": "#13222A"}, "usage": "Hover and pressed fill for rows, tabs and toolbar buttons that sit on `ground`."},
+      {"name": "pane", "value": {"light": "#FFFFFF", "dark": "#122027"}, "usage": "Island surface: lists, readers, editors, inspectors. The default reading surface."},
+      {"name": "pane-alt", "value": {"light": "#F6F8F9", "dark": "#0F1B21"}, "usage": "Inset areas inside an island: docked editors, table headers, section strips, zebra rows, search wells."},
+      {"name": "pane-hover", "value": {"light": "#EEF2F4", "dark": "#1A2B34"}, "usage": "Hover and pressed fill for rows and quiet controls inside an island."},
+      {"name": "raised", "value": {"light": "#FFFFFF", "dark": "#1A2A32"}, "usage": "Everything that floats: menus, popovers, toasts, dialogs, sheets, the command palette. Always with `shadow-float`."},
+      {"name": "canvas", "value": {"light": "#DCE2E5", "dark": "#070F13"}, "usage": "The desk behind documents: page feeds, image, scan and PDF viewers, print previews. Documents sit on it as paper and islands float over it. Text on it is chrome (a page number, a zoom level) in `ink` or `ink-muted`."},
+      {"name": "scrim", "value": {"light": "rgba(11,21,26,0.32)", "dark": "rgba(0,0,0,0.55)"}, "usage": "Backdrop behind modal dialogs and bottom sheets only, never behind popovers or menus."},
+      {"name": "ink", "value": {"light": "#0F1B21", "dark": "#E4ECEF"}, "usage": "Primary text and icons on `ground`, `pane`, `pane-alt`, `raised` and `accent-soft` (at least 5.5:1 in both themes)."},
+      {"name": "ink-muted", "value": {"light": "#52616A", "dark": "#93A5AE"}, "usage": "Secondary text: metadata, timestamps, counts, captions, section headers, idle icons. Reads on `ground`, `pane`, `pane-alt`, `raised` and `accent-soft` (at least 4.5:1)."},
+      {"name": "ink-faint", "value": {"light": "#8795A0", "dark": "#5E717B"}, "usage": "Disabled labels, placeholders and de-emphasised marks. Never for text a person must read (about 3:1)."},
+      {"name": "line", "value": {"light": "#D8DFE3", "dark": "#21323B"}, "usage": "Hairlines: dividers and separators inside islands, the neutral count badge. Decorative, never the only boundary of a control."},
+      {"name": "line-strong", "value": {"light": "#C3CCD1", "dark": "#2C414B"}, "usage": "Outlines of controls that also carry a label or icon: secondary buttons, the select trigger, keycaps, the switch track."},
+      {"name": "control-edge", "value": {"light": "#85929A", "dark": "#667A84"}, "usage": "Boundary of text fields, checkboxes, radios and switches (at least 3:1 on `pane` and `raised`)."},
+      {"name": "success", "value": {"light": "#16733A", "dark": "#4AC26B"}, "usage": "Success and healthy states: completed operations, running processes, synced, added. Text and icons on `pane`, `raised` and `success-bg`."},
+      {"name": "success-bg", "value": {"light": "#E6F4EA", "dark": "#0F2E1C"}, "usage": "Success toast and banner tint; background of added lines."},
+      {"name": "warning", "value": {"light": "#9A5B00", "dark": "#E3A948"}, "usage": "Warnings and changed-but-unsaved states, thresholds crossed. Text and icons on `pane`, `raised` and `warning-bg`."},
+      {"name": "warning-bg", "value": {"light": "#FDF1DC", "dark": "#3A2A10"}, "usage": "Warning banner and toast tint."},
+      {"name": "danger", "value": {"light": "#B42318", "dark": "#FF6B61"}, "usage": "Destructive actions, errors, failed states. Text and icons on `pane`, `raised` and `danger-bg`; the danger button fill."},
+      {"name": "on-danger", "value": {"light": "#FFFFFF", "dark": "#1A0503"}, "usage": "Text and icons on a `danger` fill."},
+      {"name": "danger-bg", "value": {"light": "#FCEBEA", "dark": "#3A1A1B"}, "usage": "Error banner and toast tint; hover fill of a danger-quiet button; background of removed lines."},
+      {"name": "attention", "value": {"light": "#B03A08", "dark": "#FF9E5E"}, "usage": "Work the person has to do that is not a failure: conflicts, pending review, action required. Orange, never red. Text on `pane` and `attention-bg`."},
+      {"name": "on-attention", "value": {"light": "#FFFFFF", "dark": "#1F0C02"}, "usage": "Text on an `attention` fill, such as the attention count badge."},
+      {"name": "attention-bg", "value": {"light": "#FDEBDD", "dark": "#3D2413"}, "usage": "Attention banner tint and background of regions that need a decision."},
+      {"name": "series-1", "value": {"light": "#1F6FD6", "dark": "#6AAEFF"}, "usage": "Categorical colour 1 (blue): chart series, avatars, labels, graph lanes. Always paired with a name or shape. At least 4:1 on `pane`."},
+      {"name": "series-2", "value": {"light": "#0B8A7A", "dark": "#3DD6C0"}, "usage": "Categorical colour 2 (teal). At least 4:1 on `pane`."},
+      {"name": "series-3", "value": {"light": "#B26A00", "dark": "#F2C14E"}, "usage": "Categorical colour 3 (amber). At least 4:1 on `pane`."},
+      {"name": "series-4", "value": {"light": "#D4521E", "dark": "#FF8A5B"}, "usage": "Categorical colour 4 (orange). At least 3:1 on `pane`."},
+      {"name": "series-5", "value": {"light": "#C7306B", "dark": "#FF6B9A"}, "usage": "Categorical colour 5 (rose). At least 4:1 on `pane`."},
+      {"name": "series-6", "value": {"light": "#7A55D3", "dark": "#B49BFF"}, "usage": "Categorical colour 6 (violet). At least 4:1 on `pane`."},
+      {"name": "series-7", "value": {"light": "#0784A8", "dark": "#4CC9F0"}, "usage": "Categorical colour 7 (cyan). At least 4:1 on `pane`."},
+      {"name": "series-8", "value": {"light": "#5D8A12", "dark": "#A3D65C"}, "usage": "Categorical colour 8 (olive). At least 3:1 on `pane`."}
+    ]
+  },
+  "accent": {
+    "note": "The accent family is supplied by the app's brand (tokens/brands/*.json). Every brand must define all of these for light and dark and pass the contrast floors in tool/generate.py.",
+    "tokens": [
+      {"name": "accent", "usage": "The one accent, spent on intent: primary button fill, the selected row in the focused island, checked controls, progress, the active tab rule."},
+      {"name": "on-accent", "usage": "Text and icons on an `accent` fill (at least 4.5:1)."},
+      {"name": "on-accent-muted", "usage": "Secondary text (metadata, keycaps) inside an `accent`-filled selected row (at least 4.5:1 on `accent`)."},
+      {"name": "accent-soft", "usage": "Selection in an island without keyboard focus, the active navigation row, toggled icon buttons, tinted chips. `ink`, `ink-muted` and `accent-ink` read on it."},
+      {"name": "accent-ink", "usage": "Accent-coloured text and icons: links, the current location, toggled icon buttons, info banner icon. At least 4.5:1 on `pane`, `pane-alt`, `ground` and `accent-soft`."},
+      {"name": "focus", "usage": "The 2px keyboard focus ring, 1px offset, on every focusable control. At least 3:1 on `pane`, `ground` and `raised`."},
+      {"name": "brand", "usage": "Brand only: the app mark's ground colour. Welcome and About screens, splash, cover. Never a working UI surface."}
+    ]
+  },
+  "syntax": {
+    "note": "Foreground colours of code token categories, shared by every brand. Plain code is `ink`; a category changes only the colour, never the font, weight or size. None is a status colour: added, removed and conflicting lines keep their backgrounds and signs.",
+    "tokens": [
+      {"name": "syntax-comment", "value": {"light": "#5C6870", "dark": "#8C9EA7"}, "usage": "Comments and documentation comments. Code text on `pane`, `pane-alt`, `raised`, `pane-hover`, `success-bg` and `danger-bg` (at least 4.5:1)."},
+      {"name": "syntax-keyword", "value": {"light": "#8A2F8C", "dark": "#DDA0E6"}, "usage": "Keywords: declaration, control and storage words. Code text on `pane`, `pane-alt`, `raised`, `pane-hover`, `success-bg` and `danger-bg` (at least 4.5:1)."},
+      {"name": "syntax-string", "value": {"light": "#0B6157", "dark": "#7FD3C4"}, "usage": "String and character literals, with their escapes and interpolations. Code text on `pane`, `pane-alt`, `raised`, `pane-hover`, `success-bg` and `danger-bg` (at least 4.5:1)."},
+      {"name": "syntax-number", "value": {"light": "#0B5A96", "dark": "#8FC6F2"}, "usage": "Numeric literals. Code text on `pane`, `pane-alt`, `raised`, `pane-hover`, `success-bg` and `danger-bg` (at least 4.5:1)."},
+      {"name": "syntax-type", "value": {"light": "#8C3A62", "dark": "#EBA6C5"}, "usage": "Type, class and namespace names. Code text on `pane`, `pane-alt`, `raised`, `pane-hover`, `success-bg` and `danger-bg` (at least 4.5:1)."},
+      {"name": "syntax-function", "value": {"light": "#5241A8", "dark": "#B9AEF7"}, "usage": "Function and method names, where declared and where called. Code text on `pane`, `pane-alt`, `raised`, `pane-hover`, `success-bg` and `danger-bg` (at least 4.5:1)."},
+      {"name": "syntax-variable", "value": {"light": "#2C4A5C", "dark": "#CBD9E0"}, "usage": "Variables and parameters a grammar names as such. Code text on `pane`, `pane-alt`, `raised`, `pane-hover`, `success-bg` and `danger-bg` (at least 4.5:1)."},
+      {"name": "syntax-constant", "value": {"light": "#0B5A96", "dark": "#8FC6F2"}, "usage": "Language constants (true, null), named constants and enum values. Code text on `pane`, `pane-alt`, `raised`, `pane-hover`, `success-bg` and `danger-bg` (at least 4.5:1)."},
+      {"name": "syntax-operator", "value": {"light": "#4B5962", "dark": "#A9B8BF"}, "usage": "Operators. Code text on `pane`, `pane-alt`, `raised`, `pane-hover`, `success-bg` and `danger-bg` (at least 4.5:1)."},
+      {"name": "syntax-punctuation", "value": {"light": "#4B5962", "dark": "#A9B8BF"}, "usage": "Delimiters, separators and terminators. Code text on `pane`, `pane-alt`, `raised`, `pane-hover`, `success-bg` and `danger-bg` (at least 4.5:1)."},
+      {"name": "syntax-attribute", "value": {"light": "#7A4A00", "dark": "#E8BE7C"}, "usage": "Annotations, attributes and markup attribute names. Code text on `pane`, `pane-alt`, `raised`, `pane-hover`, `success-bg` and `danger-bg` (at least 4.5:1)."},
+      {"name": "syntax-tag", "value": {"light": "#8A2F8C", "dark": "#DDA0E6"}, "usage": "Markup tag names. Code text on `pane`, `pane-alt`, `raised`, `pane-hover`, `success-bg` and `danger-bg` (at least 4.5:1)."}
+    ]
+  },
+  "type": {
+    "fonts": [
+      {"family": "JetBrains Mono", "file": "fonts/JetBrainsMono-Regular.ttf", "weight": "400"}
+    ],
+    "families": {
+      "sans": "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"Segoe UI Variable Text\", \"Segoe UI\", Roboto, Cantarell, \"Noto Sans\", sans-serif",
+      "mono": "\"JetBrains Mono\", ui-monospace, Menlo, Consolas, monospace",
+      "reading": "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"Segoe UI Variable Text\", \"Segoe UI\", Roboto, sans-serif"
+    },
+    "groups": [
+      {
+        "name": "Desktop",
+        "family": "sans",
+        "styles": [
+          {"name": "display", "fontSize": "26px", "lineHeight": "32px", "fontWeight": 600, "letterSpacing": "-0.015em", "sample": "Open a mailbox", "usage": "Welcome and empty-state headline only. One per window."},
+          {"name": "title", "fontSize": "17px", "lineHeight": "22px", "fontWeight": 600, "letterSpacing": "-0.01em", "sample": "Delete 3 notebooks", "usage": "Dialog, sheet and settings page titles."},
+          {"name": "heading", "fontSize": "15px", "lineHeight": "20px", "fontWeight": 600, "sample": "Quarterly report draft", "usage": "The headline of the selected item in a detail or reader island (a commit subject, a mail subject, a process name)."},
+          {"name": "body", "fontSize": "13px", "lineHeight": "18px", "fontWeight": 400, "sample": "Recover the connection after an early disconnect", "usage": "Default for rows, fields, menus and running text in the UI."},
+          {"name": "body-strong", "fontSize": "13px", "lineHeight": "18px", "fontWeight": 600, "sample": "main", "usage": "The current item, unread rows, emphasised row text, island titles."},
+          {"name": "label", "fontSize": "12px", "lineHeight": "16px", "fontWeight": 500, "sample": "Move to archive", "usage": "Buttons, segmented options, chips, tabs, field labels."},
+          {"name": "caption", "fontSize": "11px", "lineHeight": "14px", "fontWeight": 500, "sample": "Synced · 2 min ago", "usage": "Toolbar button labels, metadata lines, help text, the status bar."},
+          {"name": "overline", "fontSize": "11px", "lineHeight": "14px", "fontWeight": 600, "letterSpacing": "0.06em", "sample": "FOLDERS", "usage": "Section headers in sidebars, menus and the palette, set in capitals in `ink-muted`."},
+          {"name": "code", "family": "mono", "fontSize": "12px", "lineHeight": "18px", "fontWeight": 400, "sample": "git fetch --prune origin", "usage": "Code, file content, command output, diff lines."},
+          {"name": "code-sm", "family": "mono", "fontSize": "11px", "lineHeight": "16px", "fontWeight": 400, "letterSpacing": "0.01em", "sample": "f4b34279b4 · PID 4812", "usage": "Identifiers a person might paste: hashes, PIDs, message IDs, line numbers. `ink-muted` unless selected."},
+          {"name": "reading", "family": "reading", "fontSize": "15px", "lineHeight": "24px", "fontWeight": 400, "sample": "Thanks for the notes. I moved the review to Thursday.", "usage": "Long-form content a person reads rather than scans: mail bodies, notes, release notes. The brand may set a serif `reading` family."}
+        ]
+      },
+      {
+        "name": "Touch",
+        "family": "sans",
+        "styles": [
+          {"name": "display-touch", "fontSize": "28px", "lineHeight": "34px", "fontWeight": 600, "letterSpacing": "-0.015em", "sample": "Your notebooks", "usage": "Touch density: screen and empty-state headline."},
+          {"name": "title-touch", "fontSize": "20px", "lineHeight": "26px", "fontWeight": 600, "letterSpacing": "-0.01em", "sample": "Export notebook", "usage": "Touch density: sheet, dialog and page titles."},
+          {"name": "heading-touch", "fontSize": "17px", "lineHeight": "22px", "fontWeight": 600, "sample": "Linear algebra, week 3", "usage": "Touch density: detail headline."},
+          {"name": "body-touch", "fontSize": "15px", "lineHeight": "22px", "fontWeight": 400, "sample": "Pages are saved on this device", "usage": "Touch density: rows, fields, menus and running text."},
+          {"name": "body-strong-touch", "fontSize": "15px", "lineHeight": "22px", "fontWeight": 600, "sample": "Algebra", "usage": "Touch density: current and emphasised rows."},
+          {"name": "label-touch", "fontSize": "14px", "lineHeight": "20px", "fontWeight": 500, "sample": "Add page", "usage": "Touch density: buttons, tabs, chips, field labels."},
+          {"name": "caption-touch", "fontSize": "12px", "lineHeight": "16px", "fontWeight": 500, "sample": "Edited 5 min ago", "usage": "Touch density: metadata and help text."},
+          {"name": "overline-touch", "fontSize": "12px", "lineHeight": "16px", "fontWeight": 600, "letterSpacing": "0.06em", "sample": "RECENT", "usage": "Touch density: section headers in capitals."},
+          {"name": "code-touch", "family": "mono", "fontSize": "13px", "lineHeight": "20px", "fontWeight": 400, "sample": "sync.error.timeout", "usage": "Touch density: code and identifiers."},
+          {"name": "code-sm-touch", "family": "mono", "fontSize": "12px", "lineHeight": "16px", "fontWeight": 400, "sample": "a1f3c9", "usage": "Touch density: short identifiers."},
+          {"name": "reading-touch", "family": "reading", "fontSize": "17px", "lineHeight": "26px", "fontWeight": 400, "sample": "The derivative measures how the function changes.", "usage": "Touch density: long-form content."}
+        ]
+      }
+    ]
+  },
+  "spacing": {
+    "tokens": [
+      {"name": "space-1", "value": "2px", "usage": "Icon-to-badge nudges, the segmented track inset, gaps inside compound chips."},
+      {"name": "space-2", "value": "4px", "usage": "Gap between icon and label in chips and toolbar buttons; label-to-field gap."},
+      {"name": "space-3", "value": "6px", "usage": "The island gutter: between islands and from the window edge. Row inset from the island edge."},
+      {"name": "space-4", "value": "8px", "usage": "The working unit: control padding-x, gap between related controls, row padding-x."},
+      {"name": "space-5", "value": "12px", "usage": "Island header padding-x, gap between control groups, button padding-x."},
+      {"name": "space-6", "value": "16px", "usage": "Popover, toast and menu padding; detail content inset; touch screen margin."},
+      {"name": "space-7", "value": "20px", "usage": "Dialog padding, settings row spacing."},
+      {"name": "space-8", "value": "24px", "usage": "Dialog section gaps, sheet padding, welcome gutters."},
+      {"name": "space-9", "value": "32px", "usage": "Empty-state rhythm, touch section gaps."},
+      {"name": "space-10", "value": "48px", "usage": "Touch empty-state rhythm and page top margins."}
+    ]
+  },
+  "radius": {
+    "note": "Default shape (GitLama). A brand may replace the five named steps with its own scale; `radius-pill` never changes.",
+    "tokens": [
+      {"name": "radius-xs", "value": "3px", "usage": "Keycaps, status tiles, inline highlights."},
+      {"name": "radius-sm", "value": "5px", "usage": "Rows (the selection is an inset rounded bar, never full-bleed), chips, menu items, small icon buttons."},
+      {"name": "radius-md", "value": "7px", "usage": "Buttons, fields, select, segmented track, tabs."},
+      {"name": "radius-lg", "value": "10px", "usage": "Islands, banners, cards."},
+      {"name": "radius-xl", "value": "14px", "usage": "Everything that floats: menus, popovers, toasts, dialogs, the palette; the top corners of bottom sheets."},
+      {"name": "radius-pill", "value": "999px", "usage": "Count badges, switches, progress bars, avatars, pill tabs."}
+    ]
+  },
+  "shadow": {
+    "tokens": [
+      {"name": "shadow-pane", "value": {"light": "0 0 0 1px rgba(15,27,33,0.07), 0 1px 2px rgba(15,27,33,0.05)", "dark": "0 0 0 1px rgba(255,255,255,0.05), 0 1px 2px rgba(0,0,0,0.35)"}, "usage": "Every island. It is the island's edge: islands have no separate border."},
+      {"name": "shadow-float", "value": {"light": "0 0 0 1px rgba(15,27,33,0.09), 0 16px 40px -12px rgba(15,27,33,0.28)", "dark": "0 0 0 1px rgba(255,255,255,0.08), 0 16px 40px -12px rgba(0,0,0,0.7)"}, "usage": "Menus, popovers, toasts, dialogs, sheets and the palette."},
+      {"name": "shadow-control", "value": {"light": "0 1px 0 rgba(15,27,33,0.06)", "dark": "0 1px 0 rgba(0,0,0,0.3)"}, "usage": "Secondary buttons, the select trigger and the selected segment: a 1px lip, never a blur."}
+    ]
+  },
+  "size": {
+    "tokens": [
+      {"name": "size-row-compact", "value": "24px", "usage": "Row height at compact density."},
+      {"name": "size-row", "value": "28px", "usage": "Row height at regular density (the desktop default): list, navigation and menu rows."},
+      {"name": "size-row-comfortable", "value": "32px", "usage": "Row height at comfortable density."},
+      {"name": "size-row-touch", "value": "48px", "usage": "Row height at touch density (phones and tablets)."},
+      {"name": "size-control", "value": "28px", "usage": "Buttons, fields, segmented controls and selects on desktop."},
+      {"name": "size-control-sm", "value": "22px", "usage": "Controls inside island headers and rows (hover actions, filters)."},
+      {"name": "size-control-touch", "value": "44px", "usage": "Buttons, fields and segmented controls at touch density."},
+      {"name": "size-target-touch", "value": "48px", "usage": "Minimum hit target at touch density, even when the visible control is smaller."},
+      {"name": "size-icon", "value": "16px", "usage": "UI icons; 14px inside chips and small controls, 18px in the toolbar, 20px at touch density."},
+      {"name": "size-toolbar", "value": "52px", "usage": "Unified desktop title bar and toolbar."},
+      {"name": "size-appbar-touch", "value": "56px", "usage": "Touch app bar."},
+      {"name": "size-island-header", "value": "36px", "usage": "Island header strip."},
+      {"name": "size-sidebar", "value": "248px", "usage": "Default sidebar width (resizable 200–360)."}
+    ]
+  },
+  "motion": {
+    "note": "Durations in ms. See design/project/guides/40-motion.md. Honour reduce motion through MeridianMotion.",
+    "curves": [
+      {"name": "standard", "cubic": [0.2, 0.0, 0.0, 1.0], "usage": "Moves and changes that start and end on screen."},
+      {"name": "enter", "cubic": [0.05, 0.7, 0.1, 1.0], "usage": "Arrivals: fast start, long gentle landing."},
+      {"name": "exit", "cubic": [0.3, 0.0, 0.8, 0.15], "usage": "Departures: accelerate away."},
+      {"name": "exit-soft", "cubic": [0.4, 0.0, 1.0, 1.0], "usage": "Tints and highlights fading back."}
+    ],
+    "springs": [
+      {"name": "snappy", "stiffness": 600, "ratio": 0.86, "usage": "Glides, switch thumb, press release."},
+      {"name": "gentle", "stiffness": 300, "ratio": 0.9, "usage": "Drag settle, reorder, travel, toasts arriving."},
+      {"name": "pop", "stiffness": 520, "ratio": 0.55, "usage": "Small rewards: count increase, badge, radio dot, checkbox fill."}
+    ],
+    "scales": [
+      {"name": "press", "value": 0.97, "usage": "Press-in scale."},
+      {"name": "press-touch", "value": 0.96, "usage": "Press-in scale at touch density."},
+      {"name": "overlay-enter", "value": 0.98, "usage": "Menus, popovers, suggestions and exits start or end here."},
+      {"name": "dialog-enter", "value": 0.96, "usage": "Dialogs grow from here."},
+      {"name": "pop", "value": 1.12, "usage": "Peak of a pop."},
+      {"name": "lift", "value": 1.02, "usage": "An item being dragged."},
+      {"name": "rise-overlay", "value": 4, "usage": "Overlay rise in px."},
+      {"name": "rise-content", "value": 6, "usage": "Content swap, banner and empty-state rise in px."},
+      {"name": "rise-dialog", "value": 8, "usage": "Dialog rise in px."},
+      {"name": "offset-toast", "value": 12, "usage": "Toast arrival offset in px."},
+      {"name": "nudge", "value": 2, "usage": "Toolbar icon nudge in px."},
+      {"name": "shake-field", "value": 3, "usage": "Field shake amplitude in px (3 cycles over 240 ms)."},
+      {"name": "shake-surface", "value": 4, "usage": "Dialog shake amplitude in px (3 cycles over 280 ms)."},
+      {"name": "shake-cycles", "value": 3, "usage": "Shake cycles."},
+      {"name": "stagger-max", "value": 6, "usage": "Items staggered in an entrance; the rest appear with the last."},
+      {"name": "pulse-scale", "value": 2.2, "usage": "A live halo grows to this scale while fading."},
+      {"name": "glide-max-rows", "value": 8, "usage": "Longer selection jumps crossfade instead of gliding."}
+    ],
+    "tokens": [
+      {"name": "motion-hover", "value": 80, "curve": "linear", "usage": "Hover fill in, and press fills."},
+      {"name": "motion-hover-out", "value": 160, "curve": "linear", "usage": "Hover fill out: slower, so sweeping the pointer across rows leaves a soft trail."},
+      {"name": "motion-press", "value": 60, "curve": "exit", "usage": "Press-in: a control scales to press-scale."},
+      {"name": "motion-quick", "value": 100, "curve": "standard", "usage": "Small flips: icon swap, count roll, check stroke, chevron rotate, colour-only changes."},
+      {"name": "motion-select", "value": 120, "curve": "standard", "usage": "Selection bar, toggles, tab rule when not springing."},
+      {"name": "motion-exit", "value": 100, "curve": "exit", "usage": "Anything leaving: overlays, toasts, rows, hover actions."},
+      {"name": "motion-overlay", "value": 140, "curve": "enter", "usage": "Menus, popovers, suggestions and tooltips entering: fade in while rising 4px."},
+      {"name": "motion-dialog", "value": 200, "curve": "enter", "usage": "Dialog and sheet surface entering; scrim fade."},
+      {"name": "motion-layout", "value": 200, "curve": "standard", "usage": "Size changes: disclosure, banner, row insert or remove, button width, reveal."},
+      {"name": "motion-sheet", "value": 240, "curve": "enter", "usage": "Bottom sheets and side panels sliding in."},
+      {"name": "motion-emphasized", "value": 240, "curve": "standard", "usage": "Values in live lists and meters moving to a new value."},
+      {"name": "motion-highlight", "value": 320, "curve": "standard", "usage": "An app's signature moment, e.g. an item travelling to its new home."},
+      {"name": "motion-celebrate", "value": 520, "curve": "standard", "usage": "A rare success moment; at most one per action the person took."},
+      {"name": "motion-attention", "value": 900, "curve": "exitSoft", "usage": "A changed item's accent-soft tint fading back to normal."},
+      {"name": "motion-reduced-fade", "value": 100, "curve": "linear", "usage": "The crossfade that replaces movement under reduce motion (MeridianMotion.fade)."},
+      {"name": "motion-stagger", "value": 18, "curve": "linear", "usage": "Delay between successive items in an entrance; at most stagger-max items are staggered."},
+      {"name": "motion-spinner-delay", "value": 150, "curve": "linear", "usage": "Wait before a spinner or busy state appears, so fast work never flashes."},
+      {"name": "motion-shake-field", "value": 240, "curve": "linear", "usage": "One field shake (MM-09)."},
+      {"name": "motion-shake-surface", "value": 280, "curve": "linear", "usage": "One dialog shake (MM-47)."},
+      {"name": "motion-nudge", "value": 90, "curve": "standard", "usage": "A toolbar icon's nudge out (MM-07); the return is spring-snappy."},
+      {"name": "motion-hold", "value": 900, "curve": "linear", "usage": "How long a success check stays (MM-04)."},
+      {"name": "motion-progress-hold", "value": 300, "curve": "linear", "usage": "A progress bar at 100% waits this long before it fades (MM-63)."},
+      {"name": "motion-tooltip-wait", "value": 500, "curve": "linear", "usage": "Delay before a tooltip shows."},
+      {"name": "motion-tooltip-warm", "value": 800, "curve": "linear", "usage": "Reserved: after a tooltip hides, the next one within this window shows at once."},
+      {"name": "motion-pulse", "value": 1600, "curve": "standard", "usage": "One loop of a live halo."},
+      {"name": "motion-skeleton-pulse", "value": 1200, "curve": "standard", "usage": "One half-cycle of a skeleton's breathing."},
+      {"name": "motion-march", "value": 600, "curve": "linear", "usage": "One period of a drop zone's marching dashes (MM-77)."},
+      {"name": "motion-spinner", "value": 700, "curve": "linear", "usage": "One spinner turn (2000 with reduce motion)."},
+      {"name": "motion-spinner-reduced", "value": 2000, "curve": "linear", "usage": "One spinner turn with reduce motion."},
+      {"name": "motion-progress", "value": 1100, "curve": "easeInOut", "usage": "One sweep of the indeterminate progress bar."},
+      {"name": "motion-skeleton-delay", "value": 300, "curve": "linear", "usage": "Wait before skeletons appear, so fast loads never flash them."},
+      {"name": "motion-toast", "value": 4000, "curve": "linear", "usage": "How long a toast stays."},
+      {"name": "motion-toast-action", "value": 8000, "curve": "linear", "usage": "How long a toast with an action (Undo) stays."}
+    ]
+  }
+}

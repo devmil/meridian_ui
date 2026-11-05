@@ -1,0 +1,18 @@
+{
+  "id": "gitlama",
+  "name": "GitLama",
+  "description": "Desktop Git client. The reference brand: a cerulean accent, clear of the danger red that marks conflicts and failed operations.",
+  "accentName": "cerulean",
+  "density": "regular",
+  "colors": {
+    "light": {"accent": "#056CB3", "on-accent": "#FFFFFF", "on-accent-muted": "#E2EFFB", "accent-soft": "#DBEBFC", "accent-ink": "#0160A0", "focus": "#056CB3", "brand": "#14242B"},
+    "dark":  {"accent": "#5BB1FE", "on-accent": "#06111D", "on-accent-muted": "#123452", "accent-soft": "#16334D", "accent-ink": "#87C4FE", "focus": "#87C4FE", "brand": "#1F3A48"}
+  },
+  "fonts": {
+    "sans": {"flutter": null, "css": null, "note": "Platform face (SF Pro, Segoe UI Variable, Cantarell or Noto Sans)."},
+    "mono": {"flutter": "JetBrains Mono", "package": "meridian_ui", "css": null, "note": "Bundled with meridian_ui."},
+    "reading": {"flutter": null, "css": null, "note": "Same as sans."}
+  },
+  "radius": null,
+  "signature": "Islands on a tinted ground, the Compass in the title bar, the spline history graph."
+}

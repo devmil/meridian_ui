@@ -1,0 +1,16 @@
+<!-- @dsCard group="Feedback" height=250 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Banner · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo col pane' },
+  h(M.Banner, { tone: 'attention', title: 'Sync paused.' }, 'The server asked for a new password. Sign in again to continue.'),
+  h(M.Banner, { tone: 'error', title: 'Could not send “Quarterly report”.', actions: h(M.Button, { size: 'sm' }, 'Open draft') }, 'The attachment is larger than 25 MB. Remove it or share a link instead.'),
+  h(M.Banner, null, 'Messages older than 30 days are kept on the server only.')));
+</script>
+</body>
+</html>

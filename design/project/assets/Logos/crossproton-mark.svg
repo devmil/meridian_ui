@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!--
+    Canonical CrossProton application mark. The envelope geometry matches
+    CpBrandMarkPainter's 40×40 viewBox; the 92 px transparent perimeter is
+    the macOS safe area, not part of the product glyph.
+  -->
+  <rect x="92" y="92" width="840" height="840" rx="257" fill="#6d4aff"/>
+  <path d="M255.5 417.5 L512 615 L768.5 417.5" fill="none" stroke="#ffffff" stroke-width="37.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M755.3 254.3v105M702.8 306.8h105" fill="none" stroke="#dde300" stroke-width="50.4" stroke-linecap="round"/>
+</svg>

@@ -5,7 +5,7 @@
   const link = document.getElementById('live-link');
   if (!frame || !start || !link) return;
 
-  const state = {path: 'actions/button/ranks', brand: 'Northspline', theme: 'light'};
+  const state = {path: 'actions/button/ranks', brand: 'GitLama', theme: 'light'};
   let view = null;
 
   // Widgetbook reads its settings from the fragment, as `group={field:value}`.

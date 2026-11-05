@@ -1,0 +1,14 @@
+# TextField
+
+Single- or multi-line text input. Flutter: `MeridianTextField`.
+
+- The consumer provides `label` (above the field; in a settings row the row's label is used instead), `placeholder`, `controller`/`onChanged`, optional leading `icon`, `trailingText` (match counter, character count) or a `trailing` widget, `variant: search`, `size: small`, `monospace` for identifiers and paths, `minLines`/`maxLines` for multi-line (`minLines` alone grows without limit), `expands` to fill a bounded height (an editor pane), `scrollController` to read and drive a multi-line field's scroll offset (an editor kept in step with a neighbouring pane), `height` for a taller single-line field that leads a form (a composer's subject line), `error` and `message`. `showLabel: false` keeps the label as the accessible name without showing it, for a palette query or a filter beside its list. `fieldKey` keys the inner editable field for tests; `spellCheckConfiguration` turns on the platform spell checker for prose.
+- The edge is `control-edge` (3:1). Focus paints a `focus` edge plus a 1px `focus` ring. The **search** variant is a filled `pane-alt` well with no edge until focused, for filters in island headers and toolbars.
+- An `error` replaces the message: a `danger` edge and one `caption` line that says what is wrong and how to fix it ("Enter a host name without https://"). Never a floating label, never a Material outline.
+- In a Row, give the field a `width` or wrap it in Expanded.
+- The **plain** variant has no edge, well, ring or inset: it types inside a surface that is already a field, such as the chips of a recipient field.
+- `clearLabel` adds a clear button (its tooltip and accessible name) while the field holds text: search and filter fields. `onTap` reports taps, for a field that opens more options.
+- `underlay` paints marks inside the well under the text, its selection and the caret, filling the text area: an editor's line marks such as a merge result's chosen blocks. Keep marks clear of `accent-soft`, the selection colour, so a selection over a mark stays visible. The underlay takes no taps and is not announced; the consumer keeps it in step with the text and `scrollController`.
+- It brings its own Material ancestor, so it works on a `MeridianGround` without a Scaffold.
+- Inside a Dialog a single-line field submits the dialog: Enter runs the dialog's primary action (or shakes the dialog when that action is disabled) and focus stays in the field. A field with its own `onSubmitted`, a multi-line or read-only field keeps Enter. Set `submitsDialog: false` for a field whose Enter means something else (adding a chip, picking a suggestion).
+- Motion: Focus grows a 1px halo over `motion-quick`; `rejectCount` shakes the field once and the message rises in; a numeric `trailingText` rolls (MM-08, MM-09, MM-10).

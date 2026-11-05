@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read the pinned Flutter version
+        id: flutter
+        run: echo "version=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ steps.flutter.outputs.version }}
+          cache: true
+      - name: Generated tokens and checks
+        run: |
+          python3 tool/generate.py --check
+          python3 tool/check_motion_usage.py
+          python3 tool/build_site_icons.py --check
+          python3 tool/check_fonts.py
+          python3 tool/test_font_checkout.py
+      - name: Package
+        run: |
+          flutter pub get --enforce-lockfile
+          dart format --set-exit-if-changed lib test example/lib example/test
+          flutter analyze
+          flutter test
+      - name: Gallery and Widgetbook
+        working-directory: example
+        run: |
+          flutter pub get --enforce-lockfile
+          flutter analyze
+          flutter test
+      - name: Native menus package
+        working-directory: packages/meridian_native_menus
+        run: |
+          flutter pub get
+          dart format --set-exit-if-changed lib test
+          flutter analyze
+          flutter test
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Web rendition contracts
+        run: |
+          deps="$RUNNER_TEMP/web-preview-deps"
+          mkdir -p "$deps"
+          npm install --prefix "$deps" --no-save --no-package-lock react@18.3.1 react-test-renderer@18.3.1
+          NODE_PATH="$deps/node_modules" node --test tool/test_button_preview.cjs tool/test_chip_preview.cjs tool/test_split_button_preview.cjs tool/test_shortcut_field_preview.cjs

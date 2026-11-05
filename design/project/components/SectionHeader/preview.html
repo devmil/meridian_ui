@@ -1,0 +1,17 @@
+<!-- @dsCard group="Containers" height=150 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>SectionHeader · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo col' },
+  h('section', { className: 'mr-island', style: { width: '100%' } },
+    h('header', { className: 'mr-ihead' }, h(M.Icon, { name: 'folder', size: 'sm' }), h('span', { className: 'title' }, 'Unstaged'), h(M.Count, { tone: 'quiet' }, '12'), h('span', { className: 'sub' }, '3 selected'), h('span', { className: 'grow' }),
+      h(M.IconButton, { icon: 'plus', label: 'Stage all', size: 'sm' }), h(M.IconButton, { icon: 'ellipsis', label: 'More', size: 'sm' })),
+    h('div', { className: 'mr-ibody', style: { padding: 'var(--space-5)' } }, 'The list starts below the hairline.'))));
+</script>
+</body>
+</html>

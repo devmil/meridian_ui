@@ -1,0 +1,975 @@
+{
+ "library": "Lucide (lucide-static)",
+ "version": "1.37.0",
+ "license": "ISC; the upstream @license header is kept in every SVG",
+ "icons": [
+  {
+   "name": "arrow-up",
+   "group": "Navigation"
+  },
+  {
+   "name": "arrow-down",
+   "group": "Navigation"
+  },
+  {
+   "name": "arrow-left",
+   "group": "Navigation"
+  },
+  {
+   "name": "arrow-right",
+   "group": "Navigation"
+  },
+  {
+   "name": "arrow-up-right",
+   "group": "Navigation"
+  },
+  {
+   "name": "arrow-left-right",
+   "group": "Navigation"
+  },
+  {
+   "name": "arrow-down-to-line",
+   "group": "Navigation"
+  },
+  {
+   "name": "arrow-up-to-line",
+   "group": "Navigation"
+  },
+  {
+   "name": "chevron-up",
+   "group": "Navigation"
+  },
+  {
+   "name": "chevron-down",
+   "group": "Navigation"
+  },
+  {
+   "name": "chevron-left",
+   "group": "Navigation"
+  },
+  {
+   "name": "chevron-right",
+   "group": "Navigation"
+  },
+  {
+   "name": "chevrons-up-down",
+   "group": "Navigation"
+  },
+  {
+   "name": "chevrons-down-up",
+   "group": "Navigation"
+  },
+  {
+   "name": "external-link",
+   "group": "Navigation"
+  },
+  {
+   "name": "link",
+   "group": "Navigation"
+  },
+  {
+   "name": "house",
+   "group": "Navigation"
+  },
+  {
+   "name": "menu",
+   "group": "Navigation"
+  },
+  {
+   "name": "panel-left",
+   "group": "Navigation"
+  },
+  {
+   "name": "panel-right",
+   "group": "Navigation"
+  },
+  {
+   "name": "app-window",
+   "group": "Navigation"
+  },
+  {
+   "name": "layout-grid",
+   "group": "Navigation"
+  },
+  {
+   "name": "list",
+   "group": "Navigation"
+  },
+  {
+   "name": "list-tree",
+   "group": "Navigation"
+  },
+  {
+   "name": "table",
+   "group": "Navigation"
+  },
+  {
+   "name": "chevrons-right",
+   "group": "Navigation"
+  },
+  {
+   "name": "move-diagonal-2",
+   "group": "Navigation"
+  },
+  {
+   "name": "gallery-horizontal",
+   "group": "Navigation"
+  },
+  {
+   "name": "plus",
+   "group": "Actions"
+  },
+  {
+   "name": "minus",
+   "group": "Actions"
+  },
+  {
+   "name": "x",
+   "group": "Actions"
+  },
+  {
+   "name": "check",
+   "group": "Actions"
+  },
+  {
+   "name": "check-check",
+   "group": "Actions"
+  },
+  {
+   "name": "search",
+   "group": "Actions"
+  },
+  {
+   "name": "list-filter",
+   "group": "Actions"
+  },
+  {
+   "name": "sliders-horizontal",
+   "group": "Actions"
+  },
+  {
+   "name": "case-sensitive",
+   "group": "Actions"
+  },
+  {
+   "name": "whole-word",
+   "group": "Actions"
+  },
+  {
+   "name": "regex",
+   "group": "Actions"
+  },
+  {
+   "name": "settings",
+   "group": "Actions"
+  },
+  {
+   "name": "copy",
+   "group": "Actions"
+  },
+  {
+   "name": "clipboard",
+   "group": "Actions"
+  },
+  {
+   "name": "trash",
+   "group": "Actions"
+  },
+  {
+   "name": "trash-2",
+   "group": "Actions"
+  },
+  {
+   "name": "pencil",
+   "group": "Actions"
+  },
+  {
+   "name": "undo-2",
+   "group": "Actions"
+  },
+  {
+   "name": "redo-2",
+   "group": "Actions"
+  },
+  {
+   "name": "rotate-cw",
+   "group": "Actions"
+  },
+  {
+   "name": "rotate-ccw",
+   "group": "Actions"
+  },
+  {
+   "name": "refresh-cw",
+   "group": "Actions"
+  },
+  {
+   "name": "download",
+   "group": "Actions"
+  },
+  {
+   "name": "upload",
+   "group": "Actions"
+  },
+  {
+   "name": "share",
+   "group": "Actions"
+  },
+  {
+   "name": "save",
+   "group": "Actions"
+  },
+  {
+   "name": "printer",
+   "group": "Actions"
+  },
+  {
+   "name": "pin",
+   "group": "Actions"
+  },
+  {
+   "name": "pin-off",
+   "group": "Actions"
+  },
+  {
+   "name": "star",
+   "group": "Actions"
+  },
+  {
+   "name": "bookmark",
+   "group": "Actions"
+  },
+  {
+   "name": "bookmark-plus",
+   "group": "Actions"
+  },
+  {
+   "name": "tag",
+   "group": "Actions"
+  },
+  {
+   "name": "square-plus",
+   "group": "Actions"
+  },
+  {
+   "name": "circle-plus",
+   "group": "Actions"
+  },
+  {
+   "name": "circle-minus",
+   "group": "Actions"
+  },
+  {
+   "name": "maximize-2",
+   "group": "Actions"
+  },
+  {
+   "name": "minimize-2",
+   "group": "Actions"
+  },
+  {
+   "name": "zoom-in",
+   "group": "Actions"
+  },
+  {
+   "name": "zoom-out",
+   "group": "Actions"
+  },
+  {
+   "name": "move",
+   "group": "Actions"
+  },
+  {
+   "name": "grip-vertical",
+   "group": "Actions"
+  },
+  {
+   "name": "grip-horizontal",
+   "group": "Actions"
+  },
+  {
+   "name": "ellipsis",
+   "group": "Actions"
+  },
+  {
+   "name": "ellipsis-vertical",
+   "group": "Actions"
+  },
+  {
+   "name": "brush-cleaning",
+   "group": "Actions"
+  },
+  {
+   "name": "file-input",
+   "group": "Actions"
+  },
+  {
+   "name": "file-output",
+   "group": "Actions"
+  },
+  {
+   "name": "file-search",
+   "group": "Actions"
+  },
+  {
+   "name": "list-filter-plus",
+   "group": "Actions"
+  },
+  {
+   "name": "arrow-down-a-z",
+   "group": "Actions"
+  },
+  {
+   "name": "lasso-select",
+   "group": "Actions"
+  },
+  {
+   "name": "unlink",
+   "group": "Actions"
+  },
+  {
+   "name": "image-plus",
+   "group": "Actions"
+  },
+  {
+   "name": "info",
+   "group": "Status"
+  },
+  {
+   "name": "circle-alert",
+   "group": "Status"
+  },
+  {
+   "name": "circle-check",
+   "group": "Status"
+  },
+  {
+   "name": "circle-x",
+   "group": "Status"
+  },
+  {
+   "name": "circle-help",
+   "group": "Status"
+  },
+  {
+   "name": "triangle-alert",
+   "group": "Status"
+  },
+  {
+   "name": "ban",
+   "group": "Status"
+  },
+  {
+   "name": "loader-circle",
+   "group": "Status"
+  },
+  {
+   "name": "circle-dot",
+   "group": "Status"
+  },
+  {
+   "name": "shield-check",
+   "group": "Status"
+  },
+  {
+   "name": "shield-alert",
+   "group": "Status"
+  },
+  {
+   "name": "lock",
+   "group": "Status"
+  },
+  {
+   "name": "lock-open",
+   "group": "Status"
+  },
+  {
+   "name": "key-round",
+   "group": "Status"
+  },
+  {
+   "name": "eye",
+   "group": "Status"
+  },
+  {
+   "name": "eye-off",
+   "group": "Status"
+  },
+  {
+   "name": "bell",
+   "group": "Status"
+  },
+  {
+   "name": "bell-off",
+   "group": "Status"
+  },
+  {
+   "name": "cloud",
+   "group": "Status"
+  },
+  {
+   "name": "cloud-off",
+   "group": "Status"
+  },
+  {
+   "name": "wifi-off",
+   "group": "Status"
+  },
+  {
+   "name": "history",
+   "group": "Status"
+  },
+  {
+   "name": "clock",
+   "group": "Status"
+  },
+  {
+   "name": "calendar",
+   "group": "Status"
+  },
+  {
+   "name": "alarm-clock",
+   "group": "Status"
+  },
+  {
+   "name": "hourglass",
+   "group": "Status"
+  },
+  {
+   "name": "cloud-check",
+   "group": "Status"
+  },
+  {
+   "name": "search-x",
+   "group": "Status"
+  },
+  {
+   "name": "square-check",
+   "group": "Status"
+  },
+  {
+   "name": "file",
+   "group": "Objects"
+  },
+  {
+   "name": "file-text",
+   "group": "Objects"
+  },
+  {
+   "name": "file-plus",
+   "group": "Objects"
+  },
+  {
+   "name": "folder",
+   "group": "Objects"
+  },
+  {
+   "name": "folder-open",
+   "group": "Objects"
+  },
+  {
+   "name": "folder-plus",
+   "group": "Objects"
+  },
+  {
+   "name": "image",
+   "group": "Objects"
+  },
+  {
+   "name": "paperclip",
+   "group": "Objects"
+  },
+  {
+   "name": "user",
+   "group": "Objects"
+  },
+  {
+   "name": "users",
+   "group": "Objects"
+  },
+  {
+   "name": "user-plus",
+   "group": "Objects"
+  },
+  {
+   "name": "log-in",
+   "group": "Objects"
+  },
+  {
+   "name": "log-out",
+   "group": "Objects"
+  },
+  {
+   "name": "command",
+   "group": "Objects"
+  },
+  {
+   "name": "keyboard",
+   "group": "Objects"
+  },
+  {
+   "name": "sun",
+   "group": "Objects"
+  },
+  {
+   "name": "moon",
+   "group": "Objects"
+  },
+  {
+   "name": "monitor",
+   "group": "Objects"
+  },
+  {
+   "name": "smartphone",
+   "group": "Objects"
+  },
+  {
+   "name": "palette",
+   "group": "Objects"
+  },
+  {
+   "name": "type",
+   "group": "Objects"
+  },
+  {
+   "name": "languages",
+   "group": "Objects"
+  },
+  {
+   "name": "accessibility",
+   "group": "Objects"
+  },
+  {
+   "name": "box",
+   "group": "Objects"
+  },
+  {
+   "name": "puzzle",
+   "group": "Objects"
+  },
+  {
+   "name": "wand-sparkles",
+   "group": "Objects"
+  },
+  {
+   "name": "focus",
+   "group": "Objects"
+  },
+  {
+   "name": "locate",
+   "group": "Objects"
+  },
+  {
+   "name": "map",
+   "group": "Objects"
+  },
+  {
+   "name": "layers",
+   "group": "Objects"
+  },
+  {
+   "name": "badge-check",
+   "group": "Objects"
+  },
+  {
+   "name": "folder-closed",
+   "group": "Objects"
+  },
+  {
+   "name": "folder-clock",
+   "group": "Objects"
+  },
+  {
+   "name": "folder-symlink",
+   "group": "Objects"
+  },
+  {
+   "name": "key",
+   "group": "Objects"
+  },
+  {
+   "name": "layout-template",
+   "group": "Objects"
+  },
+  {
+   "name": "life-buoy",
+   "group": "Objects"
+  },
+  {
+   "name": "message-square-text",
+   "group": "Objects"
+  },
+  {
+   "name": "signature",
+   "group": "Objects"
+  },
+  {
+   "name": "circle",
+   "group": "Objects"
+  },
+  {
+   "name": "pointer",
+   "group": "Objects"
+  },
+  {
+   "name": "images",
+   "group": "Objects"
+  },
+  {
+   "name": "graduation-cap",
+   "group": "Objects"
+  },
+  {
+   "name": "paint-bucket",
+   "group": "Objects"
+  },
+  {
+   "name": "mail",
+   "group": "Mail"
+  },
+  {
+   "name": "mails",
+   "group": "Mail"
+  },
+  {
+   "name": "mail-open",
+   "group": "Mail"
+  },
+  {
+   "name": "inbox",
+   "group": "Mail"
+  },
+  {
+   "name": "send",
+   "group": "Mail"
+  },
+  {
+   "name": "reply",
+   "group": "Mail"
+  },
+  {
+   "name": "reply-all",
+   "group": "Mail"
+  },
+  {
+   "name": "forward",
+   "group": "Mail"
+  },
+  {
+   "name": "archive",
+   "group": "Mail"
+  },
+  {
+   "name": "archive-restore",
+   "group": "Mail"
+  },
+  {
+   "name": "flag",
+   "group": "Mail"
+  },
+  {
+   "name": "at-sign",
+   "group": "Mail"
+  },
+  {
+   "name": "filter",
+   "group": "Mail"
+  },
+  {
+   "name": "message-square",
+   "group": "Mail"
+  },
+  {
+   "name": "octagon-alert",
+   "group": "Mail"
+  },
+  {
+   "name": "folder-input",
+   "group": "Mail"
+  },
+  {
+   "name": "book-user",
+   "group": "Mail"
+  },
+  {
+   "name": "calendar-clock",
+   "group": "Mail"
+  },
+  {
+   "name": "activity",
+   "group": "System"
+  },
+  {
+   "name": "cpu",
+   "group": "System"
+  },
+  {
+   "name": "memory-stick",
+   "group": "System"
+  },
+  {
+   "name": "hard-drive",
+   "group": "System"
+  },
+  {
+   "name": "gauge",
+   "group": "System"
+  },
+  {
+   "name": "chart-line",
+   "group": "System"
+  },
+  {
+   "name": "chart-column",
+   "group": "System"
+  },
+  {
+   "name": "terminal",
+   "group": "System"
+  },
+  {
+   "name": "server",
+   "group": "System"
+  },
+  {
+   "name": "zap",
+   "group": "System"
+  },
+  {
+   "name": "pause",
+   "group": "System"
+  },
+  {
+   "name": "play",
+   "group": "System"
+  },
+  {
+   "name": "square",
+   "group": "System"
+  },
+  {
+   "name": "circle-play",
+   "group": "System"
+  },
+  {
+   "name": "circle-pause",
+   "group": "System"
+  },
+  {
+   "name": "circle-stop",
+   "group": "System"
+  },
+  {
+   "name": "octagon-x",
+   "group": "System"
+  },
+  {
+   "name": "skip-forward",
+   "group": "System"
+  },
+  {
+   "name": "text-search",
+   "group": "System"
+  },
+  {
+   "name": "ratio",
+   "group": "System"
+  },
+  {
+   "name": "blocks",
+   "group": "System"
+  },
+  {
+   "name": "rows-3",
+   "group": "System"
+  },
+  {
+   "name": "pen-line",
+   "group": "Notes"
+  },
+  {
+   "name": "pen-tool",
+   "group": "Notes"
+  },
+  {
+   "name": "eraser",
+   "group": "Notes"
+  },
+  {
+   "name": "highlighter",
+   "group": "Notes"
+  },
+  {
+   "name": "notebook",
+   "group": "Notes"
+  },
+  {
+   "name": "notebook-pen",
+   "group": "Notes"
+  },
+  {
+   "name": "book-open",
+   "group": "Notes"
+  },
+  {
+   "name": "library",
+   "group": "Notes"
+  },
+  {
+   "name": "scan",
+   "group": "Notes"
+  },
+  {
+   "name": "scan-line",
+   "group": "Notes"
+  },
+  {
+   "name": "camera",
+   "group": "Notes"
+  },
+  {
+   "name": "crop",
+   "group": "Notes"
+  },
+  {
+   "name": "hand",
+   "group": "Notes"
+  },
+  {
+   "name": "columns-2",
+   "group": "Notes"
+  },
+  {
+   "name": "pilcrow",
+   "group": "Notes"
+  },
+  {
+   "name": "rows-2",
+   "group": "Notes"
+  },
+  {
+   "name": "spell-check",
+   "group": "Notes"
+  },
+  {
+   "name": "wrap-text",
+   "group": "Notes"
+  },
+  {
+   "name": "bold",
+   "group": "Notes"
+  },
+  {
+   "name": "italic",
+   "group": "Notes"
+  },
+  {
+   "name": "underline",
+   "group": "Notes"
+  },
+  {
+   "name": "strikethrough",
+   "group": "Notes"
+  },
+  {
+   "name": "list-ordered",
+   "group": "Notes"
+  },
+  {
+   "name": "text-quote",
+   "group": "Notes"
+  },
+  {
+   "name": "text-align-start",
+   "group": "Notes"
+  },
+  {
+   "name": "text-align-center",
+   "group": "Notes"
+  },
+  {
+   "name": "text-align-end",
+   "group": "Notes"
+  },
+  {
+   "name": "text-align-justify",
+   "group": "Notes"
+  },
+  {
+   "name": "remove-formatting",
+   "group": "Notes"
+  },
+  {
+   "name": "git-branch",
+   "group": "Development"
+  },
+  {
+   "name": "git-merge",
+   "group": "Development"
+  },
+  {
+   "name": "git-commit-horizontal",
+   "group": "Development"
+  },
+  {
+   "name": "file-diff",
+   "group": "Development"
+  },
+  {
+   "name": "file-user",
+   "group": "Development"
+  },
+  {
+   "name": "folder-git-2",
+   "group": "Development"
+  },
+  {
+   "name": "git-compare-arrows",
+   "group": "Development"
+  },
+  {
+   "name": "git-fork",
+   "group": "Development"
+  },
+  {
+   "name": "git-pull-request",
+   "group": "Development"
+  },
+  {
+   "name": "square-terminal",
+   "group": "Development"
+  },
+  {
+   "name": "binary",
+   "group": "Development"
+  },
+  {
+   "name": "code-xml",
+   "group": "Development"
+  },
+  {
+   "name": "bug",
+   "group": "Development"
+  },
+  {
+   "name": "skip-back",
+   "group": "Media"
+  },
+  {
+   "name": "step-back",
+   "group": "Media"
+  },
+  {
+   "name": "step-forward",
+   "group": "Media"
+  },
+  {
+   "name": "volume-2",
+   "group": "Media"
+  },
+  {
+   "name": "volume-x",
+   "group": "Media"
+  }
+ ]
+}

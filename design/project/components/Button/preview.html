@@ -1,0 +1,26 @@
+<!-- @dsCard group="Actions" height=140 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Button · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo col pane' },
+  h('div', { className: 'mr-row' },
+    h(M.Button, { variant: 'primary', shortcut: ['⌘', '↵'] }, 'Move 3 messages to archive'),
+    h(M.Button, { icon: 'download' }, 'Export'),
+    h(M.Button, { variant: 'quiet', icon: 'copy' }, 'Copy ID'),
+    h(M.Button, { variant: 'danger' }, 'Delete notebook'),
+    h(M.Button, { variant: 'danger-quiet', icon: 'undo-2' }, 'Discard')),
+  h('div', { className: 'mr-row' },
+    h(M.Button, { loading: true }, 'Syncing…'),
+    h(M.Button, { disabled: true }, 'Send'),
+    h(M.Button, { variant: 'primary', disabled: true }, 'Commit'),
+    h(M.Button, { size: 'sm', icon: 'list-filter' }, 'Filter'),
+    h(M.Button, { size: 'sm', variant: 'quiet', trailingIcon: 'chevron-down' }, 'Newest first'),
+    h(M.ButtonConfirmationDemo))));
+</script>
+</body>
+</html>

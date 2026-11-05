@@ -1,0 +1,18 @@
+<!-- @dsCard group="Inputs" height=180 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>TextField · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo pane start' },
+  h(M.TextField, { label: 'Display name', placeholder: 'Michael', message: 'Shown to people you write to.', width: 240 }),
+  h(M.TextField, { label: 'Server', value: 'https://cloud.example.org', error: 'Enter a host name without https://', width: 240 }),
+  h(M.TextField, { variant: 'search', placeholder: 'Filter processes', trailing: '12 / 480', width: 220 }),
+  h(M.TextField, { variant: 'search', value: 'invoice', clear: 'Clear search', width: 220 }),
+  h(M.TextField, { label: 'Notes', multiline: true, rows: 2, placeholder: 'Add a note', width: 240 })));
+</script>
+</body>
+</html>

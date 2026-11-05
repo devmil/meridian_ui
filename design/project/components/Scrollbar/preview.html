@@ -1,0 +1,19 @@
+<!-- @dsCard group="Containers" height=230 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Scrollbar · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo pane', style: { display: 'flex', gap: 16 } },
+  h(M.Scrollbar, { height: 180, width: 200 },
+    ['main', 'develop', 'feature/login-form', 'feature/login-flow', 'fix/clone-timeout', 'release/2026-09', 'release/2026-10', 'topic/graph-filter', 'topic/sidebar'].map(function (name) {
+      return h(M.NavRow, { key: name, name: name, icon: 'git-branch' }); })),
+  h(M.Scrollbar, { height: 180, width: 200, visibility: 'always' },
+    ['Inbox', 'Drafts', 'Sent', 'Archive', 'Spam', 'Trash', 'Receipts', 'Travel', 'Work'].map(function (name) {
+      return h(M.NavRow, { key: name, name: name, icon: 'archive' }); }))));
+</script>
+</body>
+</html>

@@ -1,5 +1,3 @@
-# meridian:public-site:v1
-# Deployed only from the public GitHub mirror populated by Forgejo.
 name: Publish Meridian Pages
 
 on:
@@ -7,6 +5,17 @@ on:
     branches: [main]
     paths:
       - webfront/**
+      - example/lib/widgetbook.dart
+      - example/lib/widgetbook/**
+      - example/pubspec.yaml
+      - example/pubspec.lock
+      - example/web/**
+      - pubspec.yaml
+      - pubspec.lock
+      - .fvmrc
+      - lib/**
+      - assets/**
+      - tokens/**
       - .github/workflows/meridian-pages.yml
   workflow_dispatch:
 
@@ -22,8 +31,38 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+      - name: Read the pinned Flutter version
+        id: flutter
+        run: echo "version=$(jq -r .flutter .fvmrc)" >> "$GITHUB_OUTPUT"
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ steps.flutter.outputs.version }}
+          cache: true
+      - name: Verify bundled font sources
+        run: |
+          python3 tool/check_fonts.py
+          python3 tool/test_font_checkout.py
+      - name: Build Widgetbook
+        env:
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          repo_name=${REPOSITORY#*/}
+          if [[ "$repo_name" == *.github.io ]]; then
+            base_href=/widgetbook/
+          else
+            base_href="/$repo_name/widgetbook/"
+          fi
+          cd example
+          flutter pub get --enforce-lockfile
+          flutter build web --release --target lib/widgetbook.dart --base-href "$base_href"
+          cd ..
+          mkdir -p webfront/widgetbook
+          rsync -a --delete example/build/web/ webfront/widgetbook/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

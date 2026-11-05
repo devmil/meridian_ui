@@ -1,0 +1,17 @@
+<!-- @dsCard group="Containers" height=230 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Panel · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo start' }, h(M.Panel, { title: 'Operations' },
+  h('div', { style: { display: 'grid', gap: 'var(--space-4)' } },
+    h('div', { className: 'mr-row' }, h(M.StatusDot, { tone: 'success' }, 'Fetched origin'), h('span', { className: 'mr-caption mr-numeric', style: { marginLeft: 'auto' } }, '2 min')),
+    h('div', { className: 'mr-row' }, h(M.Spinner), h('span', null, 'Pushing main to origin…')),
+    h(M.ProgressBar, { value: 0.4, track: true })))));
+</script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!-- @dsCard group="Navigation" height=250 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>AppBar · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo' }, h('div', { className: 'mr-phone mr-touch' },
+  h(M.AppBar, { leading: 'arrow-left', leadingLabel: 'Back', title: 'Linear algebra', subtitle: 'Saved on this device', elevated: true, actions: [{ icon: 'search', label: 'Search' }, { icon: 'ellipsis-vertical', label: 'More' }] }),
+  h('div', { style: { padding: 'var(--space-3)' } }, h(M.Island, null, h('div', { className: 'mr-list' },
+    h(M.ListRow, { icon: 'notebook', title: 'Week 3: eigenvalues', subtitle: 'Edited 5 min ago', twoLine: true }),
+    h(M.ListRow, { icon: 'scan', title: 'Lecture scan', subtitle: '4 pages', twoLine: true })))))));
+</script>
+</body>
+</html>

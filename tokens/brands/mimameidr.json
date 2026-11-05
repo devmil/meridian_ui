@@ -1,0 +1,18 @@
+{
+  "id": "mimameidr",
+  "name": "Mimameidr",
+  "description": "Cross-platform process explorer. Data is the hero, chrome is quiet, every number in Geist Mono.",
+  "accentName": "signal",
+  "density": "compact",
+  "colors": {
+    "light": {"accent": "#0E7C59", "on-accent": "#FFFFFF", "on-accent-muted": "#ECF9F2", "accent-soft": "#DAF2E6", "accent-ink": "#026F4F", "focus": "#0E7C59", "brand": "#00402C"},
+    "dark":  {"accent": "#24C27D", "on-accent": "#03130C", "on-accent-muted": "#043D2A", "accent-soft": "#0B3627", "accent-ink": "#80D6B0", "focus": "#80D6B0", "brand": "#1A533E"}
+  },
+  "fonts": {
+    "sans": {"flutter": "Geist", "css": "\"Geist\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif", "note": "Geist, bundled by the app (OFL)."},
+    "mono": {"flutter": "Geist Mono", "css": "\"Geist Mono\", ui-monospace, Menlo, Consolas, monospace", "note": "Geist Mono for every metric, with tabular figures."},
+    "reading": {"flutter": "Geist", "css": null, "note": "Same as sans."}
+  },
+  "radius": {"radius-xs": 3, "radius-sm": 6, "radius-md": 8, "radius-lg": 10, "radius-xl": 13},
+  "signature": "The live dot that breathes while polling, CPU heat tint on rows. The signal-green accent replaced the original blue in October 2026 so the Lama apps are told apart by hue."
+}

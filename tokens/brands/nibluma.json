@@ -1,0 +1,23 @@
+{
+  "id": "nibluma",
+  "name": "Nibluma",
+  "description": "Offline notebooks for handwriting and scanned documents on phones and tablets. Warm paper, blue-black ink and petrol, a serif only where a book speaks.",
+  "accentName": "petrol",
+  "density": "touch",
+  "colors": {
+    "light": {"accent": "#0B6477", "on-accent": "#FFFFFF", "on-accent-muted": "#D3ECF0", "accent-soft": "#DDEEF0", "accent-ink": "#0A5A6B", "focus": "#0B6477", "brand": "#18304F"},
+    "dark":  {"accent": "#5CC0CF", "on-accent": "#03191E", "on-accent-muted": "#0E3F48", "accent-soft": "#17363B", "accent-ink": "#80D2DE", "focus": "#80D2DE", "brand": "#22406A"}
+  },
+  "neutrals": {
+    "light": {"ground": "#ECEAE6", "ground-hover": "#E2DFD9", "pane": "#FDFCFA", "pane-alt": "#F6F4F0", "pane-hover": "#EFECE7", "raised": "#FFFFFF", "canvas": "#E2DFD9", "scrim": "rgba(24,22,19,0.32)", "ink": "#18212D", "ink-muted": "#555D67", "ink-faint": "#8C8A86", "line": "#E1DDD6", "line-strong": "#CEC9C1", "control-edge": "#86827B"},
+    "dark":  {"ground": "#151412", "ground-hover": "#211F1C", "pane": "#1D1C1A", "pane-alt": "#191816", "pane-hover": "#282623", "raised": "#262421", "canvas": "#24221F", "scrim": "rgba(0,0,0,0.55)", "ink": "#ECE8E1", "ink-muted": "#A9A398", "ink-faint": "#6F6A63", "line": "#2D2A27", "line-strong": "#3A3632", "control-edge": "#7E786F"}
+  },
+  "fonts": {
+    "sans": {"flutter": null, "css": "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", Roboto, system-ui, sans-serif", "note": "Platform face: SF Pro on iOS and iPadOS, Roboto on Android. Controls feel native on each."},
+    "mono": {"flutter": "JetBrains Mono", "package": "meridian_ui", "css": null, "note": "Bundled with meridian_ui. Rare in Nibluma: sync diagnostics only."},
+    "display": {"flutter": "Literata", "css": "Literata, \"Iowan Old Style\", Charter, Georgia, serif", "weight": 500, "titles": false, "note": "Literata 500 for the display style only: the library headline, book titles, empty states. Dialog and sheet titles stay in the sans."},
+    "reading": {"flutter": "Literata", "css": "Literata, \"Iowan Old Style\", Charter, Georgia, serif", "note": "Serif for long-form text (help, onboarding)."}
+  },
+  "radius": {"radius-xs": 6, "radius-sm": 10, "radius-md": 12, "radius-lg": 18, "radius-xl": 24},
+  "signature": "The book as object: covers with a spine and orbital arcs, paper that never inverts, pages resting on the canvas, tools in one floating dock. Petrol marks intent; saved-state green stays status."
+}

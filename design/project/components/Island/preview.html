@@ -1,0 +1,17 @@
+<!-- @dsCard group="Containers" height=260 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Island · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-islands', style: { height: 220 } },
+  h('div', { style: { width: 200 } }, h(M.NavSection, { title: 'Views' }, h(M.NavRow, { name: 'All processes', icon: 'list-tree', state: 'selected' }), h(M.NavRow, { name: 'Spawned', icon: 'circle-plus', count: 3 }))),
+  h(M.Island, { title: 'Processes', subtitle: '482', focused: true, style: { flex: 1 }, actions: [h(M.IconButton, { key: 1, icon: 'search', label: 'Search', size: 'sm' })] },
+    h('div', { className: 'mr-list' }, h(M.ListRow, { icon: 'cpu', title: 'WindowServer', meta: '12.4%', state: 'focused' }), h(M.ListRow, { icon: 'cpu', title: 'Mimameidr', meta: '3.1%' }))),
+  h(M.Island, { title: 'Inspector', style: { width: 240 } }, h('div', { style: { padding: 'var(--space-6)' } }, h('div', { style: { fontSize: 15, lineHeight: '20px', fontWeight: 600 } }, 'WindowServer'), h('div', { className: 'mr-caption', style: { fontFamily: 'var(--font-mono)' } }, 'PID 412 · macOS')))));
+</script>
+</body>
+</html>

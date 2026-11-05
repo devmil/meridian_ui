@@ -1,0 +1,15 @@
+<!-- @dsCard group="Feedback" height=160 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Skeleton · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo col' }, h(M.Island, null, h('div', { style: { padding: 'var(--space-5)', display: 'grid', gap: 'var(--space-5)' } },
+  [0, 1, 2].map(function (i) { return h('div', { key: i, style: { display: 'grid', gridTemplateColumns: '16px 1fr 40px', gap: 'var(--space-4)', alignItems: 'center' } },
+    h(M.Skeleton, { width: 16, height: 16 }), h('div', { style: { display: 'grid', gap: 6 } }, h(M.Skeleton, { width: ['60%', '45%', '70%'][i] }), h(M.Skeleton, { width: ['85%', '70%', '50%'][i] })), h(M.Skeleton)); })))));
+</script>
+</body>
+</html>

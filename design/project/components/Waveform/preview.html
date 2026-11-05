@@ -1,0 +1,13 @@
+<!-- @dsCard group="Data" height=100 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Waveform · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', {className:'mr-demo pane col'}, h(M.Waveform, {peaks:[0.1,0.3,0.8,0.4,0.2,0.7,1,0.5,0.2,0.6,0.4,0.1],progress:0.37,width:320,height:24})));
+</script>
+</body>
+</html>

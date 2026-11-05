@@ -1,0 +1,18 @@
+<!-- @dsCard group="Feedback" height=150 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Progress · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo col pane start' },
+  h('div', { className: 'mr-row' }, h(M.Spinner), h('span', { className: 'mr-caption' }, 'Fetching origin…')),
+  h(M.ProgressBar, { track: true, width: 320, label: 'Importing' }),
+  h(M.ProgressBar, { track: true, value: 0.62, width: 320, label: 'Exporting' }),
+  h('div', { className: 'mr-metric' }, h('span', null, 'CPU'), h('span', { className: 'v' }, '78.4%'), h(M.Meter, { value: 0.784, warningAt: 0.5, dangerAt: 0.9 })),
+  h('div', { className: 'mr-metric' }, h('span', null, 'Memory'), h('span', { className: 'v' }, '1.2 GB'), h(M.Meter, { value: 0.31, warningAt: 0.5, dangerAt: 0.9 }))));
+</script>
+</body>
+</html>

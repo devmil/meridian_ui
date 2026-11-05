@@ -1,0 +1,15 @@
+<!-- @dsCard group="Navigation" height=120 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Breadcrumbs · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-demo col pane' },
+  h(M.Breadcrumbs, { crumbs: [{ label: 'Move Meridian to 1.1.1', icon: 'git-commit-horizontal', code: '434cdea0' }, { label: 'lib' }, { label: 'app' }, { label: 'workspace' }, { label: 'commit_files.dart', mono: true, current: true }] }),
+  h(M.Breadcrumbs, { crumbs: [{ label: 'Move Meridian to 1.1.1', icon: 'git-commit-horizontal', code: '434cdea0' }, { label: 'lib' }, { label: 'app' }, { label: 'workspace' }, { label: 'commit_files.dart', mono: true, current: true }], fold: 2, width: 320 })));
+</script>
+</body>
+</html>

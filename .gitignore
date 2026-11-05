@@ -1,0 +1,10 @@
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+example/.dart_tool/
+example/build/
+__pycache__/
+webfront/widgetbook/
+.DS_Store

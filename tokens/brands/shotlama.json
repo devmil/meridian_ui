@@ -1,0 +1,22 @@
+{
+  "id": "shotlama",
+  "name": "ShotLama",
+  "description": "Cross-platform screenshot and screen-recording studio. The capture is the hero; chrome is graphite glass that steps aside, and one magenta accent marks intent.",
+  "accentName": "magenta",
+  "density": "regular",
+  "colors": {
+    "light": {"accent": "#B8338F", "on-accent": "#FFFFFF", "on-accent-muted": "#FDF1F8", "accent-soft": "#FBE4F0", "accent-ink": "#A72A82", "focus": "#B8338F", "brand": "#4D253F"},
+    "dark":  {"accent": "#E977BB", "on-accent": "#180A13", "on-accent-muted": "#49243C", "accent-soft": "#412235", "accent-ink": "#EFA7D2", "focus": "#EFA7D2", "brand": "#623852"}
+  },
+  "neutrals": {
+    "light": {"ground": "#ECECF1", "ground-hover": "#E1E1E8", "pane": "#FFFFFF", "pane-alt": "#F7F7FA", "pane-hover": "#F0F0F5", "raised": "#FFFFFF", "canvas": "#E2E2E9", "scrim": "rgba(14,14,22,0.32)", "ink": "#14141B", "ink-muted": "#575769", "ink-faint": "#8F8FA0", "line": "#DFDFE7", "line-strong": "#C9C9D4", "control-edge": "#84849A"},
+    "dark":  {"ground": "#0F0F14", "ground-hover": "#1A1A22", "pane": "#17171E", "pane-alt": "#131319", "pane-hover": "#212129", "raised": "#1F1F28", "canvas": "#09090D", "scrim": "rgba(0,0,0,0.55)", "ink": "#EDEDF3", "ink-muted": "#A3A3B4", "ink-faint": "#666679", "line": "#262630", "line-strong": "#34343F", "control-edge": "#71718A"}
+  },
+  "fonts": {
+    "sans": {"flutter": null, "css": "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"Segoe UI Variable Text\", \"Segoe UI\", Cantarell, \"Noto Sans\", sans-serif", "note": "Platform face (SF Pro, Segoe UI Variable, Cantarell or Noto Sans): ShotLama should feel like part of the operating system."},
+    "mono": {"flutter": "JetBrains Mono", "package": "meridian_ui", "css": null, "note": "Bundled with meridian_ui. Dimensions, coordinates, colour values, timers and file sizes, always with tabular figures."},
+    "reading": {"flutter": null, "css": null, "note": "Same as sans."}
+  },
+  "radius": {"radius-xs": 4, "radius-sm": 6, "radius-md": 9, "radius-lg": 12, "radius-xl": 18},
+  "signature": "Graphite glass over the capture (the veil), the shutter lift from selection into the Quick Access card, the Drag me grip. Annotation colours are content and never follow the theme."
+}

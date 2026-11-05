@@ -1,0 +1,22 @@
+<!-- @dsCard group="Navigation" height=275 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>NavRow · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-nav', style: { width: 260 } },
+  h(M.NavSection, { title: 'Mailbox', action: 'plus', actionLabel: 'New folder' },
+    h(M.NavRow, { name: 'Inbox', icon: 'inbox', count: 12, countTone: 'accent', state: 'selected' }),
+    h(M.NavRow, { name: 'Drafts', icon: 'file-text', count: 2 }),
+    h(M.NavRow, { name: 'Projects', icon: 'folder', expandable: true, open: true }),
+    h(M.NavRow, { name: 'Meridian', icon: 'tag', depth: 1, iconColor: 'var(--series-6)' }),
+    h(M.NavRow, { name: 'Archive', icon: 'archive' })),
+  h(M.NavSection, { title: 'Branches', count: 3 },
+    h(M.NavRow, { name: 'main', icon: 'git-branch', current: true }),
+    h(M.NavRow, { name: 'design-system', icon: 'git-branch', state: 'focused' }))));
+</script>
+</body>
+</html>

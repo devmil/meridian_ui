@@ -1,0 +1,22 @@
+{
+  "id": "vaultlama",
+  "name": "VaultLama",
+  "description": "Open-source Vaultwarden password manager for phones, tablets, desktops and browsers. Calm midnight chrome, secrets that stay masked until asked, and one midnight-violet accent for intent.",
+  "accentName": "midnight",
+  "density": "regular",
+  "colors": {
+    "light": {"accent": "#463878", "on-accent": "#FFFFFF", "on-accent-muted": "#DCD5F2", "accent-soft": "#ECE8F8", "accent-ink": "#4B3C86", "focus": "#5A47A8", "brand": "#231B3F"},
+    "dark":  {"accent": "#D6C3FA", "on-accent": "#170F2B", "on-accent-muted": "#4B3D70", "accent-soft": "#2C2446", "accent-ink": "#DCCDFB", "focus": "#DCCDFB", "brand": "#31285A"}
+  },
+  "neutrals": {
+    "light": {"ground": "#ECEBF2", "ground-hover": "#E1E0EA", "pane": "#FFFFFF", "pane-alt": "#F7F6FB", "pane-hover": "#F0EFF6", "raised": "#FFFFFF", "canvas": "#E3E1EC", "scrim": "rgba(18,14,32,0.32)", "ink": "#15131D", "ink-muted": "#58566A", "ink-faint": "#8F8DA1", "line": "#E0DEE8", "line-strong": "#CAC8D6", "control-edge": "#85839B"},
+    "dark":  {"ground": "#0F0E15", "ground-hover": "#1A1823", "pane": "#17151F", "pane-alt": "#13121A", "pane-hover": "#22202C", "raised": "#1F1D29", "canvas": "#0A090F", "scrim": "rgba(0,0,0,0.55)", "ink": "#EDECF4", "ink-muted": "#A5A3B6", "ink-faint": "#67657B", "line": "#27252F", "line-strong": "#35333F", "control-edge": "#72708B"}
+  },
+  "fonts": {
+    "sans": {"flutter": null, "css": "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", \"Segoe UI Variable Text\", \"Segoe UI\", Roboto, Cantarell, \"Noto Sans\", sans-serif", "note": "Platform face (SF Pro, Segoe UI Variable, Roboto, Cantarell or Noto Sans): a password manager should feel like part of the system it fills into."},
+    "mono": {"flutter": "JetBrains Mono", "package": "meridian_ui", "css": null, "note": "Bundled with meridian_ui. Revealed passwords, generated passwords, one-time codes and fingerprints, always with tabular figures so similar glyphs stay apart."},
+    "reading": {"flutter": null, "css": null, "note": "Same as sans."}
+  },
+  "radius": {"radius-xs": 4, "radius-sm": 7, "radius-md": 10, "radius-lg": 14, "radius-xl": 20},
+  "signature": "Midnight islands on a cool ground; secrets masked until the person asks, revealed in mono and re-masked on their own; one midnight-violet accent for intent. Danger, warning and attention keep their status meaning for weak, reused and exposed credentials."
+}

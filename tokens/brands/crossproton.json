@@ -1,0 +1,18 @@
+{
+  "id": "crossproton",
+  "name": "CrossProton",
+  "description": "Private-first desktop client for Proton Mail. Violet on neutral, Inter chrome, serif reading surfaces.",
+  "accentName": "violet",
+  "density": "regular",
+  "colors": {
+    "light": {"accent": "#6D4AFF", "on-accent": "#FFFFFF", "on-accent-muted": "#F4F1FF", "accent-soft": "#EEEAFF", "accent-ink": "#5636DC", "focus": "#6D4AFF", "brand": "#6D4AFF"},
+    "dark":  {"accent": "#9B83FF", "on-accent": "#120B2B", "on-accent-muted": "#2A1F57", "accent-soft": "#312657", "accent-ink": "#B7A6FF", "focus": "#B7A6FF", "brand": "#6D4AFF"}
+  },
+  "fonts": {
+    "sans": {"flutter": "Inter", "css": "\"Inter\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif", "note": "Inter 4.1 (400/500/600/700), bundled by the app."},
+    "mono": {"flutter": "JetBrains Mono", "package": "meridian_ui", "css": null, "note": "Bundled with meridian_ui."},
+    "reading": {"flutter": "Georgia", "fallback": ["Times New Roman", "Noto Serif", "serif"], "css": "ui-serif, Georgia, \"Times New Roman\", serif", "note": "Serif for message bodies only."}
+  },
+  "radius": {"radius-xs": 4, "radius-sm": 6, "radius-md": 10, "radius-lg": 14, "radius-xl": 22},
+  "signature": "The lime privacy spark (#DDE300 light, #F0EF52 dark) under the active menu item, and the folded-envelope mark. Both stay app-level."
+}
