@@ -23,7 +23,7 @@ nav a:hover,.text-link:hover,footer a:hover{color:var(--blue)}
 .hero h1{font-size:clamp(58px,5.4vw,85px)}
 h1 em,h2 em{font-family:Georgia,serif;font-weight:400;letter-spacing:-.052em;color:var(--blue)}
 .lead{max-width:550px;font-size:17px;line-height:1.75;color:#52636e;margin:32px 0 34px}
-.hero-actions{display:flex;align-items:center;gap:29px}
+.hero-actions{display:flex;align-items:center;gap:29px;flex-wrap:wrap}
 .button{display:inline-flex;align-items:center;justify-content:center;border-radius:8px;padding:16px 21px;font-size:13px;font-weight:700}
 .button.primary{background:var(--blue);color:white;box-shadow:0 5px 10px #0a62cc23}
 .button.primary:hover,.demo-button:hover{background:#074f9e}
