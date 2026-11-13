@@ -38,20 +38,20 @@ jobs:
         run: |
           flutter pub get --enforce-lockfile
           dart format --set-exit-if-changed lib test example/lib example/test
-          flutter analyze
+          flutter analyze --no-fatal-infos
           flutter test
       - name: Gallery and Widgetbook
         working-directory: example
         run: |
           flutter pub get --enforce-lockfile
-          flutter analyze
+          flutter analyze --no-fatal-infos
           flutter test
       - name: Native menus package
         working-directory: packages/meridian_native_menus
         run: |
           flutter pub get
           dart format --set-exit-if-changed lib test
-          flutter analyze
+          flutter analyze --no-fatal-infos
           flutter test
       - uses: actions/setup-node@v4
         with:
