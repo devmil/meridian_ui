@@ -83,6 +83,23 @@ abstract class MeridianLocalizations {
   /// text.
   String get loading;
 
+  // License dialog ----------------------------------------------------------
+
+  /// The title of a `MeridianLicenseDialog` when the app gives none.
+  String get licensesTitle;
+
+  /// The field that narrows the package list of a `MeridianLicenseDialog`.
+  String get licensesFilter;
+
+  /// How many licenses a package has: "3 licenses".
+  String licensesCount(int count);
+
+  /// A package filter that matched nothing.
+  String get licensesNoMatches;
+
+  /// The button that goes back from one package's licenses to the list.
+  String get licensesBack;
+
   // Steps -------------------------------------------------------------------
 
   /// A step of a `MeridianSteps` line that is finished.
@@ -170,6 +187,17 @@ class MeridianLocalizationsEn extends MeridianLocalizations {
   String get findSearching => 'Searching…';
   @override
   String get loading => 'Loading…';
+  @override
+  String get licensesTitle => 'Licenses';
+  @override
+  String get licensesFilter => 'Filter packages';
+  @override
+  String licensesCount(int count) =>
+      count == 1 ? '1 license' : '$count licenses';
+  @override
+  String get licensesNoMatches => 'No packages match';
+  @override
+  String get licensesBack => 'All packages';
   @override
   String get stepDone => 'done';
   @override
@@ -263,6 +291,17 @@ class MeridianLocalizationsDe extends MeridianLocalizations {
   String get findSearching => 'Wird gesucht …';
   @override
   String get loading => 'Wird geladen …';
+  @override
+  String get licensesTitle => 'Lizenzen';
+  @override
+  String get licensesFilter => 'Pakete filtern';
+  @override
+  String licensesCount(int count) =>
+      count == 1 ? '1 Lizenz' : '$count Lizenzen';
+  @override
+  String get licensesNoMatches => 'Keine passenden Pakete';
+  @override
+  String get licensesBack => 'Alle Pakete';
   @override
   String get stepDone => 'erledigt';
   @override

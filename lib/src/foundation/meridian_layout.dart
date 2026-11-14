@@ -162,6 +162,27 @@ abstract final class MeridianLayout {
   /// Below this dialog width a `MeridianSettingsDialog` swaps its page list
   /// for a select above the page.
   static const double settingsDialogPagedBreakpoint = 600;
+
+  /// A `MeridianLicenseDialog`: wide enough for license text to keep
+  /// readable lines next to the package list.
+  static const double licenseDialogWidth = 960;
+
+  /// The tallest a `MeridianLicenseDialog` grows (at most
+  /// [dialogMaxHeightFraction] of the window).
+  static const double licenseDialogHeight = 720;
+
+  /// The package list of a `MeridianLicenseDialog`.
+  static const double licenseDialogPackageListWidth = 260;
+
+  /// Below this dialog width a `MeridianLicenseDialog` shows the package
+  /// list and one package's licenses one at a time.
+  static const double licenseDialogPagedBreakpoint = 640;
+
+  /// The widest a line of license text grows.
+  static const double licenseTextMaxWidth = 720;
+
+  /// Each indent level of a license paragraph.
+  static const double licenseIndent = 16;
   static const double emptyStateIconSize = 24;
   static const double emptyStateMaxWidth = 360;
 

@@ -831,6 +831,25 @@ mount(h('div', { className: 'mr-scrim' }, h(M.SettingsDialog, { title: 'Settings
     h(M.SettingsRow, { label: 'Icon cache', help: '90 KB used of 64 MB' }, h(M.Select, { value: '64 MB', label: 'Icon cache' }))))));
 """)
 
+add("LicenseDialog", "Containers", 420, """
+# LicenseDialog
+
+The licenses of an app and everything it bundles: the packages listed at the start, the selected package's licenses beside them. Flutter: `MeridianLicenseDialog` with `showMeridianLicenses` (or `showMeridianDialog`). It replaces Flutter's Material `showLicensePage`.
+
+- Open it from the About dialog ("Licenses") and, where an app has one, from a Settings page. It is the only place an app shows license text.
+- It reads `LicenseRegistry`: the Flutter engine's notices plus every license the app registers with `LicenseRegistry.addLicense` (its own license, generated dependency inventories, font and icon notices). Register the app's documents once at startup; the dialog does not read files itself. `licenses` replaces the source in tests and previews.
+- The consumer provides `title` (defaults to "Licenses"), `applicationName`, `applicationVersion`, `applicationIcon` (about 40px) and `applicationLegalese`, shown at the top of the list, plus `onClose` (pops the route by default) and `width`.
+- A title bar with ✕ over a hairline; the list on `ground` (`licenseDialogPackageListWidth`, 260px): the app header, a search TextField that filters packages, then a NavRow per package with its license count. A vertical hairline, then the package on `raised`: its name in `title`, the count in `caption` `ink-muted`, and each license in `caption` `ink`, separated by hairlines, lines at most 720px (`licenseTextMaxWidth`). Indented paragraphs step 16px per level; centred ones stay centred. 960px wide (`licenseDialogWidth`), up to 720px tall (at most 85% of the window).
+- Packages sort by name without regard to case; the first is selected when the dialog opens. Tab reaches the list, Up and Down move between packages. License text is selectable and scrolls on its own, starting at the top for each package.
+- Below 640px of dialog width (`licenseDialogPagedBreakpoint`) and at touch density the list fills the dialog; picking a package shows its licenses with a back button in the title bar.
+- While the registry loads, a compact EmptyState with a spinner; a filter that matches nothing shows "No packages match".
+- Don't add an app's licenses as one long text, link to a website instead of shipping the text, or restyle Material's license page.
+""", """
+mount(h('div', { className: 'mr-scrim' }, h(M.LicenseDialog, { title: 'Licenses', app: 'ProcessLama', version: '1.4.0', page: 'flutter_svg',
+  packages: [{ name: 'ProcessLama', count: 1 }, { name: 'Flutter production dependencies', count: 1 }, { name: 'flutter_svg', count: 1 }, { name: 'Geist', count: 1 }, { name: 'libbpf', count: 2 }, { name: 'skia', count: 14 }],
+  licenses: ['Copyright (c) 2018 Dan Field\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction.'] })));
+""")
+
 add("Drawer", "Containers", 260, """
 # Drawer
 

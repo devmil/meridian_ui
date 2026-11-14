@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:meridian_ui/meridian_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
@@ -977,6 +978,50 @@ WidgetbookFolder containersFolder() => WidgetbookFolder(
       ],
     ),
     WidgetbookComponent(
+      name: 'License dialog',
+      useCases: [
+        WidgetbookUseCase(
+          name: 'Playground',
+          builder: (context) {
+            final title = context.knobs.string(
+              label: 'Title',
+              initialValue: 'Licenses',
+            );
+            final width = context.knobs.double.slider(
+              label: 'Width',
+              initialValue: MeridianLayout.licenseDialogWidth,
+              min: 360,
+              max: 1200,
+              precision: 0,
+            );
+            final application = context.knobs.boolean(
+              label: 'Application header',
+              description: 'Name, version and legalese above the list.',
+              initialValue: true,
+            );
+            return preview(
+              Center(
+                child: MeridianButton(
+                  label: 'Open licenses',
+                  onPressed: () => showMeridianDialog<void>(
+                    context: context,
+                    builder: (context) => MeridianLicenseDialog(
+                      title: title,
+                      width: width,
+                      applicationName: application ? 'Meridian' : null,
+                      applicationVersion: application ? '1.18.0' : null,
+                      applicationLegalese: application ? '© Devmil' : null,
+                      licenses: _widgetbookLicenses,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    ),
+    WidgetbookComponent(
       name: 'Scrollbar',
       useCases: [
         WidgetbookUseCase(
@@ -1092,4 +1137,18 @@ class _ScrollbarListState extends State<_ScrollbarList> {
       ],
     ),
   );
+}
+
+Stream<LicenseEntry> _widgetbookLicenses() async* {
+  yield const LicenseEntryWithLineBreaks(
+    ['meridian_ui'],
+    'MIT License\n\nCopyright (c) Devmil\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software.',
+  );
+  yield const LicenseEntryWithLineBreaks(
+    ['JetBrains Mono'],
+    'SIL OPEN FONT LICENSE Version 1.1\n\nPREAMBLE\n\n  The goals of the Open Font License are to stimulate worldwide development of collaborative font projects.',
+  );
+  yield const LicenseEntryWithLineBreaks([
+    'lucide',
+  ], 'ISC License\n\nCopyright (c) Lucide Contributors');
 }
