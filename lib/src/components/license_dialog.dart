@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -17,6 +17,7 @@ import 'feedback.dart';
 import 'inputs.dart';
 import 'navigation.dart';
 import 'scrollbar.dart';
+import 'selection.dart';
 
 /// The licenses of an app and everything it bundles: a title bar with a
 /// close button, the app and its packages listed on `ground` at the start,
@@ -313,9 +314,7 @@ class _MeridianLicenseDialogState extends State<MeridianLicenseDialog> {
                     ),
                     const SizedBox(width: MeridianSpace.space4),
                     MeridianIconButton(
-                      label: MaterialLocalizations.of(
-                        context,
-                      ).closeButtonTooltip,
+                      label: MeridianLocalizations.of(context).close,
                       icon: MeridianIcons.x,
                       onPressed: _close,
                     ),
@@ -471,7 +470,7 @@ class _MeridianLicenseDialogState extends State<MeridianLicenseDialog> {
     return MeridianScrollbar(
       controller: _textScroll,
       visibility: MeridianScrollbarVisibility.always,
-      child: SelectionArea(
+      child: MeridianSelectionArea(
         child: ListView.builder(
           key: ValueKey(package.name),
           controller: _textScroll,

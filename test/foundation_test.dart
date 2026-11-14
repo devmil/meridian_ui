@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/physics.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -213,33 +213,61 @@ void main() {
   });
 
   group('theme', () {
+    testWidgets('the scope sets text, icon and selection defaults', (
+      tester,
+    ) async {
+      await tester.pumpWidget(host(const Text('Plain')));
+      final context = tester.element(find.text('Plain'));
+      final meridian = MeridianTheme.of(context);
+      expect(IconTheme.of(context).color, meridian.colors.ink);
+      expect(
+        DefaultSelectionStyle.of(context).selectionColor,
+        meridian.colors.accentSoft,
+      );
+      expect(DefaultTextStyle.of(context).style.color, meridian.colors.ink);
+    });
+
+    test('app extensions resolve, copy and blend', () {
+      const a = _Tokens(Color(0xFF000000));
+      const b = _Tokens(Color(0xFFFFFFFF));
+      final light = MeridianTheme.resolve(
+        brand: MeridianBrands.gitlama,
+        brightness: Brightness.light,
+        extensions: const [a],
+      );
+      final dark = light.copyWith(extensions: const [b]);
+      expect(light.extension<_Tokens>(), same(a));
+      expect(dark.extension<_Tokens>(), same(b));
+      expect(
+        light.lerp(dark, 0.5).extension<_Tokens>()!.diff.r,
+        closeTo(0.5, 0.01),
+      );
+      expect(light.extension<String>(), isNull);
+    });
+
     for (final brand in MeridianBrands.all) {
       for (final brightness in Brightness.values) {
         test('${brand.id} ${brightness.name} resolves', () {
-          final theme = buildMeridianTheme(
+          final meridian = MeridianTheme.resolve(
             brand: brand,
             brightness: brightness,
           );
-          final meridian = theme.extension<MeridianTheme>()!;
           final accent = brightness == Brightness.dark
               ? brand.dark
               : brand.light;
           expect(meridian.colors.accent, accent.accent);
           expect(meridian.colors.focus, accent.focus);
-          expect(theme.colorScheme.primary, accent.accent);
           expect(meridian.density, brand.density);
           expect(meridian.radius, brand.radius);
-          expect(theme.splashFactory, NoSplash.splashFactory);
-          expect(theme.iconTheme.color, meridian.colors.ink);
         });
       }
     }
 
     test('touch density uses the touch type scale and 48px targets', () {
-      final meridian = buildMeridianTheme(
+      final meridian = MeridianTheme.resolve(
         brand: MeridianBrands.nibluma,
         brightness: Brightness.light,
-      ).extension<MeridianTheme>()!;
+      );
       expect(meridian.density, MeridianDensity.touch);
       expect(meridian.text.body.fontSize, 15);
       expect(meridian.density.minTarget, 48);
@@ -247,10 +275,10 @@ void main() {
     });
 
     test('mono resolves to the bundled package font', () {
-      final meridian = buildMeridianTheme(
+      final meridian = MeridianTheme.resolve(
         brand: MeridianBrands.gitlama,
         brightness: Brightness.light,
-      ).extension<MeridianTheme>()!;
+      );
       expect(
         meridian.text.code.fontFamily,
         'packages/meridian_ui/JetBrains Mono',
@@ -258,10 +286,10 @@ void main() {
     });
 
     test('app fonts are used as named', () {
-      final meridian = buildMeridianTheme(
+      final meridian = MeridianTheme.resolve(
         brand: MeridianBrands.mimameidr,
         brightness: Brightness.dark,
-      ).extension<MeridianTheme>()!;
+      );
       expect(meridian.text.body.fontFamily, 'Geist');
       expect(meridian.text.code.fontFamily, 'Geist Mono');
     });
@@ -505,7 +533,7 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(
-      MaterialApp(
+      MeridianApp(
         theme: testTheme(),
         home: const MeridianGround(child: Text('Plain')),
       ),
@@ -563,4 +591,17 @@ void main() {
     expect(seen, [true, false]);
     expect(MeridianInputModality.keyboard, isFalse);
   });
+}
+
+class _Tokens extends MeridianThemeExtension<_Tokens> {
+  const _Tokens(this.diff);
+
+  final Color diff;
+
+  @override
+  _Tokens copyWith({Color? diff}) => _Tokens(diff ?? this.diff);
+
+  @override
+  _Tokens lerp(_Tokens? other, double t) =>
+      other == null ? this : _Tokens(Color.lerp(diff, other.diff, t)!);
 }

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/semantics.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +14,7 @@ import '../foundation/meridian_theme.dart';
 import '../foundation/meridian_tokens.g.dart';
 import 'actions.dart';
 import 'inputs.dart';
+import 'tooltip.dart';
 
 /// One open document of a [MeridianTabStrip].
 @immutable
@@ -1369,7 +1370,7 @@ class _TabPill extends StatelessWidget {
     }
 
     if (editing) return Center(child: pill(_idle));
-    Widget result = Tooltip(
+    Widget result = MeridianTooltip(
       message: tooltip,
       child: Semantics(
         excludeSemantics: true,
@@ -1411,7 +1412,7 @@ class _Close extends StatelessWidget {
     final meridian = MeridianTheme.of(context);
     final colors = meridian.colors;
     final radius = BorderRadius.circular(meridian.radius.xs);
-    return Tooltip(
+    return MeridianTooltip(
       message: label,
       child: Semantics(
         button: true,
@@ -1617,9 +1618,8 @@ class _GroupChip<G extends Object> extends StatelessWidget {
                   const SizedBox(width: MeridianSpace.space3),
                   Text(
                     '$count',
-                    style: _countStyle(
-                      context,
-                    ).copyWith(color: colors.inkMuted),
+                    style: _countStyle(context)
+                        .copyWith(color: colors.inkMuted),
                   ),
                 ],
               ],
@@ -1646,7 +1646,7 @@ class _GroupChip<G extends Object> extends StatelessWidget {
         ? labels.expandGroup?.call(name) ?? 'Expand $name'
         : labels.collapseGroup?.call(name) ?? 'Collapse $name';
     final onContextMenu = this.onContextMenu;
-    Widget result = Tooltip(
+    Widget result = MeridianTooltip(
       message: action,
       child: Semantics(
         excludeSemantics: true,

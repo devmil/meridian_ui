@@ -73,7 +73,7 @@
         </article>
         <article class="catalogue-card">
           <h3>Display</h3>
-          <ul><li>Avatar</li><li>Count</li><li>Chip</li><li>Status dot</li><li>Keycap</li><li>Middle ellipsis</li></ul>
+          <ul><li>Avatar</li><li>Count</li><li>Chip</li><li>Status dot</li><li>Keycap</li><li>Middle ellipsis</li><li>Tooltip</li><li>Selectable text</li></ul>
           <a href="widgetbook/#/?path=display/chip/playground">Open display <span aria-hidden="true">↗</span></a>
         </article>
         <article class="catalogue-card">
@@ -83,7 +83,7 @@
         </article>
         <article class="catalogue-card">
           <h3>Containers</h3>
-          <ul><li>Island</li><li>Section header</li><li>Split pane</li><li>Dialog</li><li>Sheet</li><li>Menu</li><li>Popover</li><li>Panel</li><li>Disclosure</li><li>Settings</li><li>Settings dialog</li><li>License dialog</li><li>Drawer</li><li>Scrollbar</li></ul>
+          <ul><li>Island</li><li>Section header</li><li>Split pane</li><li>Dialog</li><li>Sheet</li><li>Menu</li><li>Popover</li><li>Panel</li><li>Disclosure</li><li>Settings</li><li>App</li><li>Scaffold</li><li>Settings dialog</li><li>License dialog</li><li>Drawer</li><li>Scrollbar</li></ul>
           <a href="widgetbook/#/?path=containers/island/playground">Open containers <span aria-hidden="true">↗</span></a>
         </article>
         <article class="catalogue-card">
@@ -204,12 +204,12 @@
     <section class="code section" id="code">
       <div class="section-top"><div><p class="eyebrow">06 / IN CODE</p><h2>A theme,<br><em>then widgets.</em></h2></div><p>An app chooses its brand once. Widgets read colours, type, and spacing from the theme, so no screen names a colour itself.</p></div>
       <div class="code-grid">
-        <figure><figcaption>Apply a brand</figcaption><pre tabindex="0"><code>MaterialApp(
-  theme: buildMeridianTheme(
+        <figure><figcaption>Apply a brand</figcaption><pre tabindex="0"><code>MeridianApp(
+  theme: MeridianTheme.resolve(
     brand: MeridianBrands.gitlama,
     brightness: Brightness.light,
   ),
-  darkTheme: buildMeridianTheme(
+  darkTheme: MeridianTheme.resolve(
     brand: MeridianBrands.gitlama,
     brightness: Brightness.dark,
   ),

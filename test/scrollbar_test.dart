@@ -1,5 +1,5 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
 
@@ -53,18 +53,18 @@ void main() {
       tester,
     ) async {
       await pumpList(tester);
-      expect(find.byType(Scrollbar), isNot(thumb));
+      expect(find.byType(MeridianScrollbarThumb), isNot(thumb));
       // Only this scrollbar: the platform adds none below it.
-      expect(find.byType(Scrollbar), findsOneWidget);
+      expect(find.byType(MeridianScrollbarThumb), findsOneWidget);
 
       final gesture = await pointer(tester);
       await gesture.moveTo(tester.getCenter(find.byType(ListView)));
       await tester.pumpAndSettle();
-      expect(find.byType(Scrollbar), thumb);
+      expect(find.byType(MeridianScrollbarThumb), thumb);
 
       await gesture.moveTo(Offset.zero);
       await tester.pumpAndSettle();
-      expect(find.byType(Scrollbar), isNot(thumb));
+      expect(find.byType(MeridianScrollbarThumb), isNot(thumb));
     }, variant: TargetPlatformVariant.desktop());
 
     testWidgets(
@@ -74,10 +74,10 @@ void main() {
         controller.jumpTo(120);
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 400));
-        expect(find.byType(Scrollbar), thumb);
+        expect(find.byType(MeridianScrollbarThumb), thumb);
 
         await tester.pumpAndSettle(const Duration(seconds: 1));
-        expect(find.byType(Scrollbar), isNot(thumb));
+        expect(find.byType(MeridianScrollbarThumb), isNot(thumb));
       },
       variant: TargetPlatformVariant.desktop(),
     );
@@ -87,12 +87,12 @@ void main() {
       final gesture = await pointer(tester);
       await gesture.moveTo(tester.getCenter(find.byType(ListView)));
       await tester.pumpAndSettle();
-      expect(find.byType(Scrollbar), isNot(thumb));
+      expect(find.byType(MeridianScrollbarThumb), isNot(thumb));
     }, variant: TargetPlatformVariant.desktop());
 
     testWidgets('always visibility keeps the thumb', (tester) async {
       await pumpList(tester, visibility: MeridianScrollbarVisibility.always);
-      expect(find.byType(Scrollbar), thumb);
+      expect(find.byType(MeridianScrollbarThumb), thumb);
     }, variant: TargetPlatformVariant.desktop());
 
     testWidgets('a view that fits shows no thumb', (tester) async {
@@ -100,7 +100,7 @@ void main() {
       final gesture = await pointer(tester);
       await gesture.moveTo(tester.getCenter(find.byType(ListView)));
       await tester.pumpAndSettle();
-      expect(find.byType(Scrollbar), isNot(thumb));
+      expect(find.byType(MeridianScrollbarThumb), isNot(thumb));
       expect(tester.takeException(), isNull);
     }, variant: TargetPlatformVariant.desktop());
 
@@ -108,14 +108,14 @@ void main() {
       tester,
     ) async {
       await pumpList(tester, density: MeridianDensity.touch);
-      expect(find.byType(Scrollbar), isNot(thumb));
+      expect(find.byType(MeridianScrollbarThumb), isNot(thumb));
       final drag = await tester.startGesture(
         tester.getCenter(find.byType(ListView)),
       );
       await drag.moveBy(const Offset(0, -80));
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 400));
-      expect(find.byType(Scrollbar), thumb);
+      expect(find.byType(MeridianScrollbarThumb), thumb);
       await drag.up();
       await tester.pumpAndSettle(const Duration(seconds: 1));
       expect(tester.takeException(), isNull);

@@ -83,6 +83,83 @@ abstract class MeridianLocalizations {
   /// text.
   String get loading;
 
+  // Common ------------------------------------------------------------------
+
+  /// A button or ✕ that closes a dialog, panel, banner or sheet.
+  String get close;
+
+  /// Tapping outside a menu, popover or dialog to dismiss it.
+  String get dismiss;
+
+  /// The button that abandons a choice.
+  String get cancel;
+
+  /// The button that confirms a choice.
+  String get ok;
+
+  /// The back button of an app bar.
+  String get back;
+
+  /// The button that opens the menu of a split button or overflow.
+  String get showMenu;
+
+  /// A drawer of navigation destinations.
+  String get navigationMenu;
+
+  /// The app bar button that opens the navigation drawer.
+  String get openNavigationMenu;
+
+  /// The action of a collapsed row's chevron.
+  String get expand;
+
+  /// The action of an expanded row's chevron.
+  String get collapse;
+
+  /// The text menu action that deletes the selection.
+  String get textDelete;
+
+  /// The text menu action that reads text with the camera.
+  String get textScan;
+
+  // Dates -------------------------------------------------------------------
+
+  /// The month names, January first.
+  List<String> get monthNames;
+
+  /// The short month names, January first.
+  List<String> get shortMonthNames;
+
+  /// The weekday names, Monday first.
+  List<String> get weekdayNames;
+
+  /// The short weekday names, Monday first.
+  List<String> get shortWeekdayNames;
+
+  /// The one-letter weekday names, Monday first.
+  List<String> get narrowWeekdayNames;
+
+  /// The day weeks start on: `DateTime.monday` … `DateTime.sunday`.
+  int get firstDayOfWeek;
+
+  /// "November 2026".
+  String formatMonthYear(DateTime date);
+
+  /// "Nov 14, 2026" / "14. Nov. 2026".
+  String formatMediumDate(DateTime date);
+
+  /// "Saturday, November 14, 2026" / "Samstag, 14. November 2026".
+  String formatFullDate(DateTime date);
+
+  /// The time of day: "3:07 PM" / "15:07", or 24-hour when
+  /// [alwaysUse24HourFormat] (from `MediaQuery.alwaysUse24HourFormatOf`).
+  String formatTime(DateTime time, {bool alwaysUse24HourFormat = false});
+
+  /// A date picker's heading.
+  String get datePickerTitle;
+
+  String get previousMonth;
+  String get nextMonth;
+
   // License dialog ----------------------------------------------------------
 
   /// The title of a `MeridianLicenseDialog` when the app gives none.
@@ -188,6 +265,118 @@ class MeridianLocalizationsEn extends MeridianLocalizations {
   @override
   String get loading => 'Loading…';
   @override
+  String get close => 'Close';
+  @override
+  String get dismiss => 'Dismiss';
+  @override
+  String get cancel => 'Cancel';
+  @override
+  String get ok => 'OK';
+  @override
+  String get back => 'Back';
+  @override
+  String get showMenu => 'Show menu';
+  @override
+  String get navigationMenu => 'Navigation menu';
+  @override
+  String get openNavigationMenu => 'Open navigation menu';
+  @override
+  String get expand => 'Expand';
+  @override
+  String get collapse => 'Collapse';
+  @override
+  String get textDelete => 'Delete';
+  @override
+  String get textScan => 'Scan text';
+  @override
+  List<String> get monthNames => const [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  @override
+  List<String> get shortMonthNames => const [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
+  @override
+  List<String> get weekdayNames => const [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+  @override
+  List<String> get shortWeekdayNames => const [
+    'Mon',
+    'Tue',
+    'Wed',
+    'Thu',
+    'Fri',
+    'Sat',
+    'Sun',
+  ];
+  @override
+  List<String> get narrowWeekdayNames => const [
+    'M',
+    'T',
+    'W',
+    'T',
+    'F',
+    'S',
+    'S',
+  ];
+  @override
+  int get firstDayOfWeek => DateTime.sunday;
+  @override
+  String formatMonthYear(DateTime date) =>
+      '${monthNames[date.month - 1]} ${date.year}';
+  @override
+  String formatMediumDate(DateTime date) =>
+      '${shortMonthNames[date.month - 1]} ${date.day}, ${date.year}';
+  @override
+  String formatFullDate(DateTime date) =>
+      '${weekdayNames[date.weekday - 1]}, ${monthNames[date.month - 1]} '
+      '${date.day}, ${date.year}';
+  @override
+  String formatTime(DateTime time, {bool alwaysUse24HourFormat = false}) {
+    final minute = time.minute.toString().padLeft(2, '0');
+    if (alwaysUse24HourFormat) {
+      return '${time.hour.toString().padLeft(2, '0')}:$minute';
+    }
+    final hour = time.hour % 12 == 0 ? 12 : time.hour % 12;
+    return '$hour:$minute ${time.hour < 12 ? 'AM' : 'PM'}';
+  }
+
+  @override
+  String get datePickerTitle => 'Select date';
+  @override
+  String get previousMonth => 'Previous month';
+  @override
+  String get nextMonth => 'Next month';
+  @override
   String get licensesTitle => 'Licenses';
   @override
   String get licensesFilter => 'Filter packages';
@@ -291,6 +480,112 @@ class MeridianLocalizationsDe extends MeridianLocalizations {
   String get findSearching => 'Wird gesucht …';
   @override
   String get loading => 'Wird geladen …';
+  @override
+  String get close => 'Schließen';
+  @override
+  String get dismiss => 'Schließen';
+  @override
+  String get cancel => 'Abbrechen';
+  @override
+  String get ok => 'OK';
+  @override
+  String get back => 'Zurück';
+  @override
+  String get showMenu => 'Menü anzeigen';
+  @override
+  String get navigationMenu => 'Navigationsmenü';
+  @override
+  String get openNavigationMenu => 'Navigationsmenü öffnen';
+  @override
+  String get expand => 'Aufklappen';
+  @override
+  String get collapse => 'Zuklappen';
+  @override
+  String get textDelete => 'Löschen';
+  @override
+  String get textScan => 'Text scannen';
+  @override
+  List<String> get monthNames => const [
+    'Januar',
+    'Februar',
+    'März',
+    'April',
+    'Mai',
+    'Juni',
+    'Juli',
+    'August',
+    'September',
+    'Oktober',
+    'November',
+    'Dezember',
+  ];
+  @override
+  List<String> get shortMonthNames => const [
+    'Jan.',
+    'Feb.',
+    'März',
+    'Apr.',
+    'Mai',
+    'Juni',
+    'Juli',
+    'Aug.',
+    'Sept.',
+    'Okt.',
+    'Nov.',
+    'Dez.',
+  ];
+  @override
+  List<String> get weekdayNames => const [
+    'Montag',
+    'Dienstag',
+    'Mittwoch',
+    'Donnerstag',
+    'Freitag',
+    'Samstag',
+    'Sonntag',
+  ];
+  @override
+  List<String> get shortWeekdayNames => const [
+    'Mo.',
+    'Di.',
+    'Mi.',
+    'Do.',
+    'Fr.',
+    'Sa.',
+    'So.',
+  ];
+  @override
+  List<String> get narrowWeekdayNames => const [
+    'M',
+    'D',
+    'M',
+    'D',
+    'F',
+    'S',
+    'S',
+  ];
+  @override
+  int get firstDayOfWeek => DateTime.monday;
+  @override
+  String formatMonthYear(DateTime date) =>
+      '${monthNames[date.month - 1]} ${date.year}';
+  @override
+  String formatMediumDate(DateTime date) =>
+      '${date.day}. ${shortMonthNames[date.month - 1]} ${date.year}';
+  @override
+  String formatFullDate(DateTime date) =>
+      '${weekdayNames[date.weekday - 1]}, ${date.day}. '
+      '${monthNames[date.month - 1]} ${date.year}';
+  @override
+  String formatTime(DateTime time, {bool alwaysUse24HourFormat = false}) =>
+      '${time.hour.toString().padLeft(2, '0')}:'
+      '${time.minute.toString().padLeft(2, '0')}';
+  @override
+  String get datePickerTitle => 'Datum auswählen';
+  @override
+  String get previousMonth => 'Vorheriger Monat';
+  @override
+  String get nextMonth => 'Nächster Monat';
   @override
   String get licensesTitle => 'Lizenzen';
   @override

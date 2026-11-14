@@ -1,6 +1,6 @@
 import 'dart:ui' show PathMetric;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../foundation/meridian_icons.g.dart';
 import '../foundation/meridian_interaction.dart';

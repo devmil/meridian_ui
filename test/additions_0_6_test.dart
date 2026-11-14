@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -28,12 +28,12 @@ void main() {
           fontFamily: 'Georgia',
         ),
       );
-      final theme = buildMeridianTheme(
+      final theme = MeridianTheme.resolve(
         brand: MeridianBrands.crossproton,
         brightness: Brightness.light,
         colors: colors,
         typeScale: scale,
-      ).extension<MeridianTheme>()!;
+      );
       expect(theme.colors.ground, const Color(0xFF102030));
       expect(theme.colors.pane, base.pane);
       expect(theme.text.heading.fontSize, 19);
@@ -335,8 +335,8 @@ void main() {
       final pages = <int>[];
       await tester.pumpWidget(pagination(onPage: pages.add));
       await tester.tap(find.text('4'));
-      await tester.tap(find.byTooltip('Previous page'));
-      await tester.tap(find.byTooltip('Next page'));
+      await tester.tap(findTooltip('Previous page'));
+      await tester.tap(findTooltip('Next page'));
       await tester.enterText(find.byType(EditableText), '99');
       await tester.testTextInput.receiveAction(TextInputAction.go);
       await tester.pump();
@@ -350,7 +350,7 @@ void main() {
       final pages = <int>[];
       await tester.pumpWidget(pagination(onPage: pages.add, enabled: false));
       await tester.tap(find.text('4'));
-      await tester.tap(find.byTooltip('Next page'));
+      await tester.tap(findTooltip('Next page'));
       expect(pages, isEmpty);
       await tester.pumpWidget(pagination(onPage: pages.add, page: 1, count: 1));
       expect(find.byType(MeridianIconButton), findsNothing);
@@ -407,14 +407,14 @@ void main() {
       ),
     );
     await tester.pumpWidget(bar(600));
-    expect(find.byTooltip('More actions'), findsNothing);
-    await tester.tap(find.byTooltip('Delete'));
+    expect(findTooltip('More actions'), findsNothing);
+    await tester.tap(findTooltip('Delete'));
     expect(deleted, 1);
     await tester.pumpWidget(bar(260));
     await tester.pumpAndSettle();
-    expect(find.byTooltip('Archive'), findsOneWidget);
-    expect(find.byTooltip('Delete'), findsNothing);
-    await tester.tap(find.byTooltip('More actions'));
+    expect(findTooltip('Archive'), findsOneWidget);
+    expect(findTooltip('Delete'), findsNothing);
+    await tester.tap(findTooltip('More actions'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Delete'));
     await tester.pumpAndSettle();
@@ -748,10 +748,10 @@ void main() {
       await tester.pump();
       expect(taps, 1);
 
-      await tester.tap(find.byTooltip('Clear search'));
+      await tester.tap(findTooltip('Clear search'));
       await tester.pump();
       expect(controller.text, isEmpty);
-      expect(find.byTooltip('Clear search'), findsNothing);
+      expect(findTooltip('Clear search'), findsNothing);
     });
 
     testWidgets('suggestion rows show a leading picture', (tester) async {
@@ -800,11 +800,11 @@ void main() {
       final tinted = MeridianShadows.light.tinted(
         pane: const Color(0xFF123456),
       );
-      final theme = buildMeridianTheme(
+      final theme = MeridianTheme.resolve(
         brand: MeridianBrands.crossproton,
         brightness: Brightness.light,
         shadows: tinted,
-      ).extension<MeridianTheme>()!;
+      );
       expect(theme.shadows, tinted);
       for (final (index, layer) in theme.shadows.shadowPane.indexed) {
         expect(layer.color.withValues(alpha: 1), const Color(0xFF123456));

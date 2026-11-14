@@ -1,5 +1,91 @@
 # Changelog
 
+## 2.0.0 - 2026-11-14
+
+Meridian no longer depends on Material. Everything is built on Flutter's
+widgets layer, so an app can drop `material.dart` (deprecated in Flutter
+3.50) and `material_ui` entirely. Requires Flutter 3.50.
+
+**Added**
+
+- `MeridianApp`: a `WidgetsApp` with `theme`, `darkTheme`, `themeMode`
+  (`MeridianThemeMode.system`, `light`, `dark`), an animated theme change,
+  `MeridianPageRoute`s, `MeridianScrollBehavior` and
+  `MeridianLocalizations.delegate`.
+- `MeridianThemeScope` and `AnimatedMeridianTheme` put a theme above any
+  subtree (an `InheritedTheme`, so overlays carry it). The scope sets the
+  default text style, icon theme and caret and selection colours.
+- `MeridianThemeExtension<T>` for app tokens, passed in
+  `MeridianTheme.resolve(extensions:)` / `copyWith(extensions:)`, read with
+  `MeridianTheme.extension<T>()`, blended by `MeridianTheme.lerp`.
+- `MeridianScaffold`: app bar, body, bottom bar and a navigation drawer
+  that opens from `MeridianAppBar`, a touch edge swipe or
+  `MeridianScaffold.of(context).openDrawer()`, and closes with
+  `Navigator.pop`, Escape, the back button or the scrim.
+- `MeridianPageRoute` and `MeridianPageTransition` (`platform`, `fade`,
+  `fadeUpwards`, `predictiveBack` with Android's predictive back preview,
+  `instant`), all instant under reduce motion.
+- `MeridianScrollBehavior` (Android stretch, iOS bounce, clamped desktop
+  views; `alwaysShowThumb` for always-visible desktop scrollbars) and `MeridianScrollbarThumb` (on `RawScrollbar`).
+- `MeridianTooltip` (on `RawTooltip`) and `MeridianTooltipState`.
+- `MeridianSelectableText`, `MeridianSelectionArea` (on
+  `SelectableRegion`), `MeridianTextSelectionControls` (touch handles), and
+  Meridian's text menu: `MeridianTextMenuRequest`, `MeridianTextMenuBuilder`,
+  `meridianTextMenu`, `meridianTextMenuLabel`, `resolveMeridianTextMenu`.
+- `MeridianEditableText`: the editable text of `MeridianTextField` on
+  `EditableText` with the platform's selection gestures.
+- `MeridianDates` and `MeridianLocalizations` common strings (`close`,
+  `dismiss`, `cancel`, `ok`, `back`, `showMenu`, `navigationMenu`,
+  `openNavigationMenu`, `expand`, `collapse`, `textDelete`, `textScan`),
+  month and weekday names, `firstDayOfWeek`, `formatMonthYear`,
+  `formatMediumDate`, `formatFullDate` and `formatTime`, in English and
+  German.
+- `meridianTransparent` (transparent black without Material's `Colors`).
+- `showMeridianMenu` / `showMeridianContextMenu` take `usePresenter`:
+  `false` draws the Meridian menu even under a `MeridianMenuPresenter`.
+- `MeridianDateFormatting.delegate` (registered by `MeridianApp`) loads
+  `intl`'s date symbols for the app's locale, which Material's
+  localizations used to do. Meridian now depends on `intl`.
+- `tooltipMaxWidth`, `scrollbarMargin` and `scrollbarMinLength` layout
+  values. Guidelines, web previews, gallery and Widgetbook entries for App,
+  Scaffold, Tooltip and SelectableText.
+
+**Breaking**
+
+- `buildMeridianTheme` is gone; use `MeridianTheme.resolve` (same
+  parameters) with `MeridianApp` or `MeridianThemeScope`. `MeridianTheme`
+  is no longer a `ThemeExtension` and `MeridianTheme.of` no longer reads
+  Material's `Theme`; outside any scope it falls back to a neutral theme
+  in the platform brightness.
+- App tokens extend `MeridianThemeExtension<T>` instead of
+  `ThemeExtension<T>`.
+- `MeridianMenuPresenter.textContextMenuBuilder`,
+  `MeridianTextField.contextMenuBuilder` and
+  `MeridianCodeLines.contextMenuBuilder` take a `MeridianTextMenuBuilder`
+  (`(context, MeridianTextMenuRequest)`), which serves text fields and
+  selections alike. The native menus package's
+  `nativeTextContextMenuBuilder` follows.
+- `MeridianTextField` no longer contains a Material `TextField`; tests find
+  `EditableText` or `MeridianEditableText`. Its default text menu is
+  Meridian's instead of Flutter's adaptive toolbar.
+- `MeridianTextScope` no longer provides a Material ancestor.
+- Strings Meridian took from `MaterialLocalizations` (close, back, menu,
+  calendar names) come from `MeridianLocalizations`: English for languages
+  other than German unless the app supplies a `MeridianLocalizationsScope`.
+- `MeridianAppBar` opens a `MeridianScaffold`'s drawer, not a `Scaffold`'s.
+
+**Migrating an app**: `MaterialApp` → `MeridianApp`, `ThemeMode` →
+`MeridianThemeMode`, `Scaffold` → `MeridianScaffold` (`bottomNavigationBar`
+→ `bottomBar`), `MaterialPageRoute` / `PageTransitionsTheme` →
+`MeridianPageRoute` / `MeridianPageTransition`, `Tooltip` →
+`MeridianTooltip`, `SelectableText` → `MeridianSelectableText`,
+`Scrollbar` → `MeridianScrollbar`, `MaterialScrollBehavior` →
+`MeridianScrollBehavior`, `MaterialLocalizations` →
+`MeridianLocalizations`, `DateUtils` → `MeridianDates`, `showLicensePage` →
+`showMeridianLicenses`, `GlobalMaterialLocalizations` →
+`GlobalWidgetsLocalizations`; then import `package:flutter/widgets.dart`
+instead of `material.dart`. See `design/project/guides/20-flutter.md`.
+
 ## 1.18.0 - 2026-11-14
 
 - Add `MeridianLicenseDialog` and `showMeridianLicenses`, a Meridian

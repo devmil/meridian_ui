@@ -1,5 +1,5 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
 
@@ -7,21 +7,21 @@ import 'package:meridian_ui/meridian_ui.dart';
 /// `assets/icons/`, not under `packages/meridian_ui/`.
 const testIcons = MeridianIconSet(package: null);
 
-ThemeData testTheme({
+MeridianTheme testTheme({
   MeridianBrand brand = MeridianBrands.gitlama,
   Brightness brightness = Brightness.light,
   MeridianDensity? density,
-}) => buildMeridianTheme(
+}) => MeridianTheme.resolve(
   brand: brand,
   brightness: brightness,
   density: density,
   icons: testIcons,
 );
 
-/// [child] centred on a Meridian ground in a MaterialApp.
+/// [child] centred on a Meridian ground in a [MeridianApp].
 ///
-/// No Scaffold: MeridianGround must provide everything a primitive needs
-/// (a Material ancestor, the body text style).
+/// No scaffold: MeridianGround must provide everything a primitive needs
+/// (the body text style).
 Widget host(
   Widget child, {
   MeridianBrand brand = MeridianBrands.gitlama,
@@ -29,12 +29,15 @@ Widget host(
   MeridianDensity? density,
   TextDirection textDirection = TextDirection.ltr,
   double textScale = 1,
-}) => MaterialApp(
+}) => MeridianApp(
   theme: testTheme(brand: brand, brightness: brightness, density: density),
+  themeMode: brightness == Brightness.dark
+      ? MeridianThemeMode.dark
+      : MeridianThemeMode.light,
+  darkTheme: testTheme(brand: brand, brightness: brightness, density: density),
   builder: (context, app) => MediaQuery(
-    data: MediaQuery.of(
-      context,
-    ).copyWith(textScaler: TextScaler.linear(textScale)),
+    data: MediaQuery.of(context)
+        .copyWith(textScaler: TextScaler.linear(textScale)),
     child: Directionality(textDirection: textDirection, child: app!),
   ),
   home: MeridianGround(child: Center(child: child)),
@@ -91,4 +94,20 @@ Future<TestGesture> hoverAt(WidgetTester tester, Offset location) async {
   await mouse.moveTo(location);
   await tester.pump();
   return mouse;
+}
+
+/// `find.byTooltip` for Meridian.
+///
+/// flutter_test's finder finds a tooltip by its [RawTooltip]'s semantics,
+/// so it misses a [MeridianTooltip] that is excluded from semantics. This
+/// matches that case by message, and every other tooltip like `byTooltip`.
+Finder findTooltip(Pattern message, {bool skipOffstage = true}) {
+  bool matches(String? text) =>
+      message is RegExp ? message.hasMatch(text ?? '') : text == message;
+  return find.byWidgetPredicate((widget) {
+    if (widget is MeridianTooltip && widget.excludeFromSemantics) {
+      return matches(widget.message ?? widget.richMessage?.toPlainText());
+    }
+    return widget is RawTooltip && matches(widget.semanticsTooltip);
+  }, skipOffstage: skipOffstage);
 }

@@ -19,10 +19,13 @@ SRC = ROOT / "lib" / "src"
 
 HELPERS = "lib/src/foundation/meridian_motion_helpers.dart"
 MOTION = {"lib/src/foundation/meridian_theme.dart", "lib/src/foundation/meridian_motion.dart"}
+# Android's predictive back preview, ported from material_ui: its curves are
+# the Android spec's, not Meridian's.
+PORTED = {"lib/src/foundation/predictive_back.dart"}
 
 # (rule, pattern, allowed files, hint)
 RULES = [
-    ("curve-literal", re.compile(r"\bCurves\.(?!linear\b)"), set(),
+    ("curve-literal", re.compile(r"\bCurves\.(?!linear\b)"), PORTED,
      "Use MeridianCurves or a MeridianDurations …Curve."),
     ("duration-literal", re.compile(r"Duration\(\s*(milliseconds|seconds|microseconds):"), set(),
      "Use MeridianDurations."),
@@ -36,9 +39,11 @@ RULES = [
 
 # Named durations that are not tokens; the count must match exactly. menu.dart:
 # two timers. meridian_layout.dart: the stroke draw timings the motion guide
-# names in MM-04 and MM-11 (160 ms, 140 ms, 40 ms delay).
+# names in MM-04 and MM-11 (160 ms, 140 ms, 40 ms delay). scrollbar.dart: the
+# platform's thumb fade and the delay before it fades (300 ms, 600 ms).
 DURATION_EXEMPT = {
     "lib/src/components/menu.dart": 2,
+    "lib/src/components/scrollbar.dart": 2,
     "lib/src/foundation/meridian_layout.dart": 3,
 }
 

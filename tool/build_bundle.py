@@ -11,7 +11,7 @@ OUT = ROOT / "design" / "project" / "components" / "bundle.js"
 COMPONENTS = ["Button", "SplitButton", "ShortcutField", "IconButton", "ToolbarButton", "TextField", "Checkbox", "Radio", "RadioGroup", "Switch",
               "Segmented", "Slider", "RangeSlider", "Select", "Menu", "Suggestions", "Tabs", "TabStrip", "NavSection", "NavRow", "ListRow", "AppBar", "Kbd",
               "Count", "Avatar", "Chip", "StatusDot", "MiddleEllipsis", "Spinner", "ProgressBar", "Meter", "Waveform", "Banner", "Toast",
-              "EmptyState", "Skeleton", "Island", "Disclosure", "Dialog", "Sheet", "Panel", "SettingsDialog", "LicenseDialog", "SettingsGroup",
+              "EmptyState", "Skeleton", "Island", "Disclosure", "Dialog", "Sheet", "Panel", "SettingsDialog", "LicenseDialog", "Tooltip", "SelectableText", "Scaffold", "SettingsGroup",
               "SettingsRow", "PropertyList", "ColumnHeader", "ResizeHandle", "StatusBar", "ColorSwatch", "ColorPicker", "ColorWell", "FloatingButton", "Drawer", "Scrollbar",
               "Popover", "Breadcrumbs", "Pagination", "Steps", "SelectionBar", "DropZone", "Calendar", "BusyOverlay", "Canvas", "Paper", "ToolDock", "ToolDockDivider", "Icon"]
 

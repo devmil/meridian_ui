@@ -12,6 +12,12 @@ abstract final class MeridianLayout {
   static const double scrollbarThickness = 6;
   static const double scrollbarThicknessHover = 8;
 
+  /// The gap between a scrollbar thumb and the view's edge.
+  static const double scrollbarMargin = 2;
+
+  /// The shortest a scrollbar thumb gets.
+  static const double scrollbarMinLength = 48;
+
   /// The strip a scrollbar takes beside content it must not cover: the
   /// hovered thumb with its margin on both sides.
   static const double scrollbarGutter = 12;
@@ -183,6 +189,10 @@ abstract final class MeridianLayout {
 
   /// Each indent level of a license paragraph.
   static const double licenseIndent = 16;
+
+  /// The widest a `MeridianTooltip` label grows before it wraps.
+  static const double tooltipMaxWidth = 320;
+
   static const double emptyStateIconSize = 24;
   static const double emptyStateMaxWidth = 360;
 

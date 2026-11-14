@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -252,15 +252,19 @@ void main() {
       );
       await tester.enterText(find.byKey(const ValueKey('branch-name')), 'main');
       expect(
-        tester.widget<TextField>(find.byType(TextField)).key,
+        tester
+            .widget<MeridianEditableText>(find.byType(MeridianEditableText))
+            .key,
         const ValueKey('branch-name'),
       );
       expect(find.text('main'), findsOneWidget);
     });
 
     testWidgets('text fields take the presenter text menu', (tester) async {
-      Widget nativeMenu(BuildContext context, EditableTextState editable) =>
-          const SizedBox.shrink();
+      Widget nativeMenu(
+        BuildContext context,
+        MeridianTextMenuRequest request,
+      ) => const SizedBox.shrink();
       await tester.pumpWidget(
         host(
           MeridianMenuPresenter(
@@ -274,7 +278,7 @@ void main() {
         ),
       );
       expect(
-        tester.widget<TextField>(find.byType(TextField)).contextMenuBuilder,
+        resolveMeridianTextMenu(tester.element(find.byType(EditableText))),
         same(nativeMenu),
       );
       await tester.pumpWidget(
@@ -283,16 +287,18 @@ void main() {
         ),
       );
       expect(
-        tester.widget<TextField>(find.byType(TextField)).contextMenuBuilder,
-        isNotNull,
+        resolveMeridianTextMenu(tester.element(find.byType(EditableText))),
+        same(meridianTextMenu),
       );
     });
 
     testWidgets('selectable properties take the presenter text menu', (
       tester,
     ) async {
-      Widget nativeMenu(BuildContext context, EditableTextState editable) =>
-          const SizedBox.shrink();
+      Widget nativeMenu(
+        BuildContext context,
+        MeridianTextMenuRequest request,
+      ) => const SizedBox.shrink();
       await tester.pumpWidget(
         host(
           MeridianMenuPresenter(
@@ -310,9 +316,7 @@ void main() {
         ),
       );
       expect(
-        tester
-            .widget<SelectableText>(find.byType(SelectableText))
-            .contextMenuBuilder,
+        resolveMeridianTextMenu(tester.element(find.byType(SelectableRegion))),
         same(nativeMenu),
       );
     });
@@ -351,7 +355,7 @@ void main() {
             .getSize(
               find
                   .ancestor(
-                    of: find.byType(TextField),
+                    of: find.byType(EditableText),
                     matching: find.byType(AnimatedContainer),
                   )
                   .first,
@@ -372,10 +376,15 @@ void main() {
         ),
       );
       expect(tester.takeException(), isNull);
-      final field = tester.widget<TextField>(find.byType(TextField));
+      final field = tester.widget<MeridianEditableText>(
+        find.byType(MeridianEditableText),
+      );
       expect(field.expands, isTrue);
       expect(field.maxLines, isNull);
-      expect(tester.getSize(find.byType(TextField)).height, greaterThan(150));
+      expect(
+        tester.getSize(find.byType(EditableText)).height,
+        greaterThan(150),
+      );
     });
 
     testWidgets('scrollController drives a multi-line field', (tester) async {

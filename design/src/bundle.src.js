@@ -525,6 +525,21 @@
           }))));
   }
 
+  function Tooltip(p) {
+    return h('span', { className: 'mr-tooltip', role: 'tooltip' }, p.children);
+  }
+
+  function SelectableText(p) {
+    return h('span', { className: cx('mr-selectable', p.mono && 'mono') }, p.before, h('mark', null, p.selected), p.after);
+  }
+
+  function Scaffold(p) {
+    return h('div', { className: 'mr-scaffold' },
+      h(AppBar, { title: p.title, leading: 'menu', leadingLabel: 'Open navigation menu' }),
+      h('div', { className: 'body' }, p.children),
+      p.bottomBar ? h('div', { className: 'bottom' }, p.bottomBar) : null);
+  }
+
   function SettingsGroup(p) {
     return h('div', null,
       p.title ? h('div', { className: 'mr-overline', style: { marginBottom: 'var(--space-5)' } }, p.title) : null,
@@ -667,6 +682,6 @@
     return h('div', { className: 'mr-statusbar' }, h('div', { className: 'lead' }, p.leading), h('div', { className: 'trail' }, p.trailing));
   }
 
-  var M = { Icon: Icon, Kbd: Kbd, Count: Count, Spinner: Spinner, Button: Button, SplitButton: SplitButton, ButtonConfirmationDemo: ButtonConfirmationDemo, IconButton: IconButton, ToolbarButton: ToolbarButton, TextField: TextField, ShortcutField: ShortcutField, ShortcutFieldDemo: ShortcutFieldDemo, Checkbox: Checkbox, Radio: Radio, RadioGroup: RadioGroup, Switch: Switch, Segmented: Segmented, Slider: Slider, RangeSlider: RangeSlider, Select: Select, Menu: Menu, Suggestions: Suggestions, Tabs: Tabs, TabStrip: TabStrip, NavSection: NavSection, NavRow: NavRow, ListRow: ListRow, AppBar: AppBar, Avatar: Avatar, Chip: Chip, StatusDot: StatusDot, MiddleEllipsis: MiddleEllipsis, ProgressBar: ProgressBar, Meter: Meter, Waveform: Waveform, Banner: Banner, Toast: Toast, EmptyState: EmptyState, Skeleton: Skeleton, Island: Island, Disclosure: Disclosure, Dialog: Dialog, Sheet: Sheet, Panel: Panel, SettingsDialog: SettingsDialog, LicenseDialog: LicenseDialog, SettingsGroup: SettingsGroup, SettingsRow: SettingsRow, PropertyList: PropertyList, ColumnHeader: ColumnHeader, ResizeHandle: ResizeHandle, StatusBar: StatusBar, Scrollbar: Scrollbar, ColorSwatch: ColorSwatch, ColorPicker: ColorPicker, ColorWell: ColorWell, FloatingButton: FloatingButton, Drawer: Drawer, Breadcrumbs: Breadcrumbs, Pagination: Pagination, Steps: Steps, SelectionBar: SelectionBar, DropZone: DropZone, Calendar: Calendar, BusyOverlay: BusyOverlay, Popover: Popover, Canvas: Canvas, Paper: Paper, ToolDock: ToolDock, ToolDockDivider: ToolDockDivider };
+  var M = { Icon: Icon, Kbd: Kbd, Count: Count, Spinner: Spinner, Button: Button, SplitButton: SplitButton, ButtonConfirmationDemo: ButtonConfirmationDemo, IconButton: IconButton, ToolbarButton: ToolbarButton, TextField: TextField, ShortcutField: ShortcutField, ShortcutFieldDemo: ShortcutFieldDemo, Checkbox: Checkbox, Radio: Radio, RadioGroup: RadioGroup, Switch: Switch, Segmented: Segmented, Slider: Slider, RangeSlider: RangeSlider, Select: Select, Menu: Menu, Suggestions: Suggestions, Tabs: Tabs, TabStrip: TabStrip, NavSection: NavSection, NavRow: NavRow, ListRow: ListRow, AppBar: AppBar, Avatar: Avatar, Chip: Chip, StatusDot: StatusDot, MiddleEllipsis: MiddleEllipsis, ProgressBar: ProgressBar, Meter: Meter, Waveform: Waveform, Banner: Banner, Toast: Toast, EmptyState: EmptyState, Skeleton: Skeleton, Island: Island, Disclosure: Disclosure, Dialog: Dialog, Sheet: Sheet, Panel: Panel, SettingsDialog: SettingsDialog, LicenseDialog: LicenseDialog, Tooltip: Tooltip, SelectableText: SelectableText, Scaffold: Scaffold, SettingsGroup: SettingsGroup, SettingsRow: SettingsRow, PropertyList: PropertyList, ColumnHeader: ColumnHeader, ResizeHandle: ResizeHandle, StatusBar: StatusBar, Scrollbar: Scrollbar, ColorSwatch: ColorSwatch, ColorPicker: ColorPicker, ColorWell: ColorWell, FloatingButton: FloatingButton, Drawer: Drawer, Breadcrumbs: Breadcrumbs, Pagination: Pagination, Steps: Steps, SelectionBar: SelectionBar, DropZone: DropZone, Calendar: Calendar, BusyOverlay: BusyOverlay, Popover: Popover, Canvas: Canvas, Paper: Paper, ToolDock: ToolDock, ToolDockDivider: ToolDockDivider };
   window.Meridian = Object.assign(window.Meridian || {}, M);
 })();

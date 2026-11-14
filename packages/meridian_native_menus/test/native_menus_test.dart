@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_native_menus/meridian_native_menus.dart';
@@ -9,13 +9,14 @@ import 'package:meridian_ui/meridian_ui.dart';
 /// meridian_ui's icons are not assets of this package's tests.
 const _icons = MeridianIconSet(extra: {});
 
-Widget _host(Widget child) => MaterialApp(
-  theme: buildMeridianTheme(
+Widget _host(Widget child) => MeridianApp(
+  theme: MeridianTheme.resolve(
     brand: MeridianBrands.gitlama,
     brightness: Brightness.light,
     icons: _icons,
   ),
-  builder: (context, app) => MeridianNativeMenus.scope(child: app!),
+  builder: (context, app) =>
+      MeridianNativeMenus.scope(child: app ?? const SizedBox.shrink()),
   home: MeridianGround(child: Center(child: child)),
 );
 
@@ -450,7 +451,7 @@ void main() {
         SizedBox(width: 240, child: MeridianTextField(controller: controller)),
       ),
     );
-    await tester.tap(find.byType(TextField));
+    await tester.tap(find.byType(EditableText));
     await tester.pump();
     final state = tester.state<EditableTextState>(find.byType(EditableText));
     controller.selection = const TextSelection(baseOffset: 0, extentOffset: 5);

@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
+
 import 'support.dart';
 
 void main() {
@@ -29,8 +30,7 @@ void main() {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               MeridianBanner(
-                                message:
-                                    'Der Hintergrund konnte nicht vorbereitet werden.',
+                                message: 'Der Hintergrund konnte nicht vorbereitet werden.',
                                 tone: MeridianBannerTone.error,
                                 actions: [
                                   MeridianButton(

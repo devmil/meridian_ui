@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -12,6 +12,7 @@ import '../foundation/meridian_theme.dart';
 import '../foundation/meridian_tokens.g.dart';
 import 'inputs.dart';
 import 'menu.dart';
+import 'tooltip.dart';
 
 /// A titled row of colours that a [MeridianColorPicker] offers as swatches:
 /// a palette, the colours used last, the colours already in a document.
@@ -620,7 +621,7 @@ class _ColorPreview extends StatelessWidget {
             children: [
               if (original case final before?)
                 Expanded(
-                  child: Tooltip(
+                  child: MeridianTooltip(
                     message: originalLabel,
                     excludeFromSemantics: true,
                     child: Semantics(
@@ -890,9 +891,8 @@ class _WheelPainter extends CustomPainter {
       center,
       radius,
       Paint()
-        ..shader = RadialGradient(
-          colors: [_white, _white.withValues(alpha: 0)],
-        ).createShader(rect),
+        ..shader = RadialGradient(colors: [_white, _white.withValues(alpha: 0)])
+            .createShader(rect),
     );
     canvas.drawCircle(
       center,
@@ -985,7 +985,7 @@ class MeridianColorWell extends StatelessWidget {
         : MeridianLayout.swatchSize;
     const ring = MeridianLayout.swatchRingWidth + MeridianLayout.swatchRingGap;
     final color = this.color;
-    return Tooltip(
+    return MeridianTooltip(
       message: label,
       excludeFromSemantics: true,
       child: Semantics(

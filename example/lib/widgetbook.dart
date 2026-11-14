@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:meridian_ui/meridian_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 
@@ -37,8 +37,18 @@ class MeridianWidgetbook extends StatelessWidget {
   final String initialRoute;
 
   @override
-  Widget build(BuildContext context) => Widgetbook.material(
+  Widget build(BuildContext context) => Widgetbook(
     initialRoute: initialRoute,
+    // Use cases run in a MeridianApp; the addons set the brand, theme and
+    // density on top.
+    appBuilder: (context, child) => MeridianApp(
+      theme: MeridianTheme.resolve(
+        brand: MeridianBrands.gitlama,
+        brightness: Brightness.light,
+      ),
+      debugShowCheckedModeBanner: false,
+      home: child,
+    ),
     addons: [
       ViewportAddon([
         Viewports.none,
@@ -60,10 +70,10 @@ class _Home extends StatelessWidget {
   const _Home();
 
   @override
-  Widget build(BuildContext context) => Theme(
-    data: buildMeridianTheme(
+  Widget build(BuildContext context) => MeridianThemeScope(
+    theme: MeridianTheme.resolve(
       brand: MeridianBrands.gitlama,
-      brightness: Theme.of(context).brightness,
+      brightness: MediaQuery.platformBrightnessOf(context),
     ),
     child: Builder(
       builder: (context) {
