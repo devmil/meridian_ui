@@ -1,6 +1,6 @@
 import 'shortcut_field_demo.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:meridian_ui/meridian_ui.dart';
 
@@ -51,27 +51,27 @@ class _MeridianGalleryAppState extends State<MeridianGalleryApp> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme(Brightness b) =>
-        buildMeridianTheme(brand: _brand, brightness: b, density: _density);
-    return MaterialApp(
+    MeridianTheme theme(Brightness b) =>
+        MeridianTheme.resolve(brand: _brand, brightness: b, density: _density);
+    return MeridianApp(
       title: 'Meridian gallery',
       debugShowCheckedModeBanner: false,
       theme: theme(Brightness.light),
       darkTheme: theme(Brightness.dark),
       themeMode: _brightness == Brightness.dark
-          ? ThemeMode.dark
-          : ThemeMode.light,
+          ? MeridianThemeMode.dark
+          : MeridianThemeMode.light,
       // Screenshots switch themes instantly.
       themeAnimationDuration: screenshotMode
           ? Duration.zero
-          : kThemeAnimationDuration,
+          : MeridianDurations.overlay,
       // The Reduce motion switch stands in for the platform setting.
       builder: (context, app) => _reduceMotion
           ? MediaQuery(
               data: MediaQuery.of(context).copyWith(disableAnimations: true),
-              child: app!,
+              child: app ?? const SizedBox.shrink(),
             )
-          : app!,
+          : app ?? const SizedBox.shrink(),
       home: _Gallery(
         page: _page,
         brand: _brand,
@@ -177,7 +177,7 @@ class _GalleryState extends State<_Gallery> {
       ...motionSections(context, _section),
       _documents(context),
     ];
-    return Scaffold(
+    return MeridianScaffold(
       body: MeridianGround(
         child: SafeArea(
           child: screenshotMode
@@ -906,6 +906,14 @@ class _GalleryState extends State<_Gallery> {
         runSpacing: MeridianSpace.space4,
         crossAxisAlignment: WrapCrossAlignment.center,
         children: [
+          const MeridianTooltip(
+            message: 'A Meridian tooltip',
+            child: MeridianChip(label: 'Hover me'),
+          ),
+          MeridianSelectableText(
+            '3f2a9c1e7b4d',
+            style: context.meridian.text.code,
+          ),
           const MeridianKbd(keys: ['⌘', 'K']),
           // Appears while ⌘ is held, as on buttons and title-bar hints.
           const MeridianKbd(
@@ -1204,6 +1212,34 @@ class _GalleryState extends State<_Gallery> {
                 child: const Padding(
                   padding: EdgeInsets.all(MeridianSpace.space6),
                   child: Text('Palette route controls this corner radius.'),
+                ),
+              ),
+            ),
+          ),
+          MeridianButton(
+            label: 'Open scaffold',
+            variant: MeridianButtonVariant.secondary,
+            onPressed: () => Navigator.of(context).push(
+              MeridianPageRoute<void>(
+                builder: (context) => MeridianScaffold(
+                  appBar: const MeridianAppBar(title: 'Scaffold'),
+                  drawer: MeridianDrawer(
+                    child: Builder(
+                      builder: (context) => ListView(
+                        padding: const EdgeInsets.all(MeridianSpace.space3),
+                        children: [
+                          MeridianNavRow(
+                            label: 'Back to the gallery',
+                            icon: MeridianIcons.arrowLeft,
+                            onTap: () => Navigator.pop(context),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  body: const Center(
+                    child: MeridianSelectableText('Select and copy me'),
+                  ),
                 ),
               ),
             ),

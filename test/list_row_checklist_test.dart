@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -213,7 +213,7 @@ void main() {
       );
       final row = tester.getSize(find.byType(MeridianListRow));
       expect(row.height, greaterThanOrEqualTo(MeridianDensity.touch.rowExtent));
-      expect(row.height, greaterThanOrEqualTo(kMinInteractiveDimension));
+      expect(row.height, greaterThanOrEqualTo(MeridianSize.targetTouch));
       await tester.tap(find.text('lib/src/components/navigation.dart'));
       await tester.pumpAndSettle();
       expect(_mark(tester).checked, isTrue);

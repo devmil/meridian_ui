@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/semantics.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -10,6 +10,7 @@ import '../foundation/meridian_layout.dart';
 import '../foundation/meridian_theme.dart';
 import '../foundation/meridian_tokens.g.dart';
 import 'actions.dart';
+import '../foundation/meridian_localizations.dart';
 
 /// A 12px spinner that replaces an icon while something runs. It turns
 /// slowly (2 s) with reduce motion.
@@ -573,8 +574,7 @@ class MeridianBanner extends StatelessWidget {
               centred(
                 MeridianIconButton(
                   label:
-                      dismissLabel ??
-                      MaterialLocalizations.of(context).closeButtonTooltip,
+                      dismissLabel ?? MeridianLocalizations.of(context).close,
                   icon: MeridianIcons.x,
                   size: MeridianControlSize.small,
                   onPressed: onDismiss,
@@ -726,9 +726,7 @@ class MeridianToast extends StatelessWidget {
                     : null;
                 final dismiss = onDismiss != null
                     ? MeridianIconButton(
-                        label: MaterialLocalizations.of(
-                          context,
-                        ).closeButtonTooltip,
+                        label: MeridianLocalizations.of(context).close,
                         icon: 'x',
                         size: MeridianControlSize.small,
                         onPressed: onDismiss,

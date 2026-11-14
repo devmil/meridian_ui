@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -398,13 +398,13 @@ class _MeridianNativeContextMenuRegionState
 /// [MeridianNativeMenus.scope] installs it for every `MeridianTextField`.
 Widget nativeTextContextMenuBuilder(
   BuildContext context,
-  EditableTextState editable,
-) => _NativeTextMenu(editable: editable);
+  MeridianTextMenuRequest request,
+) => _NativeTextMenu(request: request);
 
 class _NativeTextMenu extends StatefulWidget {
-  const _NativeTextMenu({required this.editable});
+  const _NativeTextMenu({required this.request});
 
-  final EditableTextState editable;
+  final MeridianTextMenuRequest request;
 
   @override
   State<_NativeTextMenu> createState() => _NativeTextMenuState();
@@ -418,22 +418,22 @@ class _NativeTextMenuState extends State<_NativeTextMenu> {
   }
 
   Future<void> _open() async {
-    if (!mounted || !widget.editable.mounted) return;
-    final editable = widget.editable;
+    if (!mounted) return;
+    final request = widget.request;
     try {
       await MeridianNativeMenus.show(context, [
-        for (final item in editable.contextMenuButtonItems)
+        for (final item in request.items)
           MeridianMenuItem(
-            label: AdaptiveTextSelectionToolbar.getButtonLabel(context, item),
+            label: meridianTextMenuLabel(context, item),
             onSelected: item.onPressed == null
                 ? null
                 : () {
-                    if (mounted && editable.mounted) item.onPressed?.call();
+                    if (mounted) item.onPressed?.call();
                   },
           ),
-      ], editable.contextMenuAnchors.primaryAnchor);
+      ], request.anchors.primaryAnchor);
     } finally {
-      if (mounted && editable.mounted) editable.hideToolbar();
+      if (mounted) request.hide();
     }
   }
 

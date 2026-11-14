@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -11,6 +11,9 @@ import '../foundation/meridian_theme.dart';
 import '../foundation/meridian_tokens.g.dart';
 import '../foundation/overlay_motion.dart';
 import 'display.dart';
+import '../foundation/meridian_localizations.dart';
+import 'selection.dart';
+import '../foundation/meridian_theme_scope.dart';
 
 /// One entry of a Meridian menu.
 sealed class MeridianMenuEntry {
@@ -820,12 +823,11 @@ class MeridianMenuAnchor extends StatelessWidget {
 /// Presents a menu instead of the Flutter [MeridianMenuSurface]. It must
 /// complete once the menu has closed and run the chosen item's
 /// `onSelected` after that.
-typedef MeridianMenuPresent =
-    Future<void> Function(
-      BuildContext context, {
-      required Rect anchor,
-      required List<MeridianMenuEntry> entries,
-    });
+typedef MeridianMenuPresent = Future<void> Function(
+  BuildContext context, {
+  required Rect anchor,
+  required List<MeridianMenuEntry> entries,
+});
 
 /// Routes every Meridian menu (menu anchors, split toolbar buttons,
 /// selects and context menus) to [present], for apps that must show the
@@ -834,7 +836,8 @@ typedef MeridianMenuPresent =
 /// order, groups, checked state, shortcuts and destructive items.
 ///
 /// [textContextMenuBuilder] does the same for the cut, copy and paste menu
-/// of every `MeridianTextField`.
+/// of every `MeridianTextField`, `MeridianSelectionArea` and
+/// `MeridianSelectableText`.
 class MeridianMenuPresenter extends InheritedWidget {
   const MeridianMenuPresenter({
     required this.present,
@@ -845,9 +848,9 @@ class MeridianMenuPresenter extends InheritedWidget {
 
   final MeridianMenuPresent present;
 
-  /// The text editing context menu of Meridian text fields. `null` keeps
-  /// Flutter's adaptive toolbar.
-  final EditableTextContextMenuBuilder? textContextMenuBuilder;
+  /// The text menu of Meridian text fields and selections. `null` keeps
+  /// Meridian's own (`meridianTextMenu`).
+  final MeridianTextMenuBuilder? textContextMenuBuilder;
 
   static MeridianMenuPresenter? maybeOf(BuildContext context) =>
       context.getInheritedWidgetOfExactType<MeridianMenuPresenter>();
@@ -881,7 +884,7 @@ Future<void> showMeridianMenu(
     return presenter.present(context, anchor: anchor, entries: entries);
   }
   final navigator = Navigator.of(context, rootNavigator: true);
-  final theme = Theme.of(context);
+  final theme = MeridianTheme.of(context);
   final route = _MeridianMenuRoute(
     anchor: anchor,
     entries: entries,
@@ -889,7 +892,7 @@ Future<void> showMeridianMenu(
     minWidth: minWidth,
     theme: theme,
     initialHighlight: initialHighlight ?? _keyboardIsOpening(),
-    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    barrierLabel: MeridianLocalizations.of(context).dismiss,
     reduced: MeridianMotion.reduced(context),
   );
   final selected = await navigator.push<MeridianMenuItem>(route);
@@ -926,7 +929,7 @@ class _MeridianMenuRoute extends PopupRoute<MeridianMenuItem> {
   final List<MeridianMenuEntry> entries;
   final double? width;
   final double minWidth;
-  final ThemeData theme;
+  final MeridianTheme theme;
   final bool initialHighlight;
 
   /// Reduce motion at the time the menu opened: a short fade instead.
@@ -956,8 +959,8 @@ class _MeridianMenuRoute extends PopupRoute<MeridianMenuItem> {
     Animation<double> secondaryAnimation,
   ) {
     final padding = MediaQuery.paddingOf(context);
-    return Theme(
-      data: theme,
+    return MeridianThemeScope(
+      theme: theme,
       child: CustomSingleChildLayout(
         delegate: _MenuLayout(
           anchor: anchor,
@@ -1112,7 +1115,7 @@ Future<T?> showMeridianPopover<T>(
     width: width,
     maxHeight: maxHeight,
     themes: InheritedTheme.capture(from: context, to: navigator.context),
-    barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+    barrierLabel: MeridianLocalizations.of(context).dismiss,
     reduced: MeridianMotion.reduced(context),
   );
   final result = await navigator.push<T>(route);

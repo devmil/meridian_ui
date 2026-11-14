@@ -3,7 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -51,8 +51,8 @@ class MeridianInteractionState {
 
 /// [color] with zero alpha: "no fill" that animates cleanly into [color].
 ///
-/// Use it instead of `Colors.transparent` for any fill, edge or rule that
-/// animates. `Colors.transparent` is transparent *black*: a transition from
+/// Use it instead of `const Color(0x00000000)` for any fill, edge or rule that
+/// animates. `const Color(0x00000000)` is transparent *black*: a transition from
 /// it to a light colour passes through translucent dark grey, which reads as
 /// a dark flash on hover.
 Color meridianClear(Color color) => color.withValues(alpha: 0);
@@ -758,8 +758,8 @@ class MeridianHairline extends StatelessWidget {
   }
 }
 
-/// Resets the ambient text style to Meridian `body` in `ink` and provides a
-/// transparent [Material] ancestor (for [TextField], [Tooltip], scrollbars).
+/// Resets the ambient text style to Meridian `body` in `ink` and the icon
+/// colour to `ink`.
 ///
 /// [MeridianGround] and every overlay surface (menus, toasts, dialogs,
 /// sheets, panels) wrap their content in it, so text never inherits
@@ -772,9 +772,8 @@ class MeridianTextScope extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final meridian = MeridianTheme.of(context);
-    return Material(
-      type: MaterialType.transparency,
-      textStyle: meridian.text.body,
+    return DefaultTextStyle(
+      style: meridian.text.body.copyWith(color: meridian.colors.ink),
       child: IconTheme.merge(
         data: IconThemeData(color: meridian.colors.ink),
         child: child,

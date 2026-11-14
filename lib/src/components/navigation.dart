@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
@@ -12,6 +12,8 @@ import '../foundation/meridian_theme.dart';
 import '../foundation/meridian_tokens.g.dart';
 import 'display.dart';
 import 'inputs.dart' show MeridianCheckboxMark;
+import 'tooltip.dart';
+import '../foundation/meridian_localizations.dart';
 
 /// Reports whether focus is anywhere inside [child] (focus-within), without
 /// taking part in traversal itself.
@@ -453,9 +455,8 @@ class _MeridianListRowState extends State<MeridianListRow> {
                           },
                           child: MeridianSurfaceScope(
                             onGround:
-                                MeridianSurfaceScope.maybeOf(
-                                  context,
-                                )?.onGround ??
+                                MeridianSurfaceScope.maybeOf(context)
+                                    ?.onGround ??
                                 false,
                             fill: fill,
                             child: Row(
@@ -705,7 +706,7 @@ class _MeridianNavSectionState extends State<MeridianNavSection> {
         ),
         decoration: BoxDecoration(
           color: state?.fill(
-            rest: Colors.transparent,
+            rest: const Color(0x00000000),
             hoverFill: onGround ? colors.groundHover : colors.paneHover,
             ink: colors.ink,
           ),
@@ -747,7 +748,7 @@ class _MeridianNavSectionState extends State<MeridianNavSection> {
                       child: MeridianSurfaceScope.withFill(
                         context,
                         fill: state?.fill(
-                          rest: Colors.transparent,
+                          rest: const Color(0x00000000),
                           hoverFill: onGround
                               ? colors.groundHover
                               : colors.paneHover,
@@ -944,7 +945,7 @@ class MeridianNavRow extends StatelessWidget {
     final slotInset = (slot - MeridianLayout.chevronSize) / 2;
     final edge = touch ? MeridianSpace.space6 : MeridianSpace.space4;
     final hasSlot = expandable || depth > 0;
-    final localizations = MaterialLocalizations.of(context);
+    final localizations = MeridianLocalizations.of(context);
     return Semantics(
       excludeSemantics: true,
       button: true,
@@ -1043,8 +1044,8 @@ class MeridianNavRow extends StatelessWidget {
                             rowFill: fill,
                             color: secondary,
                             label: expanded
-                                ? localizations.expandedIconTapHint
-                                : localizations.collapsedIconTapHint,
+                                ? localizations.collapse
+                                : localizations.expand,
                           )
                         else if (depth > 0)
                           SizedBox(width: slot),
@@ -1151,7 +1152,7 @@ class _Chevron extends StatelessWidget {
   Widget build(BuildContext context) {
     final meridian = MeridianTheme.of(context);
     final radius = BorderRadius.circular(meridian.radius.xs);
-    return Tooltip(
+    return MeridianTooltip(
       message: label,
       excludeFromSemantics: true,
       child: MeridianInteraction(
@@ -1167,7 +1168,7 @@ class _Chevron extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: state.fill(
-              rest: Colors.transparent,
+              rest: const Color(0x00000000),
               hoverFill: meridianPressed(rowFill, meridian.colors.ink),
               ink: meridian.colors.ink,
             ),
@@ -1681,7 +1682,7 @@ class _TabClose extends StatelessWidget {
       label: label,
       excludeSemantics: true,
       onTap: onPressed,
-      child: Tooltip(
+      child: MeridianTooltip(
         message: label,
         excludeFromSemantics: true,
         child: MeridianInteraction(
@@ -1697,7 +1698,7 @@ class _TabClose extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: state.fill(
-                rest: Colors.transparent,
+                rest: const Color(0x00000000),
                 hoverFill: colors.ink.withValues(
                   alpha: MeridianOpacity.primaryHoverOverlay,
                 ),
@@ -1822,14 +1823,11 @@ class _RenderTitleFirstLine extends RenderBox
         ContainerRenderObjectMixin<RenderBox, _TitleFirstParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, _TitleFirstParentData> {
   _RenderTitleFirstLine({
-    required double gap,
-    required TextStyle subtitleStyle,
-    required TextScaler textScaler,
-    required TextDirection textDirection,
-  }) : _gap = gap,
-       _subtitleStyle = subtitleStyle,
-       _textScaler = textScaler,
-       _textDirection = textDirection;
+    required this._gap,
+    required this._subtitleStyle,
+    required this._textScaler,
+    required this._textDirection,
+  });
 
   double _gap;
   set gap(double value) {
@@ -2381,11 +2379,10 @@ class _RenderBreadcrumbs extends RenderBox
         ContainerRenderObjectMixin<RenderBox, _BreadcrumbParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, _BreadcrumbParentData> {
   _RenderBreadcrumbs({
-    required int crumbCount,
+    required this._crumbCount,
     required this.onFolded,
-    required TextDirection textDirection,
-  }) : _crumbCount = crumbCount,
-       _textDirection = textDirection;
+    required this._textDirection,
+  });
 
   int _crumbCount;
   set crumbCount(int value) {

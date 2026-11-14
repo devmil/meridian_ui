@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -166,9 +166,9 @@ void main() {
     testWidgets('opens from the app bar and names its route', (tester) async {
       final semantics = tester.ensureSemantics();
       await tester.pumpWidget(
-        MaterialApp(
+        MeridianApp(
           theme: testTheme(density: MeridianDensity.touch),
-          home: Scaffold(
+          home: MeridianScaffold(
             appBar: const MeridianAppBar(title: 'Library'),
             drawer: MeridianDrawer(
               child: ListView(
@@ -179,7 +179,7 @@ void main() {
           ),
         ),
       );
-      await tester.tap(find.byTooltip('Open navigation menu'));
+      await tester.tap(findTooltip('Open navigation menu'));
       await tester.pumpAndSettle();
       expect(find.text('Archive'), findsOneWidget);
       expect(
@@ -201,16 +201,16 @@ void main() {
   group('MeridianAppBar', () {
     testWidgets('implies a back button on pushed routes', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        MeridianApp(
           theme: testTheme(),
           home: Builder(
-            builder: (context) => Scaffold(
+            builder: (context) => MeridianScaffold(
               appBar: const MeridianAppBar(title: 'Library'),
               body: MeridianButton(
                 label: 'Open',
                 onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const Scaffold(
+                  MeridianPageRoute<void>(
+                    builder: (_) => const MeridianScaffold(
                       appBar: MeridianAppBar(
                         title: 'Settings',
                         subtitle: 'Saved on this device',
@@ -223,26 +223,25 @@ void main() {
           ),
         ),
       );
-      expect(find.byTooltip('Back'), findsNothing);
+      expect(findTooltip('Back'), findsNothing);
       await tester.tap(find.text('Open'));
       await tester.pumpAndSettle();
       expect(find.text('Saved on this device'), findsOneWidget);
-      await tester.tap(find.byTooltip('Back'));
+      await tester.tap(findTooltip('Back'));
       await tester.pumpAndSettle();
       expect(find.text('Settings'), findsNothing);
     });
 
     testWidgets('title and subtitle fit at 200% text', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        MeridianApp(
           theme: testTheme(density: MeridianDensity.touch),
           builder: (context, child) => MediaQuery(
-            data: MediaQuery.of(
-              context,
-            ).copyWith(textScaler: const TextScaler.linear(2)),
+            data: MediaQuery.of(context)
+                .copyWith(textScaler: const TextScaler.linear(2)),
             child: child!,
           ),
-          home: const Scaffold(
+          home: const MeridianScaffold(
             appBar: MeridianAppBar(
               title: 'Experimentelle Naturwissenschaft',
               subtitle: 'Auf diesem Gerät gespeichert',

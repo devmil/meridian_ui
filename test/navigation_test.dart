@@ -1,5 +1,5 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -253,7 +253,7 @@ void main() {
           onClose: closed.add,
         ),
       );
-      final closes = find.byTooltip('Close Sent');
+      final closes = findTooltip('Close Sent');
       expect(closes, findsOneWidget);
       // Sent is not active or hovered: its close button is invisible.
       await tester.tap(closes, warnIfMissed: false);
@@ -261,7 +261,7 @@ void main() {
       expect(index, 3, reason: 'the tap selects the tab underneath');
       expect(find.bySemanticsLabel('Close Sent'), findsOneWidget);
       // The active tab's close button works.
-      await tester.tap(find.byTooltip('Close Inbox'));
+      await tester.tap(findTooltip('Close Inbox'));
       expect(closed, [0]);
       semantics.dispose();
     });
@@ -365,10 +365,10 @@ void main() {
         ),
       );
       expect(find.text('12 May'), findsOneWidget);
-      expect(find.byTooltip('Archive'), findsNothing);
+      expect(findTooltip('Archive'), findsNothing);
       await hoverAt(tester, tester.getCenter(find.text('Quarterly report')));
       await tester.pump();
-      expect(find.byTooltip('Archive'), findsOneWidget);
+      expect(findTooltip('Archive'), findsOneWidget);
       expect(find.text('12 May'), findsNothing);
       expect(find.text('PDF'), findsOneWidget);
     });
@@ -398,14 +398,14 @@ void main() {
       );
       await tester.sendKeyEvent(LogicalKeyboardKey.tab);
       await tester.pump();
-      expect(find.byTooltip('Archive'), findsOneWidget);
+      expect(findTooltip('Archive'), findsOneWidget);
       await tester.sendKeyEvent(LogicalKeyboardKey.tab);
       await tester.pump();
-      expect(find.byTooltip('Archive'), findsOneWidget);
+      expect(findTooltip('Archive'), findsOneWidget);
       await tester.sendKeyEvent(LogicalKeyboardKey.enter);
       expect(archived, 1);
       final action = find.ancestor(
-        of: find.byTooltip('Archive'),
+        of: findTooltip('Archive'),
         matching: find.byType(MeridianIconButton),
       );
       expect(ringVisible(tester, action), isTrue);
@@ -588,7 +588,7 @@ void main() {
           ),
         ),
       );
-      final chevron = find.byTooltip('Expand');
+      final chevron = findTooltip('Expand');
       expect(chevron, findsOneWidget);
       expect(
         tester.getSize(chevron).width,
@@ -625,7 +625,7 @@ void main() {
         ),
       );
       final chevron = find.descendant(
-        of: find.byTooltip('Expand'),
+        of: findTooltip('Expand'),
         matching: find.byType(MeridianInteraction),
       );
       expect(tester.getSize(chevron), const Size(48, 48));

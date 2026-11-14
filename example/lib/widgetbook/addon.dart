@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:meridian_ui/meridian_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
@@ -131,20 +131,14 @@ class _SpeedAddon extends WidgetbookAddon<double> {
   @override
   Widget buildUseCase(BuildContext context, Widget child, double setting) {
     timeDilation = setting;
-    final theme = buildMeridianTheme(
+    final theme = MeridianTheme.resolve(
       brand: _Choice.of<MeridianBrand>(context) ?? MeridianBrands.all.first,
       brightness: _Choice.of<Brightness>(context) ?? Brightness.light,
       density: _Choice.of<MeridianDensity?>(context),
     );
-    return Theme(
-      data: theme,
-      child: ColoredBox(
-        color: theme.scaffoldBackgroundColor,
-        child: DefaultTextStyle(
-          style: theme.textTheme.bodyMedium!,
-          child: child,
-        ),
-      ),
+    return MeridianThemeScope(
+      theme: theme,
+      child: ColoredBox(color: theme.colors.ground, child: child),
     );
   }
 }

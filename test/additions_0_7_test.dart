@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -204,7 +204,7 @@ void main() {
       ),
     );
     expect(tester.takeException(), isNull);
-    await tester.tap(find.byTooltip('More actions'));
+    await tester.tap(findTooltip('More actions'));
     await tester.pumpAndSettle();
     expect(find.text('Delete'), findsOneWidget);
   });
@@ -219,8 +219,8 @@ void main() {
       variant: TargetPlatformVariant.only(platform),
       (tester) async {
         await tester.pumpWidget(
-          MaterialApp(
-            theme: buildMeridianTheme(
+          MeridianApp(
+            theme: MeridianTheme.resolve(
               brand: MeridianBrands.nibluma,
               brightness: Brightness.light,
             ),

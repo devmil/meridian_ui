@@ -64,18 +64,13 @@ class MeridianMiddleEllipsis extends LeafRenderObjectWidget {
 
 class RenderMeridianMiddleEllipsis extends RenderBox {
   RenderMeridianMiddleEllipsis({
-    required String text,
-    required TextStyle style,
-    required TextDirection textDirection,
-    required TextScaler textScaler,
-    Locale? locale,
-    String? semanticsLabel,
-  }) : _text = text,
-       _style = style,
-       _textDirection = textDirection,
-       _textScaler = textScaler,
-       _locale = locale,
-       _semanticsLabel = semanticsLabel;
+    required this._text,
+    required this._style,
+    required this._textDirection,
+    required this._textScaler,
+    this._locale,
+    this._semanticsLabel,
+  });
 
   static const _ellipsis = '…';
 

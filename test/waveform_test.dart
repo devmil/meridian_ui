@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
-import 'package:flutter/material.dart';
+
+import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -8,8 +9,8 @@ Widget shell(
   Widget child, {
   TextDirection direction = TextDirection.ltr,
   MeridianDensity density = MeridianDensity.regular,
-}) => MaterialApp(
-  theme: buildMeridianTheme(
+}) => MeridianApp(
+  theme: MeridianTheme.resolve(
     brand: MeridianBrands.shotlama,
     brightness: Brightness.light,
     density: density,

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -12,6 +12,10 @@ import '../foundation/meridian_tokens.g.dart';
 import '../foundation/overlay_motion.dart';
 import 'actions.dart';
 import 'display.dart';
+import 'tooltip.dart';
+import '../foundation/meridian_localizations.dart';
+import 'scaffold.dart';
+import '../foundation/meridian_theme_scope.dart';
 
 /// The window or screen canvas: `ground`, with a surface scope that tells
 /// rows and buttons on it to hover with `ground-hover`. Islands sit on it
@@ -504,7 +508,7 @@ class _MeridianDisclosureState extends State<MeridianDisclosure> {
               ),
               decoration: BoxDecoration(
                 color: state.fill(
-                  rest: Colors.transparent,
+                  rest: const Color(0x00000000),
                   hoverFill: onGround ? colors.groundHover : colors.paneHover,
                   ink: colors.ink,
                 ),
@@ -634,11 +638,11 @@ class _MeridianDialogState extends State<MeridianDialog> {
 
   /// Shows the primary action's tooltip: its disabled reason.
   void _showDisabledReason() {
-    TooltipState? tooltip;
+    MeridianTooltipState? tooltip;
     void visit(Element element) {
       if (tooltip != null) return;
-      if (element is StatefulElement && element.state is TooltipState) {
-        tooltip = element.state as TooltipState;
+      if (element is StatefulElement && element.state is MeridianTooltipState) {
+        tooltip = element.state as MeridianTooltipState;
         return;
       }
       element.visitChildElements(visit);
@@ -722,7 +726,7 @@ class _MeridianDialogState extends State<MeridianDialog> {
     final closeButton = close == null
         ? null
         : MeridianIconButton(
-            label: MaterialLocalizations.of(context).closeButtonTooltip,
+            label: MeridianLocalizations.of(context).close,
             icon: MeridianIcons.x,
             onPressed: close,
           );
@@ -1020,7 +1024,7 @@ Future<T?> showMeridianDialog<T>({
         child: themes.wrap(builder(dialogContext)),
       ),
       barrierDismissible: barrierDismissible,
-      barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+      barrierLabel: MeridianLocalizations.of(context).dismiss,
       barrierColor: nested ? meridianClear(colors.scrim) : colors.scrim,
       reduced: MeridianMotion.reduced(context),
       transition: transitionBuilder,
@@ -1180,9 +1184,7 @@ Future<bool> showMeridianConfirm(
       onSubmit: () => Navigator.of(context).pop(true),
       actions: [
         MeridianButton(
-          label:
-              cancelLabel ??
-              MaterialLocalizations.of(context).cancelButtonLabel,
+          label: cancelLabel ?? MeridianLocalizations.of(context).cancel,
           variant: MeridianButtonVariant.quiet,
           autofocus: destructive,
           onPressed: () => Navigator.of(context).pop(false),
@@ -1294,24 +1296,135 @@ Future<T?> showMeridianSheet<T>({
   required BuildContext context,
   required WidgetBuilder builder,
   bool isDismissible = true,
-}) {
-  final colors = MeridianTheme.of(context).colors;
-  return showModalBottomSheet<T>(
-    context: context,
+}) => Navigator.of(context).push(
+  _MeridianSheetRoute<T>(
     builder: builder,
-    isDismissible: isDismissible,
-    isScrollControlled: true,
-    useSafeArea: true,
-    backgroundColor: Colors.transparent,
-    elevation: 0,
-    barrierColor: colors.scrim,
-    showDragHandle: false,
-    constraints: const BoxConstraints(maxWidth: MeridianLayout.sheetMaxWidth),
-    sheetAnimationStyle: AnimationStyle(
-      duration: MeridianMotion.of(context, MeridianDurations.sheet),
-      curve: MeridianDurations.sheetCurve,
-      reverseDuration: MeridianMotion.of(context, MeridianDurations.exit),
+    dismissible: isDismissible,
+    theme: MeridianTheme.of(context),
+    reduced: MeridianMotion.reduced(context),
+    barrierLabel: MeridianLocalizations.of(context).dismiss,
+  ),
+);
+
+class _MeridianSheetRoute<T> extends PopupRoute<T> {
+  _MeridianSheetRoute({
+    required this.builder,
+    required this.dismissible,
+    required this.theme,
+    required this.reduced,
+    required this.barrierLabel,
+  });
+
+  final WidgetBuilder builder;
+  final bool dismissible;
+  final MeridianTheme theme;
+  final bool reduced;
+
+  @override
+  final String barrierLabel;
+
+  @override
+  Color get barrierColor => theme.colors.scrim;
+
+  @override
+  bool get barrierDismissible => dismissible;
+
+  @override
+  Duration get transitionDuration =>
+      reduced ? MeridianDurations.reducedFade : MeridianDurations.sheet;
+
+  @override
+  Duration get reverseTransitionDuration =>
+      reduced ? MeridianDurations.reducedFade : MeridianDurations.exit;
+
+  @override
+  Widget buildPage(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+  ) => MeridianThemeScope(
+    theme: theme,
+    child: SafeArea(
+      bottom: false,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: MeridianLayout.sheetMaxWidth,
+          ),
+          child: _SheetDrag(
+            route: this,
+            enabled: dismissible,
+            child: Builder(builder: builder),
+          ),
+        ),
+      ),
     ),
+  );
+
+  @override
+  Widget buildTransitions(
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) => reduced
+      ? FadeTransition(opacity: animation, child: child)
+      : SlideTransition(
+          position: Tween(begin: const Offset(0, 1), end: Offset.zero).animate(
+            CurvedAnimation(
+              parent: animation,
+              curve: MeridianDurations.sheetCurve,
+              reverseCurve: Curves.easeIn,
+            ),
+          ),
+          child: child,
+        );
+
+  void _drag(double delta, double height) {
+    controller!.value -= delta / height;
+  }
+
+  void _release(double velocity) {
+    if (velocity > 700 || controller!.value < 0.5) {
+      if (isCurrent) navigator?.pop();
+    } else {
+      controller!.forward();
+    }
+  }
+}
+
+/// Lets a sheet follow a downward drag and close past half its height or on
+/// a fling.
+class _SheetDrag extends StatefulWidget {
+  const _SheetDrag({
+    required this.route,
+    required this.enabled,
+    required this.child,
+  });
+
+  final _MeridianSheetRoute<dynamic> route;
+  final bool enabled;
+  final Widget child;
+
+  @override
+  State<_SheetDrag> createState() => _SheetDragState();
+}
+
+class _SheetDragState extends State<_SheetDrag> {
+  final _key = GlobalKey();
+
+  double get _height => _key.currentContext?.size?.height ?? 1;
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+    onVerticalDragUpdate: widget.enabled
+        ? (details) => widget.route._drag(details.primaryDelta!, _height)
+        : null,
+    onVerticalDragEnd: widget.enabled
+        ? (details) => widget.route._release(details.primaryVelocity ?? 0)
+        : null,
+    child: KeyedSubtree(key: _key, child: widget.child),
   );
 }
 
@@ -1414,9 +1527,8 @@ class _MeridianPanelState extends State<MeridianPanel> {
                               ...widget.actions,
                               if (close != null)
                                 MeridianIconButton(
-                                  label: MaterialLocalizations.of(
-                                    context,
-                                  ).closeButtonTooltip,
+                                  label: MeridianLocalizations.of(context)
+                                      .close,
                                   icon: MeridianIcons.x,
                                   onPressed: close,
                                 ),
@@ -1629,7 +1741,7 @@ class MeridianSettingsRow extends StatelessWidget {
 /// it ([elevated]).
 ///
 /// Without a [leading] widget it shows a back button when the route can be
-/// popped, or a menu button that opens the enclosing `Scaffold`'s drawer
+/// popped, or a menu button that opens the enclosing `MeridianScaffold`'s drawer
 /// ([automaticallyImplyLeading]). A long [title] ellipsizes and shows in
 /// full as its tooltip; [subtitle] is a `caption` line under it (a save
 /// state, a location).
@@ -1658,11 +1770,11 @@ class MeridianAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   Widget? _impliedLeading(BuildContext context) {
     if (!automaticallyImplyLeading) return null;
-    final localizations = MaterialLocalizations.of(context);
-    final scaffold = Scaffold.maybeOf(context);
+    final localizations = MeridianLocalizations.of(context);
+    final scaffold = MeridianScaffold.maybeOf(context);
     if (scaffold != null && scaffold.hasDrawer) {
       return MeridianIconButton(
-        label: localizations.openAppDrawerTooltip,
+        label: localizations.openNavigationMenu,
         icon: MeridianIcons.menu,
         onPressed: scaffold.openDrawer,
       );
@@ -1670,7 +1782,7 @@ class MeridianAppBar extends StatelessWidget implements PreferredSizeWidget {
     final route = ModalRoute.of(context);
     if (route != null && route.impliesAppBarDismissal) {
       return MeridianIconButton(
-        label: localizations.backButtonTooltip,
+        label: localizations.back,
         icon: MeridianIcons.arrowLeft,
         onPressed: () => Navigator.maybePop(context),
       );
@@ -1688,7 +1800,7 @@ class MeridianAppBar extends StatelessWidget implements PreferredSizeWidget {
     if (title case final title?) {
       titleWidget = Semantics(
         header: true,
-        child: Tooltip(
+        child: MeridianTooltip(
           message: title,
           excludeFromSemantics: true,
           child: Text(
@@ -1736,7 +1848,7 @@ class MeridianAppBar extends StatelessWidget implements PreferredSizeWidget {
         foregroundDecoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: elevated ? colors.line : Colors.transparent,
+              color: elevated ? colors.line : const Color(0x00000000),
             ),
           ),
         ),
@@ -1760,7 +1872,7 @@ class MeridianAppBar extends StatelessWidget implements PreferredSizeWidget {
 /// The navigation drawer of a phone layout: the app's destinations on a
 /// `pane` side sheet that slides in from the leading edge over `scrim`,
 /// trailing corners `radius-xl`, `shadow-float`, 304px at most. Put it in
-/// `Scaffold.drawer` and fill it with [MeridianNavRow]s; wider layouts show
+/// `MeridianScaffold.drawer` and fill it with [MeridianNavRow]s; wider layouts show
 /// the same rows in a sidebar instead.
 class MeridianDrawer extends StatelessWidget {
   const MeridianDrawer({
@@ -1785,7 +1897,7 @@ class MeridianDrawer extends StatelessWidget {
       scopesRoute: true,
       namesRoute: true,
       explicitChildNodes: true,
-      label: semanticLabel ?? MaterialLocalizations.of(context).drawerLabel,
+      label: semanticLabel ?? MeridianLocalizations.of(context).navigationMenu,
       child: ConstrainedBox(
         constraints: BoxConstraints.expand(
           width: math.min(
@@ -1796,9 +1908,8 @@ class MeridianDrawer extends StatelessWidget {
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: meridian.colors.pane,
-            borderRadius: BorderRadiusDirectional.horizontal(
-              end: radius,
-            ).resolve(Directionality.of(context)),
+            borderRadius: BorderRadiusDirectional.horizontal(end: radius)
+                .resolve(Directionality.of(context)),
             boxShadow: meridian.shadows.shadowFloat,
           ),
           child: MeridianTextScope(

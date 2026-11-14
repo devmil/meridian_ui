@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -248,12 +248,10 @@ class _RenderSteps extends RenderBox
         ContainerRenderObjectMixin<RenderBox, _StepsParentData>,
         RenderBoxContainerDefaultsMixin<RenderBox, _StepsParentData> {
   _RenderSteps({
-    required int stepCount,
-    required int current,
-    required TextDirection textDirection,
-  }) : _stepCount = stepCount,
-       _current = current,
-       _textDirection = textDirection;
+    required this._stepCount,
+    required this._current,
+    required this._textDirection,
+  });
 
   int _stepCount;
   set stepCount(int value) {

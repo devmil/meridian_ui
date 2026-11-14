@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -79,11 +79,11 @@ void main() {
     await tester.pumpWidget(host(const _Finder()));
     await tester.pump();
     expect(find.text('No matches'), findsNothing);
-    await tester.enterText(find.byType(TextField), 'beta');
+    await tester.enterText(find.byType(EditableText), 'beta');
     await tester.pumpAndSettle();
     expect(find.text('1 of 3'), findsOneWidget);
     expect(find.textContaining('/'), findsNothing);
-    await tester.enterText(find.byType(TextField), 'zeta');
+    await tester.enterText(find.byType(EditableText), 'zeta');
     await tester.pumpAndSettle();
     expect(find.text('No matches'), findsOneWidget);
   });
@@ -98,7 +98,7 @@ void main() {
       ),
     );
     await tester.pump();
-    await tester.enterText(find.byType(TextField), 'beta');
+    await tester.enterText(find.byType(EditableText), 'beta');
     await tester.pumpAndSettle();
     expect(find.text('1 von 3'), findsOneWidget);
     expect(
@@ -114,7 +114,7 @@ void main() {
   testWidgets('Enter and Shift+Enter step; the buttons follow', (tester) async {
     await tester.pumpWidget(host(const _Finder()));
     await tester.pump();
-    await tester.enterText(find.byType(TextField), 'beta');
+    await tester.enterText(find.byType(EditableText), 'beta');
     await tester.pump();
     await tester.sendKeyEvent(LogicalKeyboardKey.enter);
     await tester.pumpAndSettle();
@@ -136,7 +136,7 @@ void main() {
   testWidgets('the case toggle searches again', (tester) async {
     await tester.pumpWidget(host(const _Finder()));
     await tester.pump();
-    await tester.enterText(find.byType(TextField), 'beta');
+    await tester.enterText(find.byType(EditableText), 'beta');
     await tester.pump();
     await tester.tap(find.byKey(const ValueKey('meridian-find-case')));
     await tester.pumpAndSettle();
@@ -156,7 +156,7 @@ void main() {
     var closed = 0;
     await tester.pumpWidget(host(_Finder(onClose: () => closed++)));
     await tester.pump();
-    await tester.enterText(find.byType(TextField), 'beta');
+    await tester.enterText(find.byType(EditableText), 'beta');
     await tester.pump();
     await tester.sendKeyEvent(LogicalKeyboardKey.escape);
     await tester.pumpAndSettle();
@@ -188,7 +188,12 @@ void main() {
           .onPressed,
       isNull,
     );
-    expect(tester.widget<TextField>(find.byType(TextField)).enabled, isFalse);
+    expect(
+      tester
+          .widget<MeridianEditableText>(find.byType(MeridianEditableText))
+          .enabled,
+      isFalse,
+    );
   });
 
   testWidgets('a narrow toolbar shrinks the field instead of overflowing', (
@@ -230,7 +235,7 @@ void main() {
       ),
     );
     await tester.pump();
-    await tester.enterText(find.byType(TextField), 'beta');
+    await tester.enterText(find.byType(EditableText), 'beta');
     await tester.pump();
     expect(tester.takeException(), isNull);
     expect(tester.getSize(find.byType(MeridianTextField)).width, 280);

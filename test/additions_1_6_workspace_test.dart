@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -204,9 +204,10 @@ void main() {
       expect(semantics.flagsCollection.isLiveRegion, isTrue);
       expect(
         tester.widget<Text>(find.text('Loading history…')).style?.fontSize,
-        MeridianTheme.of(
-          tester.element(find.byType(MeridianEmptyState)),
-        ).text.body.fontSize,
+        MeridianTheme.of(tester.element(find.byType(MeridianEmptyState)))
+            .text
+            .body
+            .fontSize,
       );
     });
 

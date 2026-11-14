@@ -3,12 +3,12 @@ description: >-
   Meridian, the shared design system for Michael Lamers' Flutter apps
   (GitLama, CrossProton, Mimameidr, Nibluma): tokens, per-app brands and
   the primitive widgets, for desktop and touch.
-version: 1.18.0
+version: 2.0.0
 publish_to: 'none'
 
 environment:
-  sdk: ^3.9.0
-  flutter: '>=3.35.0'
+  sdk: ^3.13.0
+  flutter: '>=3.50.0'
 
 dependencies:
   flutter:

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
@@ -9,6 +9,7 @@ import '../foundation/meridian_interaction.dart';
 import '../foundation/meridian_layout.dart';
 import '../foundation/meridian_theme.dart';
 import '../foundation/meridian_tokens.g.dart';
+import 'tooltip.dart';
 
 /// Resizes the islands on either side of the gutter it sits in: a sidebar,
 /// an inspector, a split between two lists.
@@ -397,7 +398,11 @@ class MeridianStatusBarItem extends StatelessWidget {
     final tooltip = this.tooltip;
     return tooltip == null
         ? button
-        : Tooltip(message: tooltip, excludeFromSemantics: true, child: button);
+        : MeridianTooltip(
+            message: tooltip,
+            excludeFromSemantics: true,
+            child: button,
+          );
   }
 }
 
