@@ -170,9 +170,14 @@ class _MeridianAppState extends State<MeridianApp> {
 
 /// How Meridian views scroll: on desktop they clamp at their edges, show
 /// no overscroll glow or stretch, and draw Meridian's scrollbar thumb while
-/// they scroll; on phones and tablets they keep the platform's feel.
+/// they scroll (always, with [alwaysShowThumb]); on phones and tablets they
+/// keep the platform's feel.
 class MeridianScrollBehavior extends ScrollBehavior {
-  const MeridianScrollBehavior();
+  const MeridianScrollBehavior({this.alwaysShowThumb = false});
+
+  /// Shows the desktop thumb whenever a view has more than it shows, not
+  /// only while it scrolls.
+  final bool alwaysShowThumb;
 
   static bool _desktop(TargetPlatform platform) => switch (platform) {
     TargetPlatform.macOS ||
@@ -215,6 +220,7 @@ class MeridianScrollBehavior extends ScrollBehavior {
     return switch (axisDirectionToAxis(details.direction)) {
       Axis.vertical || Axis.horizontal => MeridianScrollbarThumb(
         controller: details.controller,
+        thumbVisibility: alwaysShowThumb ? true : null,
         child: child,
       ),
     };

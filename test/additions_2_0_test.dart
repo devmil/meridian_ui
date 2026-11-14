@@ -136,6 +136,27 @@ void main() {
         ),
       );
       expect(find.byType(MeridianScrollbarThumb), findsOneWidget);
+      expect(
+        tester
+            .widget<MeridianScrollbarThumb>(find.byType(MeridianScrollbarThumb))
+            .thumbVisibility,
+        isNull,
+      );
+      await tester.pumpWidget(
+        MeridianApp(
+          theme: _theme(Brightness.light),
+          scrollBehavior: const MeridianScrollBehavior(alwaysShowThumb: true),
+          home: ListView(
+            children: [for (var i = 0; i < 80; i++) Text('Row $i')],
+          ),
+        ),
+      );
+      expect(
+        tester
+            .widget<MeridianScrollbarThumb>(find.byType(MeridianScrollbarThumb))
+            .thumbVisibility,
+        isTrue,
+      );
       final context = tester.element(find.text('Row 0'));
       expect(
         ScrollConfiguration.of(context).getScrollPhysics(context),
