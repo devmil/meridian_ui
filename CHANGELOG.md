@@ -74,6 +74,12 @@ widgets layer, so an app can drop `material.dart` (deprecated in Flutter
   other than German unless the app supplies a `MeridianLocalizationsScope`.
 - `MeridianAppBar` opens a `MeridianScaffold`'s drawer, not a `Scaffold`'s.
 
+**Fixed**
+
+- `MeridianLicenseDialog`: when the filter hides the shown package, the
+  first match is shown instead, and Up and Down start from the top or the
+  end of the filtered list.
+
 **Migrating an app**: `MaterialApp` → `MeridianApp`, `ThemeMode` →
 `MeridianThemeMode`, `Scaffold` → `MeridianScaffold` (`bottomNavigationBar`
 → `bottomBar`), `MaterialPageRoute` / `PageTransitionsTheme` →

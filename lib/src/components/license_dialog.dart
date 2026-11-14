@@ -194,6 +194,18 @@ class _MeridianLicenseDialogState extends State<MeridianLicenseDialog> {
     });
   }
 
+  /// Keeps the shown package in the list: when the filter hides it, the
+  /// first match takes its place.
+  void _filterChanged(String value) {
+    setState(() {
+      _query = value;
+      final visible = _visible;
+      if (visible.isEmpty || visible.any((p) => p.name == _selected)) return;
+      _selected = visible.first.name;
+      if (_textScroll.hasClients) _textScroll.jumpTo(0);
+    });
+  }
+
   void _close() {
     final close = widget.onClose;
     if (close != null) {
@@ -215,9 +227,13 @@ class _MeridianLicenseDialogState extends State<MeridianLicenseDialog> {
     };
     if (delta == 0) return KeyEventResult.ignored;
     final visible = _visible;
+    if (visible.isEmpty) return KeyEventResult.handled;
     final index = visible.indexWhere((p) => p.name == _selected);
-    final next = index + delta;
-    if (index < 0 || next < 0 || next >= visible.length) {
+    // With the selection filtered out, Down starts at the top, Up at the end.
+    final next = index < 0
+        ? (delta > 0 ? 0 : visible.length - 1)
+        : index + delta;
+    if (next < 0 || next >= visible.length) {
       return KeyEventResult.handled;
     }
     final focused = FocusManager.instance.primaryFocus;
@@ -401,7 +417,7 @@ class _MeridianLicenseDialogState extends State<MeridianLicenseDialog> {
               controller: _filter,
               variant: MeridianTextFieldVariant.search,
               placeholder: l10n.licensesFilter,
-              onChanged: (value) => setState(() => _query = value),
+              onChanged: _filterChanged,
             ),
           ),
           Expanded(
