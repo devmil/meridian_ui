@@ -11,7 +11,8 @@ import '../foundation/meridian_tokens.g.dart';
 /// and an optional navigation [drawer] that slides in from the leading
 /// edge over `scrim`.
 ///
-/// The body fills the rest on [backgroundColor] (`ground` by default) and
+/// The body gets the rest, loosely, at the top left (like Material's
+/// `Scaffold`), on [backgroundColor] (`ground` by default) and
 /// moves up out of the on-screen keyboard unless
 /// [resizeToAvoidBottomInset] is off. Padding that the app bar and bottom
 /// bar take care of is removed from the body's [MediaQuery].
@@ -202,7 +203,12 @@ class MeridianScaffoldState extends State<MeridianScaffold>
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ?widget.appBar,
-            Expanded(child: body),
+            // Like Material's Scaffold: the body gets the space between the
+            // bars as loose constraints, at the top left, so a body that
+            // sizes itself keeps its size.
+            Expanded(
+              child: Align(alignment: Alignment.topLeft, child: body),
+            ),
             if (keyboard == 0) ?widget.bottomBar,
           ],
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/widgets.dart';
 
+import '../foundation/meridian_date_formatting.dart';
 import '../foundation/meridian_localizations.dart';
 import '../foundation/meridian_theme.dart';
 import '../foundation/meridian_theme_scope.dart';
@@ -27,8 +28,9 @@ enum MeridianThemeMode {
 /// [theme] shows in light mode and [darkTheme] (when given) in dark mode,
 /// chosen by [themeMode]. A change animates over [themeAnimationDuration].
 /// [builder] wraps the navigator inside the theme, so it can read
-/// `context.meridian`. [MeridianLocalizations.delegate] is added to
-/// [localizationsDelegates].
+/// `context.meridian`. [MeridianLocalizations.delegate] and
+/// [MeridianDateFormatting.delegate] (so `intl`'s `DateFormat` works in the
+/// app's locale) are added to [localizationsDelegates].
 class MeridianApp extends StatefulWidget {
   const MeridianApp({
     required this.theme,
@@ -156,6 +158,7 @@ class _MeridianAppState extends State<MeridianApp> {
       localizationsDelegates: [
         ...?widget.localizationsDelegates,
         MeridianLocalizations.delegate,
+        MeridianDateFormatting.delegate,
       ],
       localeListResolutionCallback: widget.localeListResolutionCallback,
       localeResolutionCallback: widget.localeResolutionCallback,

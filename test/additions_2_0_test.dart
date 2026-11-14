@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:meridian_ui/meridian_ui.dart';
 
 import 'support.dart';
@@ -84,6 +85,8 @@ void main() {
       final context = tester.element(find.text('Start'));
       expect(ModalRoute.of(context), isA<MeridianPageRoute<dynamic>>());
       expect(MeridianLocalizations.of(context).close, 'Schließen');
+      // intl's DateFormat works in the app's locale.
+      expect(DateFormat.MMMM('de').format(DateTime(2026, 3)), 'März');
       Navigator.of(context)
           .push(MeridianPageRoute<void>(builder: (_) => const Text('Next')));
       await tester.pumpAndSettle();
@@ -235,6 +238,21 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Inbox'), findsNothing);
       expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('a body that sizes itself keeps its size', (tester) async {
+      await tester.pumpWidget(
+        host(
+          const SizedBox(
+            width: 400,
+            height: 300,
+            child: MeridianScaffold(
+              body: SizedBox(width: 210, height: 40, child: Text('Row')),
+            ),
+          ),
+        ),
+      );
+      expect(tester.getSize(find.byType(SizedBox).last), const Size(210, 40));
     });
 
     testWidgets('the body moves out of the keyboard', (tester) async {

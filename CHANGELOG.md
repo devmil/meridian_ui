@@ -41,6 +41,9 @@ widgets layer, so an app can drop `material.dart` (deprecated in Flutter
   `formatMediumDate`, `formatFullDate` and `formatTime`, in English and
   German.
 - `meridianTransparent` (transparent black without Material's `Colors`).
+- `MeridianDateFormatting.delegate` (registered by `MeridianApp`) loads
+  `intl`'s date symbols for the app's locale, which Material's
+  localizations used to do. Meridian now depends on `intl`.
 - `tooltipMaxWidth`, `scrollbarMargin` and `scrollbarMinLength` layout
   values. Guidelines, web previews, gallery and Widgetbook entries for App,
   Scaffold, Tooltip and SelectableText.

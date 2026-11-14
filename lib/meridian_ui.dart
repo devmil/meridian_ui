@@ -40,6 +40,7 @@ export 'src/components/tooltip.dart';
 export 'src/components/transfer.dart';
 export 'src/components/window.dart';
 export 'src/foundation/meridian_brand.dart';
+export 'src/foundation/meridian_date_formatting.dart';
 export 'src/foundation/meridian_dates.dart';
 export 'src/foundation/meridian_brands.g.dart';
 export 'src/foundation/meridian_density.dart';
