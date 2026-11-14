@@ -330,7 +330,7 @@ class _FadeUpwardsTransition extends MeridianPageTransition {
     final curved = CurvedAnimation(
       parent: animation,
       curve: MeridianCurves.enter,
-      reverseCurve: Curves.easeIn,
+      reverseCurve: MeridianCurves.exit,
     );
     return SlideTransition(
       position: Tween(

@@ -1375,7 +1375,7 @@ class _MeridianSheetRoute<T> extends PopupRoute<T> {
             CurvedAnimation(
               parent: animation,
               curve: MeridianDurations.sheetCurve,
-              reverseCurve: Curves.easeIn,
+              reverseCurve: MeridianCurves.exit,
             ),
           ),
           child: child,
