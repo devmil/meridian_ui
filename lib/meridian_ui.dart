@@ -19,6 +19,7 @@ export 'src/components/display.dart';
 export 'src/components/feedback.dart';
 export 'src/components/find_bar.dart';
 export 'src/components/inputs.dart' hide MeridianCheckboxMark;
+export 'src/components/license_dialog.dart';
 export 'src/components/shortcut_field.dart';
 export 'src/components/menu.dart';
 export 'src/components/middle_ellipsis.dart';

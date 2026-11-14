@@ -346,6 +346,23 @@ button.mr-chip:not(.selected):hover { background: var(--pane-hover); }
 .mr-setdialog .page { flex: 1; min-width: 0; overflow: auto; padding: var(--space-7); }
 .mr-setdialog .page h3 { margin: 0; font-size: 17px; line-height: 22px; font-weight: 600; letter-spacing: -0.01em; }
 .mr-setdialog .page .desc { margin: var(--space-2) 0 var(--space-7); color: var(--ink-muted); font-size: 12px; line-height: 16px; }
+.mr-licdialog { width: 960px; max-width: 100%; height: 420px; background: var(--raised); border-radius: var(--radius-xl); box-shadow: var(--shadow-float); overflow: hidden; display: flex; flex-direction: column; }
+.mr-licdialog .head { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-5) var(--space-5) var(--space-4) var(--space-7); border-bottom: 1px solid var(--line); }
+.mr-licdialog .head h2 { flex: 1; margin: 0; font-size: 17px; line-height: 22px; font-weight: 600; letter-spacing: -0.01em; }
+.mr-licdialog .body { flex: 1; min-height: 0; display: flex; }
+.mr-licdialog .pkgs { width: 260px; flex: none; background: var(--ground); border-right: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+.mr-licdialog .app { padding: var(--space-5) var(--space-4) var(--space-4); }
+.mr-licdialog .app .nm { font-weight: 600; font-size: 14px; line-height: 20px; }
+.mr-licdialog .app .ver { color: var(--ink-muted); font-size: 12px; line-height: 16px; }
+.mr-licdialog .filter { padding: var(--space-3) var(--space-3) var(--space-2); }
+.mr-licdialog .filter .mr-field { width: 100%; box-sizing: border-box; }
+.mr-licdialog .list { flex: 1; overflow: auto; padding: var(--space-3); }
+.mr-licdialog .text { flex: 1; min-width: 0; overflow: auto; padding: var(--space-7); }
+.mr-licdialog .text h3 { margin: 0; font-size: 17px; line-height: 22px; font-weight: 600; letter-spacing: -0.01em; }
+.mr-licdialog .text .count { margin: var(--space-2) 0 var(--space-6); color: var(--ink-muted); font-size: 12px; line-height: 16px; }
+.mr-licdialog .lic { max-width: 720px; font-size: 12px; line-height: 16px; color: var(--ink); }
+.mr-licdialog .lic + .lic { border-top: 1px solid var(--line); margin-top: var(--space-6); padding-top: var(--space-6); }
+.mr-licdialog .lic p { margin: 0 0 var(--space-4); }
 .mr-settings { display: grid; grid-template-columns: 200px 1fr; column-gap: var(--space-7); row-gap: var(--space-6); align-items: start; }
 .mr-setrow { display: contents; }
 .mr-setrow .lbl { text-align: right; line-height: 28px; color: var(--ink); }

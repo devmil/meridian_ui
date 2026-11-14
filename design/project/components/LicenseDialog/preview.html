@@ -1,0 +1,17 @@
+<!-- @dsCard group="Containers" height=420 -->
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>LicenseDialog · Meridian</title></head>
+<body>
+<div id="root"></div>
+<script>
+var M = window.Meridian, h = React.createElement;
+function mount(el) { ReactDOM.createRoot(document.getElementById('root')).render(el); }
+mount(h('div', { className: 'mr-scrim' }, h(M.LicenseDialog, { title: 'Licenses', app: 'ProcessLama', version: '1.4.0', page: 'flutter_svg',
+  packages: [{ name: 'ProcessLama', count: 1 }, { name: 'Flutter production dependencies', count: 1 }, { name: 'flutter_svg', count: 1 }, { name: 'Geist', count: 1 }, { name: 'libbpf', count: 2 }, { name: 'skia', count: 14 }],
+  licenses: ['Copyright (c) 2018 Dan Field
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction.'] })));
+</script>
+</body>
+</html>

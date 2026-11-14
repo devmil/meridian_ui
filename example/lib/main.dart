@@ -1,4 +1,5 @@
 import 'shortcut_field_demo.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -1231,6 +1232,16 @@ class _GalleryState extends State<_Gallery> {
             ),
           ),
           MeridianButton(
+            label: 'Open license dialog',
+            variant: MeridianButtonVariant.secondary,
+            onPressed: () => showMeridianLicenses(
+              context: context,
+              applicationName: 'Meridian',
+              applicationVersion: '1.18.0',
+              licenses: _demoLicenses,
+            ),
+          ),
+          MeridianButton(
             label: 'Open sheet',
             onPressed: () => showMeridianSheet<void>(
               context: context,
@@ -2193,4 +2204,18 @@ class _CompactButtonDemoState extends State<_CompactButtonDemo> {
     iconOnly: _compact,
     onPressed: () => setState(() => _compact = !_compact),
   );
+}
+
+Stream<LicenseEntry> _demoLicenses() async* {
+  yield const LicenseEntryWithLineBreaks(
+    ['meridian_ui'],
+    'MIT License\n\nCopyright (c) Devmil\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software.',
+  );
+  yield const LicenseEntryWithLineBreaks(
+    ['JetBrains Mono'],
+    'SIL OPEN FONT LICENSE Version 1.1\n\nPREAMBLE\n\n  The goals of the Open Font License are to stimulate worldwide development of collaborative font projects.',
+  );
+  yield const LicenseEntryWithLineBreaks([
+    'lucide',
+  ], 'ISC License\n\nCopyright (c) Lucide Contributors');
 }

@@ -505,6 +505,26 @@
         h('div', { className: 'page' }, h('h3', null, p.page), p.description ? h('p', { className: 'desc' }, p.description) : null, p.children)));
   }
 
+  function LicenseDialog(p) {
+    var pkgs = p.packages || [];
+    var current = pkgs.filter(function (pkg) { return pkg.name === p.page; })[0];
+    return h('div', { className: 'mr-licdialog', role: 'dialog', 'aria-modal': 'true', 'aria-label': p.title || 'Licenses' },
+      h('div', { className: 'head' }, h('h2', null, p.title || 'Licenses'), h(IconButton, { icon: 'x', label: 'Close' })),
+      h('div', { className: 'body' },
+        h('div', { className: 'pkgs' },
+          p.app ? h('div', { className: 'app' }, h('div', { className: 'nm' }, p.app), p.version ? h('div', { className: 'ver' }, p.version) : null) : null,
+          h('div', { className: 'filter' }, h(TextField, { variant: 'search', placeholder: 'Filter packages' })),
+          h('div', { className: 'list' }, pkgs.map(function (pkg) {
+            return h(NavRow, { key: pkg.name, name: pkg.name, count: pkg.count, state: pkg.name === p.page ? 'selected' : undefined });
+          }))),
+        h('div', { className: 'text' },
+          h('h3', null, p.page),
+          current ? h('p', { className: 'count' }, current.count === 1 ? '1 license' : current.count + ' licenses') : null,
+          (p.licenses || []).map(function (text, i) {
+            return h('div', { key: i, className: 'lic' }, text.split('\n\n').map(function (para, j) { return h('p', { key: j }, para); }));
+          }))));
+  }
+
   function SettingsGroup(p) {
     return h('div', null,
       p.title ? h('div', { className: 'mr-overline', style: { marginBottom: 'var(--space-5)' } }, p.title) : null,
@@ -647,6 +667,6 @@
     return h('div', { className: 'mr-statusbar' }, h('div', { className: 'lead' }, p.leading), h('div', { className: 'trail' }, p.trailing));
   }
 
-  var M = { Icon: Icon, Kbd: Kbd, Count: Count, Spinner: Spinner, Button: Button, SplitButton: SplitButton, ButtonConfirmationDemo: ButtonConfirmationDemo, IconButton: IconButton, ToolbarButton: ToolbarButton, TextField: TextField, ShortcutField: ShortcutField, ShortcutFieldDemo: ShortcutFieldDemo, Checkbox: Checkbox, Radio: Radio, RadioGroup: RadioGroup, Switch: Switch, Segmented: Segmented, Slider: Slider, RangeSlider: RangeSlider, Select: Select, Menu: Menu, Suggestions: Suggestions, Tabs: Tabs, TabStrip: TabStrip, NavSection: NavSection, NavRow: NavRow, ListRow: ListRow, AppBar: AppBar, Avatar: Avatar, Chip: Chip, StatusDot: StatusDot, MiddleEllipsis: MiddleEllipsis, ProgressBar: ProgressBar, Meter: Meter, Waveform: Waveform, Banner: Banner, Toast: Toast, EmptyState: EmptyState, Skeleton: Skeleton, Island: Island, Disclosure: Disclosure, Dialog: Dialog, Sheet: Sheet, Panel: Panel, SettingsDialog: SettingsDialog, SettingsGroup: SettingsGroup, SettingsRow: SettingsRow, PropertyList: PropertyList, ColumnHeader: ColumnHeader, ResizeHandle: ResizeHandle, StatusBar: StatusBar, Scrollbar: Scrollbar, ColorSwatch: ColorSwatch, ColorPicker: ColorPicker, ColorWell: ColorWell, FloatingButton: FloatingButton, Drawer: Drawer, Breadcrumbs: Breadcrumbs, Pagination: Pagination, Steps: Steps, SelectionBar: SelectionBar, DropZone: DropZone, Calendar: Calendar, BusyOverlay: BusyOverlay, Popover: Popover, Canvas: Canvas, Paper: Paper, ToolDock: ToolDock, ToolDockDivider: ToolDockDivider };
+  var M = { Icon: Icon, Kbd: Kbd, Count: Count, Spinner: Spinner, Button: Button, SplitButton: SplitButton, ButtonConfirmationDemo: ButtonConfirmationDemo, IconButton: IconButton, ToolbarButton: ToolbarButton, TextField: TextField, ShortcutField: ShortcutField, ShortcutFieldDemo: ShortcutFieldDemo, Checkbox: Checkbox, Radio: Radio, RadioGroup: RadioGroup, Switch: Switch, Segmented: Segmented, Slider: Slider, RangeSlider: RangeSlider, Select: Select, Menu: Menu, Suggestions: Suggestions, Tabs: Tabs, TabStrip: TabStrip, NavSection: NavSection, NavRow: NavRow, ListRow: ListRow, AppBar: AppBar, Avatar: Avatar, Chip: Chip, StatusDot: StatusDot, MiddleEllipsis: MiddleEllipsis, ProgressBar: ProgressBar, Meter: Meter, Waveform: Waveform, Banner: Banner, Toast: Toast, EmptyState: EmptyState, Skeleton: Skeleton, Island: Island, Disclosure: Disclosure, Dialog: Dialog, Sheet: Sheet, Panel: Panel, SettingsDialog: SettingsDialog, LicenseDialog: LicenseDialog, SettingsGroup: SettingsGroup, SettingsRow: SettingsRow, PropertyList: PropertyList, ColumnHeader: ColumnHeader, ResizeHandle: ResizeHandle, StatusBar: StatusBar, Scrollbar: Scrollbar, ColorSwatch: ColorSwatch, ColorPicker: ColorPicker, ColorWell: ColorWell, FloatingButton: FloatingButton, Drawer: Drawer, Breadcrumbs: Breadcrumbs, Pagination: Pagination, Steps: Steps, SelectionBar: SelectionBar, DropZone: DropZone, Calendar: Calendar, BusyOverlay: BusyOverlay, Popover: Popover, Canvas: Canvas, Paper: Paper, ToolDock: ToolDock, ToolDockDivider: ToolDockDivider };
   window.Meridian = Object.assign(window.Meridian || {}, M);
 })();

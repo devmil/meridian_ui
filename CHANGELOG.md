@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.18.0 - 2026-11-14
+
+- Add `MeridianLicenseDialog` and `showMeridianLicenses`, a Meridian
+  replacement for Material's `showLicensePage`. It reads `LicenseRegistry`
+  (or a `licenses` stream), lists the app header and the packages on
+  `ground` with a filter and per-package license counts, and shows the
+  selected package's licenses on `raised` as selectable `caption` text
+  with hairlines between licenses. Up and Down move between packages.
+  Below 640px of dialog width or at touch density the list and a package
+  take turns with a back button. New `licenseDialogWidth`,
+  `licenseDialogHeight`, `licenseDialogPackageListWidth`,
+  `licenseDialogPagedBreakpoint`, `licenseTextMaxWidth` and
+  `licenseIndent` layout values and English and German strings.
+  Guideline, web preview, gallery entry, Widgetbook use case and widget
+  tests. GitLama and ProcessLama show their licenses with it.
+
 ## 1.17.2 - 2026-11-05
 
 - Single-line `MeridianTextField` grows to fit its scaled editable line and

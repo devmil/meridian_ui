@@ -83,7 +83,7 @@ buildMeridianTheme(
 | Display | `MeridianKbd`, `MeridianCount`, `MeridianAvatar`, `MeridianChip`, `MeridianStatusDot`, `MeridianMiddleEllipsis` |
 | Feedback | `MeridianBanner`, `MeridianToast` / `showMeridianToast` / `showMeridianToastIn`, `MeridianSpinner`, `MeridianProgressBar`, `MeridianMeter`, `MeridianEmptyState`, `MeridianSkeleton`, `MeridianBusyOverlay` |
 | Documents | `MeridianCanvas`, `MeridianPaper`, `MeridianToolDock` / `MeridianToolDockDivider` |
-| Containers | `MeridianGround`, `MeridianIsland`, `MeridianSectionHeader`, `MeridianSplitPane`, `MeridianDisclosure`, `MeridianDialog` / `MeridianDialogSurface` / `showMeridianDialog` / `showMeridianConfirm` / `MeridianDialogSubmitScope`, `MeridianSheet` / `showMeridianSheet`, `MeridianPanel`, `MeridianSettingsGroup`, `MeridianSettingsRow`, `MeridianScrollbar` |
+| Containers | `MeridianGround`, `MeridianIsland`, `MeridianSectionHeader`, `MeridianSplitPane`, `MeridianDisclosure`, `MeridianDialog` / `MeridianDialogSurface` / `showMeridianDialog` / `showMeridianConfirm` / `MeridianDialogSubmitScope`, `MeridianSheet` / `showMeridianSheet`, `MeridianPanel`, `MeridianSettingsGroup`, `MeridianSettingsRow`, `MeridianSettingsDialog`, `MeridianLicenseDialog` / `showMeridianLicenses`, `MeridianScrollbar` |
 | Data | `MeridianPropertyList` / `MeridianProperty`, `MeridianColumnHeader`, `MeridianCodeLines` / `MeridianCodeGutter` / `MeridianLineMarks` / `MeridianSharedHorizontalScroll` / `MeridianHorizontalShift` |
 | Window | `MeridianResizeHandle`, `MeridianStatusBar` / `MeridianStatusBarItem` |
 
