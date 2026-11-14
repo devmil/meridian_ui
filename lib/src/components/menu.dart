@@ -871,6 +871,8 @@ class MeridianMenuPresenter extends InheritedWidget {
 /// Under a [MeridianMenuPresenter] the presenter shows the menu instead,
 /// unless it holds a [MeridianMenuCustom] block (at any depth): an operating
 /// system menu cannot show one, so Meridian draws that menu itself.
+/// [usePresenter] `false` always draws the Meridian menu: for a presenter
+/// that falls back to it (a test double, an unsupported platform).
 Future<void> showMeridianMenu(
   BuildContext context, {
   required Rect anchor,
@@ -878,8 +880,11 @@ Future<void> showMeridianMenu(
   double? width,
   double minWidth = 0,
   bool? initialHighlight,
+  bool usePresenter = true,
 }) async {
-  final presenter = MeridianMenuPresenter.maybeOf(context);
+  final presenter = usePresenter
+      ? MeridianMenuPresenter.maybeOf(context)
+      : null;
   if (presenter != null && !_holdsCustom(entries)) {
     return presenter.present(context, anchor: anchor, entries: entries);
   }
@@ -903,14 +908,19 @@ Future<void> showMeridianMenu(
 }
 
 /// Opens a context menu at the pointer position [globalPosition].
+///
+/// [usePresenter] `false` draws the Meridian menu even under a
+/// [MeridianMenuPresenter] (a presenter that falls back to it).
 Future<void> showMeridianContextMenu(
   BuildContext context, {
   required Offset globalPosition,
   required List<MeridianMenuEntry> entries,
+  bool usePresenter = true,
 }) => showMeridianMenu(
   context,
   anchor: globalPosition & Size.zero,
   entries: entries,
+  usePresenter: usePresenter,
 );
 
 class _MeridianMenuRoute extends PopupRoute<MeridianMenuItem> {

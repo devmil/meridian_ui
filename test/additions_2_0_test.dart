@@ -557,6 +557,42 @@ void main() {
     });
   });
 
+  testWidgets('a presenter can fall back to the drawn menu', (tester) async {
+    var presented = 0;
+    await tester.pumpWidget(
+      host(
+        MeridianMenuPresenter(
+          present: (context, {required anchor, required entries}) async {
+            presented += 1;
+            await showMeridianMenu(
+              context,
+              anchor: anchor,
+              entries: entries,
+              usePresenter: false,
+            );
+          },
+          child: Builder(
+            builder: (context) => MeridianButton(
+              label: 'Open',
+              onPressed: () => showMeridianContextMenu(
+                context,
+                globalPosition: const Offset(10, 10),
+                entries: const [MeridianMenuItem(label: 'Fetch')],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+    expect(presented, 1);
+    expect(find.byType(MeridianMenuSurface), findsOneWidget);
+    await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+    await tester.pumpAndSettle();
+    expect(find.byType(MeridianMenuSurface), findsNothing);
+  });
+
   testWidgets('a sheet slides up, follows a drag down and closes', (
     tester,
   ) async {
