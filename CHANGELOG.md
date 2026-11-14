@@ -25,8 +25,8 @@ widgets layer, so an app can drop `material.dart` (deprecated in Flutter
 - `MeridianPageRoute` and `MeridianPageTransition` (`platform`, `fade`,
   `fadeUpwards`, `predictiveBack` with Android's predictive back preview,
   `instant`), all instant under reduce motion.
-- `MeridianScrollBehavior` (`alwaysShowThumb` for always-visible desktop
-  scrollbars) and `MeridianScrollbarThumb` (on `RawScrollbar`).
+- `MeridianScrollBehavior` (Android stretch, iOS bounce, clamped desktop
+  views; `alwaysShowThumb` for always-visible desktop scrollbars) and `MeridianScrollbarThumb` (on `RawScrollbar`).
 - `MeridianTooltip` (on `RawTooltip`) and `MeridianTooltipState`.
 - `MeridianSelectableText`, `MeridianSelectionArea` (on
   `SelectableRegion`), `MeridianTextSelectionControls` (touch handles), and

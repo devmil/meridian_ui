@@ -125,6 +125,29 @@ void main() {
       });
     }
 
+    for (final (platform, stretch) in [
+      (TargetPlatform.android, true),
+      (TargetPlatform.iOS, false),
+      (TargetPlatform.linux, false),
+    ]) {
+      testWidgets('${platform.name} overscroll', (tester) async {
+        debugDefaultTargetPlatformOverride = platform;
+        addTearDown(() => debugDefaultTargetPlatformOverride = null);
+        await tester.pumpWidget(
+          MeridianApp(
+            theme: _theme(Brightness.light),
+            home: ListView(children: const [SizedBox(height: 4000)]),
+          ),
+        );
+        expect(
+          find.byType(StretchingOverscrollIndicator),
+          stretch ? findsOneWidget : findsNothing,
+        );
+        expect(find.byType(GlowingOverscrollIndicator), findsNothing);
+        debugDefaultTargetPlatformOverride = null;
+      });
+    }
+
     testWidgets('desktop views clamp and draw the Meridian thumb', (
       tester,
     ) async {

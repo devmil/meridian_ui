@@ -173,8 +173,8 @@ class _MeridianAppState extends State<MeridianApp> {
 
 /// How Meridian views scroll: on desktop they clamp at their edges, show
 /// no overscroll glow or stretch, and draw Meridian's scrollbar thumb while
-/// they scroll (always, with [alwaysShowThumb]); on phones and tablets they
-/// keep the platform's feel.
+/// they scroll (always, with [alwaysShowThumb]); Android stretches at the
+/// edges and iOS bounces.
 class MeridianScrollBehavior extends ScrollBehavior {
   const MeridianScrollBehavior({this.alwaysShowThumb = false});
 
@@ -204,14 +204,22 @@ class MeridianScrollBehavior extends ScrollBehavior {
     PointerDeviceKind.unknown,
   };
 
+  /// Android stretches the content at its edges (Android 12 and later, as
+  /// Material 3 did); iOS bounces; desktop shows nothing.
   @override
   Widget buildOverscrollIndicator(
     BuildContext context,
     Widget child,
     ScrollableDetails details,
-  ) => _desktop(getPlatform(context))
-      ? child
-      : super.buildOverscrollIndicator(context, child, details);
+  ) => switch (getPlatform(context)) {
+    TargetPlatform.android ||
+    TargetPlatform.fuchsia => StretchingOverscrollIndicator(
+      axisDirection: details.direction,
+      clipBehavior: details.decorationClipBehavior ?? Clip.hardEdge,
+      child: child,
+    ),
+    _ => child,
+  };
 
   @override
   ScrollPhysics getScrollPhysics(BuildContext context) =>
