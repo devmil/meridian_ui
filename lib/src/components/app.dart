@@ -179,6 +179,12 @@ class MeridianScrollBehavior extends ScrollBehavior {
   /// only while it scrolls.
   final bool alwaysShowThumb;
 
+  @override
+  bool shouldNotify(ScrollBehavior oldDelegate) =>
+      oldDelegate is! MeridianScrollBehavior ||
+      oldDelegate.alwaysShowThumb != alwaysShowThumb ||
+      super.shouldNotify(oldDelegate);
+
   static bool _desktop(TargetPlatform platform) => switch (platform) {
     TargetPlatform.macOS ||
     TargetPlatform.linux ||
