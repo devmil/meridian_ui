@@ -51,11 +51,16 @@ class MeridianInteractionState {
 
 /// [color] with zero alpha: "no fill" that animates cleanly into [color].
 ///
-/// Use it instead of `const Color(0x00000000)` for any fill, edge or rule that
-/// animates. `const Color(0x00000000)` is transparent *black*: a transition from
+/// Use it instead of [meridianTransparent] for any fill, edge or rule that
+/// animates. [meridianTransparent] is transparent *black*: a transition from
 /// it to a light colour passes through translucent dark grey, which reads as
 /// a dark flash on hover.
 Color meridianClear(Color color) => color.withValues(alpha: 0);
+
+/// Nothing painted: transparent black, Flutter's `Colors.transparent`
+/// without Material. For a fill that never animates (a hit area, a cleared
+/// scrollbar track); anything that fades uses [meridianClear].
+const Color meridianTransparent = Color(0x00000000);
 
 /// [base] with Meridian's 4% `ink` pressed overlay on top.
 Color meridianPressed(Color base, Color ink) => Color.alphaBlend(

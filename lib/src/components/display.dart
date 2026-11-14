@@ -120,7 +120,7 @@ class MeridianKbd extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: onAccent ? const Color(0x00000000) : colors.paneAlt,
+                    color: onAccent ? meridianTransparent : colors.paneAlt,
                     border: Border.all(
                       color: onAccent
                           ? colors.onAccentMuted
@@ -249,7 +249,7 @@ class MeridianCount extends StatelessWidget {
       MeridianCountTone.accent => (colors.accent, colors.onAccent),
       MeridianCountTone.attention => (colors.attention, colors.onAttention),
       MeridianCountTone.danger => (colors.danger, colors.onDanger),
-      MeridianCountTone.quiet => (const Color(0x00000000), colors.inkMuted),
+      MeridianCountTone.quiet => (meridianTransparent, colors.inkMuted),
     };
     final quiet = tone == MeridianCountTone.quiet;
     return Semantics(
@@ -808,7 +808,7 @@ class _RemoveButton extends StatelessWidget {
             height: extent,
             decoration: BoxDecoration(
               color: state.fill(
-                rest: const Color(0x00000000),
+                rest: meridianTransparent,
                 hoverFill: colors.ink.withValues(
                   alpha: MeridianOpacity.primaryHoverOverlay,
                 ),

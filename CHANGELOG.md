@@ -40,6 +40,7 @@ widgets layer, so an app can drop `material.dart` (deprecated in Flutter
   month and weekday names, `firstDayOfWeek`, `formatMonthYear`,
   `formatMediumDate`, `formatFullDate` and `formatTime`, in English and
   German.
+- `meridianTransparent` (transparent black without Material's `Colors`).
 - `tooltipMaxWidth`, `scrollbarMargin` and `scrollbarMinLength` layout
   values. Guidelines, web previews, gallery and Widgetbook entries for App,
   Scaffold, Tooltip and SelectableText.

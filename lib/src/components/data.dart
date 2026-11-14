@@ -222,7 +222,7 @@ class MeridianColumnHeader extends StatelessWidget {
             state.hovered || state.pressed,
           ),
           color: state.fill(
-            rest: const Color(0x00000000),
+            rest: meridianTransparent,
             hoverFill: onPressed == null
                 ? meridianClear(colors.paneHover)
                 : colors.paneHover,

@@ -706,7 +706,7 @@ class _MeridianNavSectionState extends State<MeridianNavSection> {
         ),
         decoration: BoxDecoration(
           color: state?.fill(
-            rest: const Color(0x00000000),
+            rest: meridianTransparent,
             hoverFill: onGround ? colors.groundHover : colors.paneHover,
             ink: colors.ink,
           ),
@@ -748,7 +748,7 @@ class _MeridianNavSectionState extends State<MeridianNavSection> {
                       child: MeridianSurfaceScope.withFill(
                         context,
                         fill: state?.fill(
-                          rest: const Color(0x00000000),
+                          rest: meridianTransparent,
                           hoverFill: onGround
                               ? colors.groundHover
                               : colors.paneHover,
@@ -1168,7 +1168,7 @@ class _Chevron extends StatelessWidget {
           alignment: Alignment.center,
           decoration: BoxDecoration(
             color: state.fill(
-              rest: const Color(0x00000000),
+              rest: meridianTransparent,
               hoverFill: meridianPressed(rowFill, meridian.colors.ink),
               ink: meridian.colors.ink,
             ),
@@ -1698,7 +1698,7 @@ class _TabClose extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: state.fill(
-                rest: const Color(0x00000000),
+                rest: meridianTransparent,
                 hoverFill: colors.ink.withValues(
                   alpha: MeridianOpacity.primaryHoverOverlay,
                 ),

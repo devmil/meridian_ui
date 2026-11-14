@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import '../foundation/meridian_layout.dart';
 import '../foundation/meridian_theme.dart';
 import '../foundation/meridian_tokens.g.dart';
+import '../foundation/meridian_interaction.dart';
 
 /// When a [MeridianScrollbar] shows its thumb.
 enum MeridianScrollbarVisibility {
@@ -122,8 +123,8 @@ class _MeridianScrollbarThumbState
     final t = _dragging ? 1.0 : _hover.value;
     scrollbarPainter
       ..color = Color.lerp(colors.lineStrong, colors.controlEdge, t)!
-      ..trackColor = const Color(0x00000000)
-      ..trackBorderColor = const Color(0x00000000)
+      ..trackColor = meridianTransparent
+      ..trackBorderColor = meridianTransparent
       ..textDirection = Directionality.of(context)
       ..thickness =
           MeridianLayout.scrollbarThickness +

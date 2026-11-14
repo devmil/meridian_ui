@@ -508,7 +508,7 @@ class _MeridianDisclosureState extends State<MeridianDisclosure> {
               ),
               decoration: BoxDecoration(
                 color: state.fill(
-                  rest: const Color(0x00000000),
+                  rest: meridianTransparent,
                   hoverFill: onGround ? colors.groundHover : colors.paneHover,
                   ink: colors.ink,
                 ),
@@ -1848,7 +1848,7 @@ class MeridianAppBar extends StatelessWidget implements PreferredSizeWidget {
         foregroundDecoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: elevated ? colors.line : const Color(0x00000000),
+              color: elevated ? colors.line : meridianTransparent,
             ),
           ),
         ),
