@@ -40,12 +40,14 @@ A `path: ../meridian_ui` dependency is fine while developing Meridian and an app
 ```dart
 import 'package:meridian_ui/meridian_ui.dart';
 
-MaterialApp(
-  theme: buildMeridianTheme(brand: MeridianBrands.crossproton, brightness: Brightness.light),
-  darkTheme: buildMeridianTheme(brand: MeridianBrands.crossproton, brightness: Brightness.dark),
+MeridianApp(
+  theme: MeridianTheme.resolve(brand: MeridianBrands.crossproton, brightness: Brightness.light),
+  darkTheme: MeridianTheme.resolve(brand: MeridianBrands.crossproton, brightness: Brightness.dark),
   home: const MeridianGround(child: InboxScreen()),
 );
 ```
+
+Meridian has no Material dependency (since 2.0.0). `MeridianApp` is a `WidgetsApp` with a Meridian theme, `MeridianPageRoute`s, `MeridianScrollBehavior` and Meridian's strings; `MeridianScaffold` frames a screen. To show Meridian inside another shell, put a `MeridianThemeScope` above it.
 
 Read tokens through the theme, never as literals:
 
@@ -62,25 +64,26 @@ const SizedBox(width: MeridianSpace.space4);
 **Icons.** `MeridianIcon('circle-check')` draws from the Lucide set in `assets/icons/` (names in `MeridianIcons`). An app adds or overrides icons without touching this package:
 
 ```dart
-buildMeridianTheme(
+MeridianTheme.resolve(
   brand: MeridianBrands.gitlama,
   brightness: Brightness.light,
   icons: const MeridianIconSet(extra: {'stash': 'assets/icons/lucide/stash.svg'}),
 );
 ```
 
-**App-specific tokens.** Tokens that only one app needs (GitLama's diff and lane colours, CrossProton's privacy spark, Mimameidr's live dot) live in that app as its own `ThemeExtension`, passed through `buildMeridianTheme(extensions: [...])`. When a second app needs the same token, it moves here.
+**App-specific tokens.** Tokens that only one app needs (GitLama's diff and lane colours, CrossProton's privacy spark, Mimameidr's live dot) live in that app as its own `MeridianThemeExtension`, passed through `MeridianTheme.resolve(extensions: [...])` and read with `context.meridian.extension<GitColors>()`. When a second app needs the same token, it moves here.
 
 ## The primitives
 
 | Group | Widgets |
 |---|---|
-| Foundation | `buildMeridianTheme`, `MeridianTheme`, `MeridianLocalizations` (English and German), `MeridianBrand`, `MeridianBrands`, `MeridianDensity`, `MeridianInteraction`, `MeridianIcon`, `MeridianSurfaceScope`, `MeridianRowColors`, `MeridianHairline` |
+| App | `MeridianApp`, `MeridianThemeMode`, `MeridianScaffold`, `MeridianPageRoute` / `MeridianPageTransition`, `MeridianScrollBehavior` |
+| Foundation | `MeridianTheme`, `MeridianThemeScope` / `AnimatedMeridianTheme`, `MeridianThemeExtension`, `MeridianDates`, `MeridianLocalizations` (English and German), `MeridianBrand`, `MeridianBrands`, `MeridianDensity`, `MeridianInteraction`, `MeridianIcon`, `MeridianSurfaceScope`, `MeridianRowColors`, `MeridianHairline` |
 | Actions | `MeridianButton`, `MeridianSplitButton`, `MeridianIconButton`, `MeridianToolbarButton`, `MeridianFloatingButton` |
-| Inputs | `MeridianShortcutField`, `MeridianTextField`, `MeridianFindBar`, `MeridianCheckbox`, `MeridianSwitch`, `MeridianRadio`, `MeridianSegmented`, `MeridianSlider`, `MeridianSelect`, `MeridianColorSwatch`, `MeridianColorChoiceRow`, `MeridianSuggestionSurface` / `MeridianSuggestionRow` / `MeridianSuggestionHeader`, `MeridianCalendar` / `showMeridianDatePicker`, `MeridianDropZone` |
+| Inputs | `MeridianShortcutField`, `MeridianTextField` / `MeridianEditableText`, `MeridianFindBar`, `MeridianCheckbox`, `MeridianSwitch`, `MeridianRadio`, `MeridianSegmented`, `MeridianSlider`, `MeridianSelect`, `MeridianColorSwatch`, `MeridianColorChoiceRow`, `MeridianSuggestionSurface` / `MeridianSuggestionRow` / `MeridianSuggestionHeader`, `MeridianCalendar` / `showMeridianDatePicker`, `MeridianDropZone` |
 | Menus | `MeridianMenuAnchor`, `MeridianMenuSurface`, `showMeridianMenu`, `showMeridianContextMenu`, `MeridianMenuPresenter` (native menus), `MeridianPopoverAnchor` / `MeridianPopoverSurface` / `showMeridianPopover` |
 | Navigation | `MeridianListRow`, `MeridianNavSection`, `MeridianNavRow`, `MeridianTabs`, `MeridianTabStrip`, `MeridianAppBar`, `MeridianDrawer`, `MeridianPagination`, `MeridianSelectionBar`, `MeridianBreadcrumbs` / `MeridianBreadcrumb`, `MeridianSteps` / `MeridianStep`, `MeridianPathTree` (path flattening for file lists and trees) |
-| Display | `MeridianKbd`, `MeridianCount`, `MeridianAvatar`, `MeridianChip`, `MeridianStatusDot`, `MeridianMiddleEllipsis` |
+| Display | `MeridianTooltip`, `MeridianSelectableText` / `MeridianSelectionArea` (and the text menu: `MeridianTextMenuRequest`, `meridianTextMenu`), `MeridianKbd`, `MeridianCount`, `MeridianAvatar`, `MeridianChip`, `MeridianStatusDot`, `MeridianMiddleEllipsis` |
 | Feedback | `MeridianBanner`, `MeridianToast` / `showMeridianToast` / `showMeridianToastIn`, `MeridianSpinner`, `MeridianProgressBar`, `MeridianMeter`, `MeridianEmptyState`, `MeridianSkeleton`, `MeridianBusyOverlay` |
 | Documents | `MeridianCanvas`, `MeridianPaper`, `MeridianToolDock` / `MeridianToolDockDivider` |
 | Containers | `MeridianGround`, `MeridianIsland`, `MeridianSectionHeader`, `MeridianSplitPane`, `MeridianDisclosure`, `MeridianDialog` / `MeridianDialogSurface` / `showMeridianDialog` / `showMeridianConfirm` / `MeridianDialogSubmitScope`, `MeridianSheet` / `showMeridianSheet`, `MeridianPanel`, `MeridianSettingsGroup`, `MeridianSettingsRow`, `MeridianSettingsDialog`, `MeridianLicenseDialog` / `showMeridianLicenses`, `MeridianScrollbar` |

@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../foundation/meridian_icons.g.dart';
 import '../foundation/meridian_interaction.dart';
 import '../foundation/meridian_layout.dart';
 import '../foundation/meridian_theme.dart';
 import '../foundation/meridian_tokens.g.dart';
-import 'menu.dart';
+import 'selection.dart';
 
 /// One label and value of a [MeridianPropertyList].
 @immutable
@@ -108,16 +108,10 @@ class _PropertyRow extends StatelessWidget {
         ? MeridianTextStyles.numeric(meridian.text.code)
         : meridian.text.body;
     final value = property.selectable
-        ? SelectableText(
+        ? MeridianSelectableText(
             property.value,
             style: style,
             maxLines: property.maxLines,
-            // An app with native menus shows them for selected text too.
-            contextMenuBuilder:
-                MeridianMenuPresenter.maybeOf(
-                  context,
-                )?.textContextMenuBuilder ??
-                _adaptiveSelectionMenu,
           )
         : Text(
             property.value,
@@ -228,7 +222,7 @@ class MeridianColumnHeader extends StatelessWidget {
             state.hovered || state.pressed,
           ),
           color: state.fill(
-            rest: Colors.transparent,
+            rest: meridianTransparent,
             hoverFill: onPressed == null
                 ? meridianClear(colors.paneHover)
                 : colors.paneHover,
@@ -266,8 +260,3 @@ class MeridianColumnHeader extends StatelessWidget {
     );
   }
 }
-
-Widget _adaptiveSelectionMenu(
-  BuildContext context,
-  EditableTextState editable,
-) => AdaptiveTextSelectionToolbar.editableText(editableTextState: editable);

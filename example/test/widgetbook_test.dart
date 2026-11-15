@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_gallery/widgetbook.dart';
@@ -42,7 +42,7 @@ const fixedHeightAtTouch = {
 };
 
 WidgetbookState stateOf(WidgetTester tester) =>
-    WidgetbookState.of(tester.element(find.byType(MaterialApp).first));
+    WidgetbookState.of(tester.element(find.byType(WidgetsApp).first));
 
 void main() {
   for (final path in [

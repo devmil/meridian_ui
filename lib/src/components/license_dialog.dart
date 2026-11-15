@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -17,6 +17,7 @@ import 'feedback.dart';
 import 'inputs.dart';
 import 'navigation.dart';
 import 'scrollbar.dart';
+import 'selection.dart';
 
 /// The licenses of an app and everything it bundles: a title bar with a
 /// close button, the app and its packages listed on `ground` at the start,
@@ -193,6 +194,18 @@ class _MeridianLicenseDialogState extends State<MeridianLicenseDialog> {
     });
   }
 
+  /// Keeps the shown package in the list: when the filter hides it, the
+  /// first match takes its place.
+  void _filterChanged(String value) {
+    setState(() {
+      _query = value;
+      final visible = _visible;
+      if (visible.isEmpty || visible.any((p) => p.name == _selected)) return;
+      _selected = visible.first.name;
+      if (_textScroll.hasClients) _textScroll.jumpTo(0);
+    });
+  }
+
   void _close() {
     final close = widget.onClose;
     if (close != null) {
@@ -214,9 +227,13 @@ class _MeridianLicenseDialogState extends State<MeridianLicenseDialog> {
     };
     if (delta == 0) return KeyEventResult.ignored;
     final visible = _visible;
+    if (visible.isEmpty) return KeyEventResult.handled;
     final index = visible.indexWhere((p) => p.name == _selected);
-    final next = index + delta;
-    if (index < 0 || next < 0 || next >= visible.length) {
+    // With the selection filtered out, Down starts at the top, Up at the end.
+    final next = index < 0
+        ? (delta > 0 ? 0 : visible.length - 1)
+        : index + delta;
+    if (next < 0 || next >= visible.length) {
       return KeyEventResult.handled;
     }
     final focused = FocusManager.instance.primaryFocus;
@@ -313,9 +330,7 @@ class _MeridianLicenseDialogState extends State<MeridianLicenseDialog> {
                     ),
                     const SizedBox(width: MeridianSpace.space4),
                     MeridianIconButton(
-                      label: MaterialLocalizations.of(
-                        context,
-                      ).closeButtonTooltip,
+                      label: MeridianLocalizations.of(context).close,
                       icon: MeridianIcons.x,
                       onPressed: _close,
                     ),
@@ -402,7 +417,7 @@ class _MeridianLicenseDialogState extends State<MeridianLicenseDialog> {
               controller: _filter,
               variant: MeridianTextFieldVariant.search,
               placeholder: l10n.licensesFilter,
-              onChanged: (value) => setState(() => _query = value),
+              onChanged: _filterChanged,
             ),
           ),
           Expanded(
@@ -471,7 +486,7 @@ class _MeridianLicenseDialogState extends State<MeridianLicenseDialog> {
     return MeridianScrollbar(
       controller: _textScroll,
       visibility: MeridianScrollbarVisibility.always,
-      child: SelectionArea(
+      child: MeridianSelectionArea(
         child: ListView.builder(
           key: ValueKey(package.name),
           controller: _textScroll,

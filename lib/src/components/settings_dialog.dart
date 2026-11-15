@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -12,6 +12,7 @@ import 'actions.dart';
 import 'containers.dart';
 import 'inputs.dart';
 import 'navigation.dart';
+import '../foundation/meridian_localizations.dart';
 
 /// One page of a [MeridianSettingsDialog]: its entry in the page list and
 /// the settings it shows.
@@ -222,9 +223,7 @@ class _MeridianSettingsDialogState extends State<MeridianSettingsDialog> {
                     ),
                     const SizedBox(width: MeridianSpace.space4),
                     MeridianIconButton(
-                      label: MaterialLocalizations.of(
-                        context,
-                      ).closeButtonTooltip,
+                      label: MeridianLocalizations.of(context).close,
                       icon: MeridianIcons.x,
                       onPressed: _close,
                     ),

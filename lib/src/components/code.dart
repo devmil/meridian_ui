@@ -1,13 +1,15 @@
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/rendering.dart';
 
 import '../foundation/meridian_interaction.dart';
 import '../foundation/meridian_layout.dart';
 import '../foundation/meridian_theme.dart';
 import '../foundation/meridian_tokens.g.dart';
+import 'scrollbar.dart';
+import 'selection.dart';
 
 /// Paints [marks] (search hits, changed words) and a [selection] behind
 /// the text of its single-line or wrapping [Text] child. Ranges are UTF-16
@@ -186,7 +188,7 @@ class MeridianSharedHorizontalScroll extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final behavior = ScrollConfiguration.of(context);
-    return Scrollbar(
+    return MeridianScrollbarThumb(
       controller: controller,
       thumbVisibility: true,
       notificationPredicate: (notification) =>
@@ -804,8 +806,8 @@ class MeridianCodeLines extends StatefulWidget {
   final bool showLineNumbers;
 
   /// The selection's context menu; the [MeridianMenuPresenter]'s text
-  /// menu does not apply to a selection area.
-  final SelectableRegionContextMenuBuilder? contextMenuBuilder;
+  /// menu (or Meridian's own) by default.
+  final MeridianTextMenuBuilder? contextMenuBuilder;
 
   /// Names the view for assistive technology ("Contents of README.md").
   final String? semanticLabel;
@@ -962,9 +964,7 @@ class _MeridianCodeLinesState extends State<MeridianCodeLines> {
     }
     if (widget.selectable) {
       final menu = widget.contextMenuBuilder;
-      list = menu == null
-          ? SelectionArea(child: list)
-          : SelectionArea(contextMenuBuilder: menu, child: list);
+      list = MeridianSelectionArea(contextMenuBuilder: menu, child: list);
     }
     return Semantics(
       container: true,

@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -119,6 +119,40 @@ void main() {
     await tester.sendKeyEvent(LogicalKeyboardKey.arrowUp);
     await tester.pumpAndSettle();
     expect(find.text('2 licenses'), findsOneWidget);
+  });
+
+  testWidgets('filtering out the shown package shows the first match', (
+    tester,
+  ) async {
+    await _pump(tester);
+    expect(find.text('Second alpha license.'), findsOneWidget);
+
+    await tester.enterText(
+      find.descendant(
+        of: find.byKey(const Key('meridian-licenses-filter')),
+        matching: find.byType(EditableText),
+      ),
+      'pkg_1',
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Second alpha license.'), findsNothing);
+    expect(find.text('License of pkg_1.'), findsOneWidget);
+    expect(
+      tester
+          .widget<MeridianNavRow>(
+            find.byKey(const ValueKey('meridian-license-pkg_1')),
+          )
+          .selected,
+      isTrue,
+    );
+
+    // Down still moves within the filtered list.
+    await tester.tap(find.byKey(const ValueKey('meridian-license-pkg_1')));
+    await tester.pumpAndSettle();
+    await tester.sendKeyEvent(LogicalKeyboardKey.arrowDown);
+    await tester.pumpAndSettle();
+    expect(find.text('License of pkg_10.'), findsOneWidget);
   });
 
   testWidgets('the close button pops the route', (tester) async {

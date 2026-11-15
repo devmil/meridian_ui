@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -11,6 +11,7 @@ import '../foundation/meridian_tokens.g.dart';
 import 'actions.dart';
 import 'inputs.dart';
 import 'menu.dart';
+import 'tooltip.dart';
 
 /// Numbered pages of a long collection that loads one page at a time
 /// (search results, a server-paged list): previous, the page numbers
@@ -254,7 +255,7 @@ class _PageButton extends StatelessWidget {
     final hover = current
         ? colors.ink.withValues(alpha: MeridianOpacity.pressedOverlay)
         : MeridianSurfaceScope.hoverFillOf(context);
-    return Tooltip(
+    return MeridianTooltip(
       message: label,
       child: Semantics(
         excludeSemantics: true,

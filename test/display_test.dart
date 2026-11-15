@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
 
@@ -406,7 +406,7 @@ void main() {
         isSemantics(isButton: true, hasTapAction: true),
       );
       final remove = find.descendant(
-        of: find.byTooltip('Remove Anna'),
+        of: findTooltip('Remove Anna'),
         matching: find.byType(MeridianInteraction),
       );
       final target = tester.getRect(remove);
@@ -489,7 +489,7 @@ void main() {
             await tester.tap(find.text('Danach bearbeiten'));
             expect(taps, 1);
             if (removable) {
-              await tester.tap(find.byTooltip('Entfernen'));
+              await tester.tap(findTooltip('Entfernen'));
               expect(removals, 1);
             }
             expect(tester.takeException(), isNull);
@@ -511,7 +511,7 @@ void main() {
         ),
       );
       await tester.tap(find.text('Anna'));
-      await tester.tap(find.byTooltip('Remove Anna'));
+      await tester.tap(findTooltip('Remove Anna'));
       expect(pressed + removed, 0);
       expect(textColor(tester, 'Anna'), colorsOf(tester).inkFaint);
     });

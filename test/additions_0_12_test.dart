@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -82,7 +82,7 @@ void main() {
     );
     expect(find.text('Palette'), findsOneWidget);
     expect(find.text('Empty'), findsNothing);
-    await tester.tap(find.byTooltip('Berry'));
+    await tester.tap(findTooltip('Berry'));
     await tester.pumpAndSettle();
     expect(changes.single.toARGB32(), berry.toARGB32());
     expect(ends.single.toARGB32(), berry.toARGB32());
@@ -105,7 +105,7 @@ void main() {
         ),
       ),
     );
-    await tester.tap(find.byTooltip('Colour #943A55'));
+    await tester.tap(findTooltip('Colour #943A55'));
     await tester.pumpAndSettle();
     expect(ends.single.toARGB32(), 0x80943A55);
   });
@@ -250,7 +250,7 @@ void main() {
     await tester.pumpWidget(
       host(_sized(_Picker(initial: berry, original: ink, ends: ends))),
     );
-    await tester.tap(find.byTooltip('Original colour'));
+    await tester.tap(findTooltip('Original colour'));
     await tester.pump();
     expect(ends.single.toARGB32(), ink.toARGB32());
   });
@@ -271,7 +271,7 @@ void main() {
         ),
       ),
     );
-    await tester.tap(find.byTooltip('Colour #943A55'), warnIfMissed: false);
+    await tester.tap(findTooltip('Colour #943A55'), warnIfMissed: false);
     await tester.tap(_wheel, warnIfMissed: false);
     await tester.pumpAndSettle();
     expect(ends, isEmpty);

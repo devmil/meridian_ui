@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -160,7 +160,7 @@ void main() {
       final dark = testTheme(brightness: Brightness.dark);
       final context = await pumpHost(
         tester,
-        wrap: (child) => Theme(data: dark, child: child),
+        wrap: (child) => MeridianThemeScope(theme: dark, child: child),
       );
       showMeridianToast(context, message: 'Dark toast');
       await tester.pumpAndSettle();
@@ -241,7 +241,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.sendKeyEvent(LogicalKeyboardKey.enter);
       expect(submitted, 1);
-      await tester.tap(find.byType(TextField));
+      await tester.tap(find.byType(EditableText));
       await tester.pump();
       await tester.sendKeyEvent(LogicalKeyboardKey.enter);
       expect(submitted, 1);
@@ -307,8 +307,8 @@ void main() {
     testWidgets('carries local theme overrides', (tester) async {
       final context = await pumpHost(
         tester,
-        wrap: (child) => Theme(
-          data: testTheme(brightness: Brightness.dark),
+        wrap: (child) => MeridianThemeScope(
+          theme: testTheme(brightness: Brightness.dark),
           child: child,
         ),
       );
@@ -326,7 +326,7 @@ void main() {
 
   testWidgets('a sheet rises above the keyboard', (tester) async {
     await tester.pumpWidget(
-      MaterialApp(
+      MeridianApp(
         theme: testTheme(brand: MeridianBrands.nibluma),
         home: MediaQuery(
           data: const MediaQueryData(

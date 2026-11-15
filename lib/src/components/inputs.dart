@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -11,6 +11,9 @@ import '../foundation/meridian_tokens.g.dart';
 import 'actions.dart';
 import 'containers.dart';
 import 'menu.dart';
+import 'tooltip.dart';
+import 'editable.dart';
+import 'selection.dart';
 
 /// `accent` brightened by the primary hover overlay: the hover of a
 /// checked box, a chosen radio and an on switch.
@@ -147,9 +150,9 @@ class MeridianTextField extends StatefulWidget {
   final double? height;
 
   /// The cut, copy and paste menu. Defaults to the enclosing
-  /// [MeridianMenuPresenter]'s `textContextMenuBuilder`, else Flutter's
-  /// adaptive toolbar.
-  final EditableTextContextMenuBuilder? contextMenuBuilder;
+  /// [MeridianMenuPresenter]'s `textContextMenuBuilder`, else Meridian's
+  /// text menu.
+  final MeridianTextMenuBuilder? contextMenuBuilder;
 
   /// Called when the field is tapped (a search field that opens its
   /// options).
@@ -404,86 +407,72 @@ class _MeridianTextFieldState extends State<MeridianTextField>
             const SizedBox(width: MeridianSpace.space3),
           ],
           Expanded(
-            // TextField needs a Material ancestor; never rely on the host.
-            child: Material(
-              type: MaterialType.transparency,
-              child: Stack(
-                alignment: AlignmentDirectional.centerStart,
-                children: [
-                  if (widget.underlay case final underlay?)
-                    Positioned.fill(
-                      child: IgnorePointer(
-                        child: ExcludeSemantics(child: underlay),
-                      ),
+            child: Stack(
+              alignment: AlignmentDirectional.centerStart,
+              children: [
+                if (widget.underlay case final underlay?)
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: ExcludeSemantics(child: underlay),
                     ),
-                  TextField(
-                    key: widget.fieldKey,
-                    controller: _controller,
-                    onTap: widget.onTap,
-                    focusNode: _focusNode,
-                    autofocus: widget.autofocus,
-                    obscureText: obscure,
-                    enabled: enabled,
-                    readOnly: widget.readOnly,
-                    keyboardType: widget.keyboardType,
-                    textInputAction: widget.textInputAction,
-                    inputFormatters: widget.inputFormatters,
-                    autocorrect: widget.autocorrect,
-                    enableSuggestions: widget.enableSuggestions,
-                    autofillHints: widget.autofillHints,
-                    minLines: minLines,
-                    maxLines: maxLines,
-                    expands: expands,
-                    scrollController: widget.scrollController,
-                    textAlignVertical: expands ? TextAlignVertical.top : null,
-                    spellCheckConfiguration: widget.spellCheckConfiguration,
-                    contextMenuBuilder:
-                        widget.contextMenuBuilder ??
-                        MeridianMenuPresenter.maybeOf(
-                          context,
-                        )?.textContextMenuBuilder ??
-                        _adaptiveTextMenu,
-                    maxLength: widget.maxLength,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    onChanged: widget.onChanged,
-                    onSubmitted:
-                        widget.onSubmitted ??
-                        (submitsDialog ? (_) => _submitDialog() : null),
-                    // Keep focus in the field when Enter submits the dialog,
-                    // so a rejected submit leaves the person where they were.
-                    onEditingComplete: submitsDialog ? () {} : null,
-                    style: baseStyle.copyWith(
-                      color: enabled ? colors.ink : colors.inkFaint,
-                    ),
-                    cursorColor: colors.accent,
-                    decoration: InputDecoration.collapsed(
-                      hintText: widget.placeholder,
-                      hintStyle: baseStyle.copyWith(color: colors.inkFaint),
-                    ).copyWith(counterText: ''),
                   ),
-                  if (_outgoingText case final outgoing?)
-                    Positioned.fill(
-                      child: IgnorePointer(
-                        child: ExcludeSemantics(
-                          child: FadeTransition(
-                            opacity: ReverseAnimation(_clearFade),
-                            child: Align(
-                              alignment: AlignmentDirectional.centerStart,
-                              child: Text(
-                                outgoing,
-                                maxLines: maxLines,
-                                overflow: TextOverflow.clip,
-                                style: baseStyle.copyWith(
-                                  color: enabled ? colors.ink : colors.inkFaint,
-                                ),
+                MeridianEditableText(
+                  key: widget.fieldKey,
+                  controller: _controller,
+                  onTap: widget.onTap,
+                  focusNode: _focusNode,
+                  autofocus: widget.autofocus,
+                  obscureText: obscure,
+                  enabled: enabled,
+                  readOnly: widget.readOnly,
+                  keyboardType: widget.keyboardType,
+                  textInputAction: widget.textInputAction,
+                  inputFormatters: widget.inputFormatters,
+                  autocorrect: widget.autocorrect,
+                  enableSuggestions: widget.enableSuggestions,
+                  autofillHints: widget.autofillHints,
+                  minLines: minLines,
+                  maxLines: maxLines,
+                  expands: expands,
+                  scrollController: widget.scrollController,
+                  spellCheckConfiguration: widget.spellCheckConfiguration,
+                  contextMenuBuilder: widget.contextMenuBuilder,
+                  maxLength: widget.maxLength,
+                  onChanged: widget.onChanged,
+                  onSubmitted:
+                      widget.onSubmitted ??
+                      (submitsDialog ? (_) => _submitDialog() : null),
+                  // Keep focus in the field when Enter submits the dialog,
+                  // so a rejected submit leaves the person where they were.
+                  onEditingComplete: submitsDialog ? () {} : null,
+                  style: baseStyle.copyWith(
+                    color: enabled ? colors.ink : colors.inkFaint,
+                  ),
+                  placeholder: widget.placeholder,
+                  placeholderStyle: baseStyle.copyWith(color: colors.inkFaint),
+                ),
+                if (_outgoingText case final outgoing?)
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: ExcludeSemantics(
+                        child: FadeTransition(
+                          opacity: ReverseAnimation(_clearFade),
+                          child: Align(
+                            alignment: AlignmentDirectional.centerStart,
+                            child: Text(
+                              outgoing,
+                              maxLines: maxLines,
+                              overflow: TextOverflow.clip,
+                              style: baseStyle.copyWith(
+                                color: enabled ? colors.ink : colors.inkFaint,
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           ),
           if (widget.trailingText case final trailing?) ...[
@@ -1886,7 +1875,7 @@ class _MeridianSegmentedState<T> extends State<MeridianSegmented<T>> {
       child: hit,
     );
     return switch (segment.tooltip) {
-      final message? => Tooltip(message: message, child: hit),
+      final message? => MeridianTooltip(message: message, child: hit),
       null => hit,
     };
   }
@@ -2463,10 +2452,6 @@ class _MeridianSelectState<T> extends State<MeridianSelect<T>> {
   }
 }
 
-/// Flutter's own text field menu, the default when no builder is set.
-Widget _adaptiveTextMenu(BuildContext context, EditableTextState editable) =>
-    AdaptiveTextSelectionToolbar.editableText(editableTextState: editable);
-
 /// One colour in a palette: a pen colour, a cover colour, a label colour.
 /// A [color] disc with a `line-strong` edge (so white reads on white);
 /// selected, it gains a check and a 2px `accent` ring 2px outside. Build a
@@ -2508,7 +2493,7 @@ class MeridianColorSwatch extends StatelessWidget {
       meridian.brand.light,
     );
     final check = color.computeLuminance() > 0.4 ? light.ink : light.pane;
-    return Tooltip(
+    return MeridianTooltip(
       message: label,
       excludeFromSemantics: true,
       child: Semantics(

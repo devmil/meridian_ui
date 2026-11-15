@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -9,6 +9,7 @@ import '../foundation/meridian_interaction.dart';
 import '../foundation/meridian_layout.dart';
 import '../foundation/meridian_theme.dart';
 import '../foundation/meridian_tokens.g.dart';
+import 'tooltip.dart';
 
 /// Keyboard keys for a shortcut, in the platform's glyphs: ⌘ ⇧ ⌥ ↵ on
 /// macOS, the words Ctrl, Shift, Alt, Enter elsewhere.
@@ -119,7 +120,7 @@ class MeridianKbd extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: onAccent ? Colors.transparent : colors.paneAlt,
+                    color: onAccent ? meridianTransparent : colors.paneAlt,
                     border: Border.all(
                       color: onAccent
                           ? colors.onAccentMuted
@@ -248,7 +249,7 @@ class MeridianCount extends StatelessWidget {
       MeridianCountTone.accent => (colors.accent, colors.onAccent),
       MeridianCountTone.attention => (colors.attention, colors.onAttention),
       MeridianCountTone.danger => (colors.danger, colors.onDanger),
-      MeridianCountTone.quiet => (Colors.transparent, colors.inkMuted),
+      MeridianCountTone.quiet => (meridianTransparent, colors.inkMuted),
     };
     final quiet = tone == MeridianCountTone.quiet;
     return Semantics(
@@ -458,7 +459,7 @@ class MeridianAvatar extends StatelessWidget {
     final onPressed = this.onPressed;
     if (onPressed == null) return avatar;
     final label = tooltip ?? name;
-    return Tooltip(
+    return MeridianTooltip(
       message: label,
       excludeFromSemantics: true,
       child: Semantics(
@@ -690,9 +691,8 @@ class MeridianChip extends StatelessWidget {
     final rowHeight = math.max(height, removeBox);
     final inset = (rowHeight - height) / 2;
     final directional = Directionality.of(context);
-    final faceRadius = BorderRadiusDirectional.horizontal(
-      start: radius.topLeft,
-    ).resolve(directional);
+    final faceRadius = BorderRadiusDirectional.horizontal(start: radius.topLeft)
+        .resolve(directional);
     Widget face(MeridianInteractionState? state) => AnimatedContainer(
       duration: meridianHoverDuration(
         context,
@@ -793,7 +793,7 @@ class _RemoveButton extends StatelessWidget {
       label: label,
       excludeSemantics: true,
       onTap: onPressed,
-      child: Tooltip(
+      child: MeridianTooltip(
         message: label,
         excludeFromSemantics: true,
         child: MeridianInteraction(
@@ -808,7 +808,7 @@ class _RemoveButton extends StatelessWidget {
             height: extent,
             decoration: BoxDecoration(
               color: state.fill(
-                rest: Colors.transparent,
+                rest: meridianTransparent,
                 hoverFill: colors.ink.withValues(
                   alpha: MeridianOpacity.primaryHoverOverlay,
                 ),

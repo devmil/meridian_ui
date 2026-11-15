@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math' as math;
 
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -46,9 +46,8 @@ void main() {
                 builder: (context, setState) {
                   rebuild = setState;
                   return MediaQuery(
-                    data: MediaQuery.of(
-                      context,
-                    ).copyWith(disableAnimations: reduced),
+                    data: MediaQuery.of(context)
+                        .copyWith(disableAnimations: reduced),
                     child: Center(
                       child: MeridianResize(
                         duration: duration,
@@ -1584,7 +1583,7 @@ void main() {
       double spread() =>
           (chrome().decoration! as BoxDecoration).boxShadow!.first.spreadRadius;
       expect(spread(), 0);
-      await tester.tap(find.byType(TextField));
+      await tester.tap(find.byType(EditableText));
       await tester.pump();
       expect(chrome().duration, MeridianDurations.quick);
       expect(spread(), MeridianLayout.hairline);
@@ -1862,8 +1861,8 @@ void main() {
       required int selected,
       ScrollController? controller,
       MeridianSelectionStyle selection = MeridianSelectionStyle.strong,
-    }) => MaterialApp(
-      theme: buildMeridianTheme(
+    }) => MeridianApp(
+      theme: MeridianTheme.resolve(
         brand: MeridianBrands.gitlama,
         brightness: Brightness.light,
         icons: testIcons,
@@ -1940,8 +1939,8 @@ void main() {
       Widget probe(
         MeridianSelectionStyle style,
         void Function(MeridianRowColors) out,
-      ) => MaterialApp(
-        theme: buildMeridianTheme(
+      ) => MeridianApp(
+        theme: MeridianTheme.resolve(
           brand: MeridianBrands.gitlama,
           brightness: Brightness.light,
           icons: testIcons,
@@ -2037,7 +2036,7 @@ void main() {
       );
       await tester.pump(const Duration(milliseconds: 40));
       final slot = find.ancestor(
-        of: find.byTooltip('Archive'),
+        of: findTooltip('Archive'),
         matching: find.byType(Opacity),
       );
       final opacity = tester.widget<Opacity>(slot.first).opacity;
@@ -2048,7 +2047,7 @@ void main() {
       await tester.pump();
       expect(find.text('12 May'), findsOneWidget);
       await pumpFrames(tester, const Duration(milliseconds: 150));
-      expect(find.byTooltip('Archive'), findsNothing);
+      expect(findTooltip('Archive'), findsNothing);
     });
 
     testWidgets('MM-22 a new row reveals once; a recycled one does not', (
@@ -2518,10 +2517,12 @@ void main() {
     });
 
     testWidgets('MM-44 tooltips leave over motion-exit', (tester) async {
-      await tester.pumpWidget(host(const SizedBox()));
-      final theme = Theme.of(tester.element(find.byType(SizedBox)));
-      expect(theme.tooltipTheme.exitDuration, MeridianDurations.exit);
-      expect(theme.tooltipTheme.waitDuration, MeridianDurations.tooltipWait);
+      await tester.pumpWidget(
+        host(const MeridianTooltip(message: 'Tip', child: SizedBox())),
+      );
+      final raw = tester.widget<RawTooltip>(find.byType(RawTooltip));
+      expect(raw.dismissDelay, MeridianDurations.exit);
+      expect(raw.hoverDelay, MeridianDurations.tooltipWait);
     });
 
     testWidgets('MM-45 and MM-46 a dialog grows and rises, and leaves in '

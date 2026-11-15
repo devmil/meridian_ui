@@ -1,6 +1,6 @@
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -344,9 +344,8 @@ class _MeridianFindBarState extends State<MeridianFindBar> {
           // The narrowest field that still shows its counter and clear
           // button at the current text size.
           final minField =
-              MediaQuery.textScalerOf(
-                context,
-              ).scale(MeridianLayout.findFieldMinWidth) +
+              MediaQuery.textScalerOf(context)
+                  .scale(MeridianLayout.findFieldMinWidth) +
               buttonExtent;
           if (!constraints.hasBoundedWidth || room >= minField) {
             // The field gives way first, down to a usable minimum.

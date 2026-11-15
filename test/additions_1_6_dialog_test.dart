@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -242,7 +242,7 @@ void main() {
         builder: (_) => _Form(onSubmit: () => submitted++),
       );
       await tester.pumpAndSettle();
-      await tester.enterText(find.byType(TextField), 'release');
+      await tester.enterText(find.byType(EditableText), 'release');
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pump();
       expect(submitted, 1);
@@ -321,7 +321,7 @@ void main() {
       await tester.pump();
       expect(
         MeridianDialogSubmitScope.maybeOf(
-          tester.element(find.byType(TextField)),
+          tester.element(find.byType(EditableText)),
         ),
         isNull,
       );
@@ -349,7 +349,7 @@ void main() {
         ),
       );
       await tester.pump();
-      await tester.tap(find.byType(TextField));
+      await tester.tap(find.byType(EditableText));
       await tester.testTextInput.receiveAction(TextInputAction.done);
       await tester.pump();
       expect(submitted, 1);

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -35,7 +35,7 @@ void main() {
         ),
       );
       await tester.tap(find.text('Send'));
-      expect(find.byTooltip('Add a recipient first'), findsOneWidget);
+      expect(findTooltip('Add a recipient first'), findsOneWidget);
     });
 
     testWidgets('canRequestFocus: false leaves focus with the list', (
@@ -154,7 +154,7 @@ void main() {
       );
       final button = tester.getRect(find.byType(MeridianToolbarButton));
       expect(button.width, greaterThan(MeridianLayout.menuMinWidth));
-      await tester.tap(find.byTooltip('More send options'));
+      await tester.tap(findTooltip('More send options'));
       await tester.pumpAndSettle();
       final menu = tester.getRect(find.byType(MeridianMenuSurface));
       expect(menu.width, greaterThanOrEqualTo(button.width));
@@ -170,7 +170,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
+        MeridianApp(
           theme: testTheme(),
           home: const MeridianGround(
             child: Center(
@@ -183,10 +183,15 @@ void main() {
         ),
       );
       expect(tester.takeException(), isNull);
-      final field = tester.widget<TextField>(find.byType(TextField));
+      final field = tester.widget<MeridianEditableText>(
+        find.byType(MeridianEditableText),
+      );
       expect(field.minLines, 3);
       expect(field.maxLines, isNull);
-      await tester.enterText(find.byType(TextField), 'one\ntwo\nthree\nfour');
+      await tester.enterText(
+        find.byType(EditableText),
+        'one\ntwo\nthree\nfour',
+      );
       await tester.pump();
       expect(tester.takeException(), isNull);
       expect(find.text('one\ntwo\nthree\nfour'), findsOneWidget);

@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:meridian_ui/meridian_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 
@@ -970,6 +970,68 @@ WidgetbookFolder containersFolder() => WidgetbookFolder(
                           : null,
                     ),
                   ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    ),
+    WidgetbookComponent(
+      name: 'Scaffold',
+      useCases: [
+        WidgetbookUseCase(
+          name: 'Playground',
+          builder: (context) {
+            final title = context.knobs.string(
+              label: 'Title',
+              initialValue: 'Library',
+            );
+            final drawer = context.knobs.boolean(
+              label: 'Drawer',
+              description: 'A navigation drawer behind the menu button.',
+              initialValue: true,
+            );
+            final bottomBar = context.knobs.boolean(
+              label: 'Bottom bar',
+              initialValue: true,
+            );
+            return preview(
+              SizedBox(
+                height: 420,
+                child: MeridianScaffold(
+                  appBar: MeridianAppBar(title: title),
+                  drawer: drawer
+                      ? MeridianDrawer(
+                          child: Builder(
+                            builder: (context) => ListView(
+                              padding: const EdgeInsets.all(
+                                MeridianSpace.space3,
+                              ),
+                              children: [
+                                for (final (label, icon) in const [
+                                  ('Library', MeridianIcons.bookOpen),
+                                  ('Archive', MeridianIcons.archive),
+                                ])
+                                  MeridianNavRow(
+                                    label: label,
+                                    icon: icon,
+                                    selected: label == 'Library',
+                                    onTap: () => Navigator.pop(context),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        )
+                      : null,
+                  bottomBar: bottomBar
+                      ? const MeridianStatusBar(
+                          leading: [
+                            MeridianStatusBarItem(label: 'Synced just now'),
+                          ],
+                        )
+                      : null,
+                  body: const Center(child: Text('Notebooks')),
                 ),
               ),
             );

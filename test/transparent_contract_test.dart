@@ -23,9 +23,10 @@ void main() {
 
   test('animated fills never start or end at transparent black', () {
     final violations = <String>[];
-    final files = Directory(
-      'lib/src/components',
-    ).listSync().whereType<File>().where((f) => f.path.endsWith('.dart'));
+    final files = Directory('lib/src/components')
+        .listSync()
+        .whereType<File>()
+        .where((f) => f.path.endsWith('.dart'));
     for (final file in files) {
       final lines = file.readAsLinesSync();
       for (var i = 0; i < lines.length; i++) {

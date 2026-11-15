@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -141,7 +141,7 @@ void main() {
       expect(find.byType(MeridianColorPicker), findsOneWidget);
       expect(tester.widget<EditableText>(_hex).controller.text, '#943A55');
 
-      await tester.tap(find.byTooltip('Ink'));
+      await tester.tap(findTooltip('Ink'));
       await tester.pumpAndSettle();
       expect(changes, [_ink]);
       expect(ends, [_ink]);

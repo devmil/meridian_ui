@@ -173,7 +173,7 @@ Single- or multi-line text input. Flutter: `MeridianTextField`.
 - The **plain** variant has no edge, well, ring or inset: it types inside a surface that is already a field, such as the chips of a recipient field.
 - `clearLabel` adds a clear button (its tooltip and accessible name) while the field holds text: search and filter fields. `onTap` reports taps, for a field that opens more options.
 - `underlay` paints marks inside the well under the text, its selection and the caret, filling the text area: an editor's line marks such as a merge result's chosen blocks. Keep marks clear of `accent-soft`, the selection colour, so a selection over a mark stays visible. The underlay takes no taps and is not announced; the consumer keeps it in step with the text and `scrollController`.
-- It brings its own Material ancestor, so it works on a `MeridianGround` without a Scaffold.
+- Its editable text is `MeridianEditableText` on the widgets layer's `EditableText`: the platform's caret, word and drag selection, Meridian's selection colour, touch handles and text menu. It needs no Material ancestor or scaffold.
 - Inside a Dialog a single-line field submits the dialog: Enter runs the dialog's primary action (or shakes the dialog when that action is disabled) and focus stays in the field. A field with its own `onSubmitted`, a multi-line or read-only field keeps Enter. Set `submitsDialog: false` for a field whose Enter means something else (adding a chip, picking a suggestion).
 """, """
 mount(h('div', { className: 'mr-demo pane start' },
@@ -531,7 +531,7 @@ add("AppBar", "Navigation", 250, """
 The top bar of a touch screen, on `ground`. Flutter: `MeridianAppBar`.
 
 - The consumer provides `title` (`heading` type), an optional `subtitle` (a `caption` line in `ink-muted`: the save state, a location), `leading` (back or menu IconButton), `actions` (IconButtons), `elevated` (a `line` hairline once content scrolls under it) and `centerTitle`.
-- Without `leading` it shows a back button when the route can be popped, or a menu button that opens the Scaffold's Drawer (`automaticallyImplyLeading`).
+- Without `leading` it shows a back button when the route can be popped, or a menu button that opens the `MeridianScaffold`'s drawer (`automaticallyImplyLeading`).
 - 56px tall plus the status bar inset (the hairline is drawn over the bar, not added to it), no elevation, no colour fill. The title follows large text up to 134% and shows in full as its tooltip, so the bar never grows. Desktop windows use the toolbar (ToolbarButtons on `ground`) instead.
 """, """
 mount(h('div', { className: 'mr-demo' }, h('div', { className: 'mr-phone mr-touch' },
@@ -542,6 +542,35 @@ mount(h('div', { className: 'mr-demo' }, h('div', { className: 'mr-phone mr-touc
 """)
 
 # ------------------------------------------------------------------ Display
+add("Tooltip", "Display", 90, """
+# Tooltip
+
+A short label that appears while the pointer rests on a control, on a long press, or on keyboard request. Flutter: `MeridianTooltip`, on the widgets layer's `RawTooltip`.
+
+- The consumer provides `message` (or `richMessage`), `excludeFromSemantics` (when the control already announces the same text), `preferBelow`, `waitDuration` and `triggerMode`. `MeridianTooltipState.ensureTooltipVisible()` shows it from code (a dialog's disabled reason).
+- An `ink` chip with `caption` text in `pane`, corners `radius-sm`, `space-3` by `space-2` padding, at most 320px wide (`tooltipMaxWidth`), 4px below the target or above it when there is no room.
+- It waits `motion-tooltip-wait` before it shows and leaves over `motion-exit` (MM-44). An empty message adds nothing.
+- Every Meridian control that has only an icon names itself with one: IconButtons, ToolbarButtons, swatches, chips' remove buttons, the title of an app bar. Don't put actions or long help in a tooltip.
+""", """
+mount(h('div', { className: 'mr-demo pane', style: { alignItems: 'flex-start', flexDirection: 'column', gap: 6 } },
+  h(M.IconButton, { icon: 'refresh-cw', label: 'Fetch' }),
+  h(M.Tooltip, null, 'Fetch from origin')));
+""")
+
+add("SelectableText", "Display", 90, """
+# SelectableText
+
+Text people can select and copy: a hash, a path, an error, a value in a property list. Flutter: `MeridianSelectableText` (and `.rich`), or `MeridianSelectionArea` around any text, on the widgets layer's `SelectableRegion`.
+
+- The consumer provides the text (or a span), `style`, `textAlign`, `maxLines`, `overflow`, `semanticsLabel`, `focusNode` and `contextMenuBuilder`.
+- Selection is `accent-soft`; drag, double click (word), Shift with the arrows and select all work as on the platform, and touch shows `accent` handles.
+- A secondary click or long press opens the text menu: Meridian's menu (`meridianTextMenu`: Copy, Select all) or the app's `MeridianMenuPresenter.textContextMenuBuilder` (native menus). It does not take focus from the selection.
+- Use it only for values people copy, never for labels or headings; a whole list of selectable rows is a `MeridianSelectionArea` around the list.
+""", """
+mount(h('div', { className: 'mr-demo pane start', style: { flexDirection: 'column', alignItems: 'flex-start', gap: 8 } },
+  h(M.SelectableText, { before: 'Commit ', selected: '3f2a9c1', after: ' by Ada Lovelace', mono: false })));
+""")
+
 add("Kbd", "Display", 60, """
 # Kbd
 
@@ -850,10 +879,39 @@ mount(h('div', { className: 'mr-scrim' }, h(M.LicenseDialog, { title: 'Licenses'
   licenses: ['Copyright (c) 2018 Dan Field\n\nPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction.'] })));
 """)
 
+add("App", "Containers", 200, """
+# App
+
+The root of a Meridian application. Flutter: `MeridianApp`, a `WidgetsApp` with no Material.
+
+- The consumer provides `theme` (`MeridianTheme.resolve(brand:, brightness:)`), `darkTheme` and `themeMode` (`MeridianThemeMode.system`, `light`, `dark`), the usual `home`/`routes`/`onGenerateRoute`, `builder`, `localizationsDelegates` and `supportedLocales`, and optionally `scrollBehavior` and `pageTransition`.
+- A theme change blends over `motion-overlay` (`AnimatedMeridianTheme`; instant with reduce motion). `MeridianLocalizations.delegate` is always added.
+- Pages are `MeridianPageRoute`s. `pageTransition` picks how they move: `MeridianPageTransition.platform` (predictive back on Android, fade upwards on iOS, a fade on desktop), `fade`, `fadeUpwards`, `predictiveBack` or `instant`. Reduce motion makes every built-in transition instant.
+- `MeridianScrollBehavior` clamps scrolling on desktop, shows no glow or stretch there, and draws Meridian's scrollbar thumb while a view scrolls; phones keep the platform's feel.
+- Inside another app shell (a plugin window, a test host) put a `MeridianThemeScope` above Meridian widgets instead. Never mix in `MaterialApp`, `Theme` or Material widgets.
+""", """
+mount(h('div', { className: 'mr-demo', style: { padding: 0 } }, h('div', { className: 'mr-phone mr-touch' },
+  h(M.Scaffold, { title: 'Library' }, h('p', { style: { margin: 0 } }, 'MeridianApp \u2192 MeridianScaffold \u2192 your screen')))));
+""")
+
+add("Scaffold", "Containers", 260, """
+# Scaffold
+
+A screen's frame: an app bar on top, the body, a bottom bar below and an optional navigation drawer. Flutter: `MeridianScaffold`.
+
+- The consumer provides `appBar` (a `MeridianAppBar`), `body`, `bottomBar` (a status bar, toolbar or navigation bar), `drawer` (a `MeridianDrawer`), `backgroundColor` (`ground` by default), `resizeToAvoidBottomInset` and `drawerEdgeDragWidth`.
+- The body fills the space between the bars and moves up out of the on-screen keyboard; padding the bars take care of is removed from the body. The bottom bar hides while the keyboard is up.
+- The drawer slides in from the leading edge over `scrim` with `motion-sheet` and `curve-enter` and leaves over `motion-exit`. It opens from the app bar's menu button, `MeridianScaffold.of(context).openDrawer()` or a swipe from the edge at touch density, and closes with `Navigator.pop` (like a route), Escape, the back button, a swipe or the scrim. Focus moves into it while it is open; the body is hidden from focus and assistive technology.
+- Desktop windows often need no scaffold: a `MeridianGround` with a toolbar and a status bar is the frame.
+""", """
+mount(h('div', { className: 'mr-demo', style: { padding: 0 } }, h('div', { className: 'mr-phone mr-touch', style: { height: 240 } },
+  h(M.Scaffold, { title: 'Library', bottomBar: 'Synced just now' }, h('p', { style: { margin: 0 } }, 'Notebooks')))));
+""")
+
 add("Drawer", "Containers", 260, """
 # Drawer
 
-The navigation drawer of a phone layout: the app's destinations on a side sheet that slides in from the leading edge over `scrim`. Flutter: `MeridianDrawer` in `Scaffold.drawer`.
+The navigation drawer of a phone layout: the app's destinations on a side sheet that slides in from the leading edge over `scrim`. Flutter: `MeridianDrawer` in `MeridianScaffold.drawer`.
 
 - The consumer provides the `child` (NavRows in a padded list, wrapped in a `SafeArea`), an optional `semanticLabel` (defaults to the platform's "Navigation menu") and `width` (304px, never more than the window minus 56px).
 - `pane`, trailing corners `radius-xl`, `shadow-float`. `MeridianAppBar` shows the menu button that opens it; the scrim closes it.

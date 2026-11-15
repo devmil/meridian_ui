@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math' as math;
 
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/scheduler.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -12,6 +12,8 @@ import '../foundation/meridian_tokens.g.dart';
 import 'display.dart';
 import 'feedback.dart';
 import 'menu.dart';
+import 'tooltip.dart';
+import '../foundation/meridian_localizations.dart';
 
 /// Button ranks. Use [primary] at most once per island or screen.
 enum MeridianButtonVariant { primary, secondary, quiet, danger, dangerQuiet }
@@ -287,9 +289,8 @@ class MeridianButton extends StatelessWidget {
               small ? density.controlSmallExtent : density.controlExtent,
               iconOnly
                   ? 0
-                  : MediaQuery.textScalerOf(
-                              context,
-                            ).scale(text.label.fontSize!) *
+                  : MediaQuery.textScalerOf(context)
+                                .scale(text.label.fontSize!) *
                             (text.label.height ?? 1) +
                         MeridianSpace.space2 * 2,
             ),
@@ -327,7 +328,9 @@ class MeridianButton extends StatelessWidget {
         },
       ),
     );
-    if (message != null) button = Tooltip(message: message, child: button);
+    if (message != null) {
+      button = MeridianTooltip(message: message, child: button);
+    }
     return button;
   }
 }
@@ -651,7 +654,7 @@ class _MeridianIconButtonState extends State<MeridianIconButton>
     final hover = on
         ? meridianPressed(colors.accentSoft, colors.ink)
         : MeridianSurfaceScope.hoverFillOf(context, onGround: ground);
-    return Tooltip(
+    return MeridianTooltip(
       message: enabled
           ? (tooltip ?? label)
           : (disabledReason ?? tooltip ?? label),
@@ -835,12 +838,10 @@ class _MeridianToolbarButtonState extends State<MeridianToolbarButton> {
     final radius = BorderRadius.circular(meridian.radius.md);
     final faceRadius = entries == null
         ? radius
-        : BorderRadiusDirectional.horizontal(
-            start: radius.topLeft,
-          ).resolve(direction);
-    final caretRadius = BorderRadiusDirectional.horizontal(
-      end: radius.topRight,
-    ).resolve(direction);
+        : BorderRadiusDirectional.horizontal(start: radius.topLeft)
+              .resolve(direction);
+    final caretRadius = BorderRadiusDirectional.horizontal(end: radius.topRight)
+        .resolve(direction);
     final rest = selected
         ? colors.accentSoft
         : meridianClear(colors.groundHover);
@@ -877,7 +878,7 @@ class _MeridianToolbarButtonState extends State<MeridianToolbarButton> {
         ],
       ],
     );
-    final button = Tooltip(
+    final button = MeridianTooltip(
       message: enabled
           ? (tooltip ?? label)
           : (disabledReason ?? tooltip ?? label),
@@ -929,9 +930,8 @@ class _MeridianToolbarButtonState extends State<MeridianToolbarButton> {
       ),
     );
     if (entries == null) return button;
-    final caretLabel =
-        menuLabel ?? MaterialLocalizations.of(context).showMenuTooltip;
-    Widget caret(VoidCallback open) => Tooltip(
+    final caretLabel = menuLabel ?? MeridianLocalizations.of(context).showMenu;
+    Widget caret(VoidCallback open) => MeridianTooltip(
       message: caretLabel,
       child: Semantics(
         excludeSemantics: true,
@@ -1116,7 +1116,7 @@ class MeridianFloatingButton extends StatelessWidget {
     final enabled = onPressed != null;
     final radius = BorderRadius.circular(meridian.radius.lg);
     final ink = enabled ? colors.onAccent : colors.inkMuted;
-    return Tooltip(
+    return MeridianTooltip(
       message: tooltip ?? label,
       excludeFromSemantics: true,
       child: Semantics(

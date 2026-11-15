@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+import 'meridian_theme_scope.dart';
 
 import 'meridian_brand.dart';
 import 'meridian_density.dart';
-import 'meridian_layout.dart';
 import 'meridian_tokens.g.dart';
 
 export 'meridian_motion.dart' hide meridianAfterFrame;
@@ -79,13 +80,17 @@ final class MeridianTextStyles {
     return package == null ? mono : 'packages/$package/$mono';
   }
 
-  /// The platform's UI family as Material's typography names it (Roboto,
-  /// the SF system face, Segoe UI), for brands without a sans of their own.
-  /// Naming it keeps text below no `Material` (a dialog or sheet over
-  /// `MaterialApp`'s fallback style) from inheriting `monospace`.
-  static String? get platformSans => Typography.material2021(
-    platform: defaultTargetPlatform,
-  ).black.bodyMedium?.fontFamily;
+  /// The platform's UI family (the SF system face, Segoe UI, Roboto), for
+  /// brands without a sans of their own. Naming it keeps text from
+  /// inheriting the engine's fallback face.
+  static String? get platformSans => switch (defaultTargetPlatform) {
+    TargetPlatform.iOS => 'CupertinoSystemText',
+    TargetPlatform.macOS => '.AppleSystemUIFont',
+    TargetPlatform.windows => 'Segoe UI',
+    TargetPlatform.android ||
+    TargetPlatform.fuchsia ||
+    TargetPlatform.linux => 'Roboto',
+  };
 
   TextStyle _sans(TextStyle style) => style.fontFamily != null
       ? style.copyWith(color: colors.ink)
@@ -166,10 +171,37 @@ enum MeridianSelectionStyle {
   soft,
 }
 
-/// Meridian's theme extension. Read it with `MeridianTheme.of(context)` or
+/// App-specific tokens that travel with a [MeridianTheme]: a git app's diff
+/// and lane colours, a mail app's reading theme. Extend it like
+/// `class GitColors extends MeridianThemeExtension<GitColors>`, pass it in
+/// [MeridianTheme.extensions] and read it with
+/// `context.meridian.extension<GitColors>()`.
+///
+/// [lerp] lets an animated theme change (light to dark) move the app's
+/// tokens along with Meridian's.
+@immutable
+abstract class MeridianThemeExtension<T extends MeridianThemeExtension<T>> {
+  const MeridianThemeExtension();
+
+  /// The key the theme stores this extension under.
+  Object get type => T;
+
+  /// A copy with some values changed.
+  T copyWith();
+
+  /// The tokens [t] of the way from this to [other].
+  T lerp(covariant T? other, double t);
+}
+
+/// Meridian's theme: the brand, brightness, colours, type, density and
+/// icons every Meridian widget draws with, plus an app's own tokens in
+/// [extensions].
+///
+/// Put it above the app with `MeridianApp(theme: …)` or a
+/// [MeridianThemeScope], and read it with `MeridianTheme.of(context)` or
 /// `context.meridian`.
 @immutable
-final class MeridianTheme extends ThemeExtension<MeridianTheme> {
+final class MeridianTheme {
   const MeridianTheme({
     required this.brand,
     required this.brightness,
@@ -179,9 +211,10 @@ final class MeridianTheme extends ThemeExtension<MeridianTheme> {
     this.icons = const MeridianIconSet(),
     this.typeScale,
     this.selection = MeridianSelectionStyle.strong,
+    this.extensions = const {},
   });
 
-  /// Builds the extension for [brand] in [brightness].
+  /// Builds the theme for [brand] in [brightness].
   ///
   /// [colors] replaces the colours resolved from the brand, for apps whose
   /// people pick or edit themes; start from `MeridianColors.resolve` and
@@ -197,9 +230,11 @@ final class MeridianTheme extends ThemeExtension<MeridianTheme> {
     MeridianTypeScale? typeScale,
     MeridianShadows? shadows,
     MeridianSelectionStyle selection = MeridianSelectionStyle.strong,
+    Iterable<MeridianThemeExtension<dynamic>> extensions = const [],
   }) {
     final dark = brightness == Brightness.dark;
     return MeridianTheme(
+      extensions: {for (final e in extensions) e.type: e},
       brand: brand,
       brightness: brightness,
       colors:
@@ -231,6 +266,12 @@ final class MeridianTheme extends ThemeExtension<MeridianTheme> {
   /// How selected rows are filled.
   final MeridianSelectionStyle selection;
 
+  /// The app's own tokens, keyed by their [MeridianThemeExtension.type].
+  final Map<Object, MeridianThemeExtension<dynamic>> extensions;
+
+  /// The app tokens of type [T], or `null` when the theme has none.
+  T? extension<T>() => extensions[T] as T?;
+
   /// The brand's corner radius scale.
   MeridianRadiusScale get radius => brand.radius;
 
@@ -256,7 +297,8 @@ final class MeridianTheme extends ThemeExtension<MeridianTheme> {
       other.density == density &&
       other.icons == icons &&
       other.typeScale == typeScale &&
-      other.selection == selection;
+      other.selection == selection &&
+      mapEquals(other.extensions, extensions);
 
   @override
   int get hashCode => Object.hash(
@@ -268,18 +310,18 @@ final class MeridianTheme extends ThemeExtension<MeridianTheme> {
     icons,
     typeScale,
     selection,
+    Object.hashAllUnordered(extensions.values),
   );
 
-  /// The nearest Meridian theme. Falls back to the GitLama-default light
-  /// or dark theme when no extension is installed (useful in tests).
-  static MeridianTheme of(BuildContext context) {
-    final theme = Theme.of(context);
-    return theme.extension<MeridianTheme>() ??
-        MeridianTheme.resolve(
-          brand: _fallbackBrand,
-          brightness: theme.brightness,
-        );
-  }
+  /// The nearest Meridian theme. Falls back to a neutral Meridian theme in
+  /// the platform's brightness when there is none (useful in tests).
+  static MeridianTheme of(BuildContext context) =>
+      MeridianThemeScope.maybeOf(context) ??
+      MeridianTheme.resolve(
+        brand: _fallbackBrand,
+        brightness:
+            MediaQuery.maybePlatformBrightnessOf(context) ?? Brightness.light,
+      );
 
   static const _fallbackBrand = MeridianBrand(
     id: 'meridian',
@@ -304,7 +346,6 @@ final class MeridianTheme extends ThemeExtension<MeridianTheme> {
     ),
   );
 
-  @override
   MeridianTheme copyWith({
     MeridianBrand? brand,
     MeridianDensity? density,
@@ -312,6 +353,7 @@ final class MeridianTheme extends ThemeExtension<MeridianTheme> {
     MeridianColors? colors,
     MeridianTypeScale? typeScale,
     MeridianSelectionStyle? selection,
+    Iterable<MeridianThemeExtension<dynamic>>? extensions,
   }) {
     final nextBrand = brand ?? this.brand;
     return MeridianTheme(
@@ -331,11 +373,16 @@ final class MeridianTheme extends ThemeExtension<MeridianTheme> {
       icons: icons ?? this.icons,
       typeScale: typeScale ?? this.typeScale,
       selection: selection ?? this.selection,
+      extensions: extensions == null
+          ? this.extensions
+          : {for (final e in extensions) e.type: e},
     );
   }
 
-  @override
-  MeridianTheme lerp(covariant MeridianTheme? other, double t) {
+  /// The theme [t] of the way from this to [other], for theme animations.
+  /// Colours, shadows, corners and the app's extensions blend; fonts,
+  /// density and icons switch at the midpoint.
+  MeridianTheme lerp(MeridianTheme? other, double t) {
     if (other == null) return this;
     final end = t >= 0.5;
     return MeridianTheme(
@@ -350,6 +397,15 @@ final class MeridianTheme extends ThemeExtension<MeridianTheme> {
       icons: end ? other.icons : icons,
       typeScale: end ? other.typeScale : typeScale,
       selection: end ? other.selection : selection,
+      extensions: {
+        for (final MapEntry(:key, :value) in extensions.entries)
+          key: other.extensions.containsKey(key)
+              ? value.lerp(other.extensions[key], t)
+                    as MeridianThemeExtension<dynamic>
+              : value,
+        for (final MapEntry(:key, :value) in other.extensions.entries)
+          if (!extensions.containsKey(key)) key: value,
+      },
     );
   }
 }
@@ -357,149 +413,6 @@ final class MeridianTheme extends ThemeExtension<MeridianTheme> {
 /// Shorthand for `MeridianTheme.of(context)`.
 extension MeridianContext on BuildContext {
   MeridianTheme get meridian => MeridianTheme.of(this);
-}
-
-/// Builds a Material [ThemeData] that carries Meridian.
-///
-/// Material widgets that stay in use (Scrollbar, Tooltip, TextField's
-/// selection) are tuned to Meridian; everything visible is drawn by the
-/// Meridian components. Ripples and splashes are off.
-///
-/// [colors], [typeScale] and [shadows] replace the brand's colours, the
-/// density's type scale and the elevation shadows, for apps with user
-/// themes (see [MeridianTheme.resolve]).
-ThemeData buildMeridianTheme({
-  required MeridianBrand brand,
-  required Brightness brightness,
-  MeridianDensity? density,
-  MeridianIconSet icons = const MeridianIconSet(),
-  MeridianColors? colors,
-  MeridianTypeScale? typeScale,
-  MeridianShadows? shadows,
-  List<ThemeExtension<dynamic>> extensions = const [],
-  MeridianSelectionStyle selection = MeridianSelectionStyle.strong,
-}) {
-  final meridian = MeridianTheme.resolve(
-    brand: brand,
-    brightness: brightness,
-    density: density,
-    icons: icons,
-    colors: colors,
-    typeScale: typeScale,
-    shadows: shadows,
-    selection: selection,
-  );
-  final palette = meridian.colors;
-  final text = meridian.text;
-  final radius = meridian.radius;
-  final touch = meridian.density.isTouch;
-  final scheme = ColorScheme(
-    brightness: brightness,
-    primary: palette.accent,
-    onPrimary: palette.onAccent,
-    primaryContainer: palette.accentSoft,
-    onPrimaryContainer: palette.ink,
-    secondary: palette.accent,
-    onSecondary: palette.onAccent,
-    error: palette.danger,
-    onError: palette.onDanger,
-    errorContainer: palette.dangerBg,
-    onErrorContainer: palette.ink,
-    surface: palette.pane,
-    onSurface: palette.ink,
-    onSurfaceVariant: palette.inkMuted,
-    surfaceContainerLowest: palette.pane,
-    surfaceContainerLow: palette.paneAlt,
-    surfaceContainer: palette.paneAlt,
-    surfaceContainerHigh: palette.raised,
-    surfaceContainerHighest: palette.paneHover,
-    outline: palette.controlEdge,
-    outlineVariant: palette.line,
-    scrim: palette.scrim,
-    surfaceTint: Colors.transparent,
-  );
-  final textTheme = TextTheme(
-    displayLarge: text.display,
-    displayMedium: text.display,
-    displaySmall: text.display,
-    headlineLarge: text.title,
-    headlineMedium: text.title,
-    headlineSmall: text.title,
-    titleLarge: text.title,
-    titleMedium: text.heading,
-    titleSmall: text.bodyStrong,
-    bodyLarge: text.body,
-    bodyMedium: text.body,
-    bodySmall: text.caption.copyWith(color: palette.inkMuted),
-    labelLarge: text.label,
-    labelMedium: text.overline.copyWith(color: palette.inkMuted),
-    labelSmall: text.caption,
-  );
-  return ThemeData(
-    useMaterial3: true,
-    brightness: brightness,
-    colorScheme: scheme,
-    fontFamily: brand.fonts.sans,
-    textTheme: textTheme,
-    scaffoldBackgroundColor: palette.ground,
-    canvasColor: palette.pane,
-    cardColor: palette.pane,
-    dividerColor: palette.line,
-    focusColor: palette.focus,
-    hoverColor: Colors.transparent,
-    splashFactory: NoSplash.splashFactory,
-    splashColor: Colors.transparent,
-    highlightColor: Colors.transparent,
-    materialTapTargetSize: touch
-        ? MaterialTapTargetSize.padded
-        : MaterialTapTargetSize.shrinkWrap,
-    visualDensity: VisualDensity.standard,
-    iconTheme: IconThemeData(
-      color: palette.ink,
-      size: meridian.density.iconSize,
-    ),
-    drawerTheme: DrawerThemeData(scrimColor: palette.scrim),
-    dividerTheme: DividerThemeData(
-      color: palette.line,
-      thickness: MeridianLayout.hairline,
-      space: MeridianLayout.hairline,
-    ),
-    tooltipTheme: TooltipThemeData(
-      waitDuration: MeridianDurations.tooltipWait,
-      exitDuration: MeridianDurations.exit,
-      decoration: BoxDecoration(
-        color: palette.ink,
-        borderRadius: BorderRadius.circular(radius.sm),
-      ),
-      textStyle: text.caption.copyWith(color: palette.pane),
-      padding: const EdgeInsets.symmetric(
-        horizontal: MeridianSpace.space3,
-        vertical: MeridianSpace.space2,
-      ),
-    ),
-    scrollbarTheme: ScrollbarThemeData(
-      thickness: WidgetStateProperty.resolveWith(
-        (states) => states.contains(WidgetState.hovered)
-            ? MeridianLayout.scrollbarThicknessHover
-            : MeridianLayout.scrollbarThickness,
-      ),
-      radius: const Radius.circular(MeridianRadiusScale.pill),
-      thumbColor: WidgetStateProperty.resolveWith(
-        (states) =>
-            states.contains(WidgetState.hovered) ||
-                states.contains(WidgetState.dragged)
-            ? palette.controlEdge
-            : palette.lineStrong,
-      ),
-      trackVisibility: const WidgetStatePropertyAll(false),
-    ),
-    textSelectionTheme: TextSelectionThemeData(
-      selectionColor: palette.accentSoft,
-      cursorColor: palette.accent,
-      selectionHandleColor: palette.accent,
-    ),
-    extensions: [meridian, ...extensions],
-  );
 }
 
 /// Shadows in another colour, for a theme that tints its elevation (a warm

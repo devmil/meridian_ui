@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 
 import '../foundation/meridian_icons.g.dart';
@@ -8,6 +8,8 @@ import '../foundation/meridian_theme.dart';
 import '../foundation/meridian_tokens.g.dart';
 import 'actions.dart';
 import 'containers.dart';
+import '../foundation/meridian_localizations.dart';
+import '../foundation/meridian_dates.dart';
 
 /// A month of days to pick one from: the month and year with previous and
 /// next buttons, the weekdays in the locale's order, and the days. Today
@@ -16,7 +18,7 @@ import 'containers.dart';
 ///
 /// The grid is one tab stop. Arrow keys move a day or a week, Page Up and
 /// Page Down a month, Home and End to the start and end of the week, and
-/// Enter or Space chooses the day. Names come from [MaterialLocalizations].
+/// Enter or Space chooses the day. Names come from [MeridianLocalizations].
 class MeridianCalendar extends StatefulWidget {
   const MeridianCalendar({
     required this.firstDate,
@@ -40,7 +42,7 @@ class MeridianCalendar extends StatefulWidget {
 
 class _MeridianCalendarState extends State<MeridianCalendar> {
   late DateTime _focused = _clamp(
-    DateUtils.dateOnly(widget.value ?? DateTime.now()),
+    MeridianDates.dateOnly(widget.value ?? DateTime.now()),
   );
   late DateTime _month = DateTime(_focused.year, _focused.month);
   final _focus = FocusNode(debugLabel: 'meridian-calendar');
@@ -57,8 +59,8 @@ class _MeridianCalendarState extends State<MeridianCalendar> {
   void didUpdateWidget(covariant MeridianCalendar oldWidget) {
     super.didUpdateWidget(oldWidget);
     final value = widget.value;
-    if (value != null && !DateUtils.isSameDay(value, oldWidget.value)) {
-      _focused = _clamp(DateUtils.dateOnly(value));
+    if (value != null && !MeridianDates.isSameDay(value, oldWidget.value)) {
+      _focused = _clamp(MeridianDates.dateOnly(value));
       _month = DateTime(_focused.year, _focused.month);
     }
   }
@@ -70,8 +72,8 @@ class _MeridianCalendarState extends State<MeridianCalendar> {
     super.dispose();
   }
 
-  DateTime get _first => DateUtils.dateOnly(widget.firstDate);
-  DateTime get _last => DateUtils.dateOnly(widget.lastDate);
+  DateTime get _first => MeridianDates.dateOnly(widget.firstDate);
+  DateTime get _last => MeridianDates.dateOnly(widget.lastDate);
 
   DateTime _clamp(DateTime day) {
     if (day.isBefore(_first)) return _first;
@@ -91,8 +93,8 @@ class _MeridianCalendarState extends State<MeridianCalendar> {
   }
 
   void _showMonth(int delta) {
-    final month = DateUtils.addMonthsToMonthDate(_month, delta);
-    final days = DateUtils.getDaysInMonth(month.year, month.month);
+    final month = MeridianDates.addMonths(_month, delta);
+    final days = MeridianDates.daysInMonth(month.year, month.month);
     final day = _focused.day > days ? days : _focused.day;
     setState(() {
       _month = month;
@@ -111,7 +113,7 @@ class _MeridianCalendarState extends State<MeridianCalendar> {
       return KeyEventResult.ignored;
     }
     final rtl = Directionality.of(context) == TextDirection.rtl;
-    final firstWeekday = MaterialLocalizations.of(context).firstDayOfWeekIndex;
+    final firstWeekday = MeridianLocalizations.of(context).firstDayOfWeek % 7;
     // DateTime.weekday is 1 (Monday) … 7 (Sunday); the index 0 is Sunday.
     final column = (_focused.weekday % 7 - firstWeekday) % 7;
     DateTime shift(int n) =>
@@ -137,7 +139,7 @@ class _MeridianCalendarState extends State<MeridianCalendar> {
           LogicalKeyboardKey.numpadEnter ||
           LogicalKeyboardKey.space:
         // A second Enter on the chosen day goes to the enclosing dialog.
-        if (DateUtils.isSameDay(_focused, widget.value) &&
+        if (MeridianDates.isSameDay(_focused, widget.value) &&
             event.logicalKey != LogicalKeyboardKey.space) {
           return KeyEventResult.ignored;
         }
@@ -152,15 +154,15 @@ class _MeridianCalendarState extends State<MeridianCalendar> {
   Widget build(BuildContext context) {
     final meridian = MeridianTheme.of(context);
     final colors = meridian.colors;
-    final localizations = MaterialLocalizations.of(context);
+    final localizations = MeridianLocalizations.of(context);
     final rtl = Directionality.of(context) == TextDirection.rtl;
-    final firstWeekday = localizations.firstDayOfWeekIndex;
+    final firstWeekday = localizations.firstDayOfWeek % 7;
     final canGoBack = _month.isAfter(DateTime(_first.year, _first.month));
     final canGoForward = _month.isBefore(DateTime(_last.year, _last.month));
-    final daysInMonth = DateUtils.getDaysInMonth(_month.year, _month.month);
+    final daysInMonth = MeridianDates.daysInMonth(_month.year, _month.month);
     final offset =
         (DateTime(_month.year, _month.month).weekday % 7 - firstWeekday) % 7;
-    final today = DateUtils.dateOnly(DateTime.now());
+    final today = MeridianDates.dateOnly(DateTime.now());
     final focusVisible = _hasFocus && MeridianInputModality.keyboard;
     return SizedBox(
       width: MeridianLayout.calendarWidth,
@@ -181,7 +183,7 @@ class _MeridianCalendarState extends State<MeridianCalendar> {
                 ),
               ),
               MeridianIconButton(
-                label: localizations.previousMonthTooltip,
+                label: localizations.previousMonth,
                 icon: rtl
                     ? MeridianIcons.chevronRight
                     : MeridianIcons.chevronLeft,
@@ -189,7 +191,7 @@ class _MeridianCalendarState extends State<MeridianCalendar> {
                 onPressed: canGoBack ? () => _showMonth(-1) : null,
               ),
               MeridianIconButton(
-                label: localizations.nextMonthTooltip,
+                label: localizations.nextMonth,
                 icon: rtl
                     ? MeridianIcons.chevronLeft
                     : MeridianIcons.chevronRight,
@@ -206,7 +208,8 @@ class _MeridianCalendarState extends State<MeridianCalendar> {
                   SizedBox(
                     width: MeridianLayout.calendarCell,
                     child: Text(
-                      localizations.narrowWeekdays[(firstWeekday + i) % 7],
+                      localizations.narrowWeekdayNames[(firstWeekday + i + 6) %
+                          7],
                       textAlign: TextAlign.center,
                       style: meridian.text.caption.copyWith(
                         color: colors.inkMuted,
@@ -250,10 +253,10 @@ class _MeridianCalendarState extends State<MeridianCalendar> {
     final meridian = MeridianTheme.of(context);
     final colors = meridian.colors;
     final selectable = _selectable(day);
-    final selected = DateUtils.isSameDay(day, widget.value);
-    final isToday = DateUtils.isSameDay(day, today);
-    final hovered = selectable && DateUtils.isSameDay(day, _hovered);
-    final focused = focusVisible && DateUtils.isSameDay(day, _focused);
+    final selected = MeridianDates.isSameDay(day, widget.value);
+    final isToday = MeridianDates.isSameDay(day, today);
+    final hovered = selectable && MeridianDates.isSameDay(day, _hovered);
+    final focused = focusVisible && MeridianDates.isSameDay(day, _focused);
     final radius = BorderRadius.circular(MeridianRadiusScale.pill);
     final fill = selected
         ? colors.accent
@@ -267,7 +270,7 @@ class _MeridianCalendarState extends State<MeridianCalendar> {
         : isToday
         ? colors.accentInk
         : colors.ink;
-    final label = MaterialLocalizations.of(context).formatFullDate(day);
+    final label = MeridianLocalizations.of(context).formatFullDate(day);
     return Semantics(
       button: true,
       selected: selected,
@@ -281,7 +284,7 @@ class _MeridianCalendarState extends State<MeridianCalendar> {
             : SystemMouseCursors.basic,
         onEnter: (_) => setState(() => _hovered = day),
         onExit: (_) {
-          if (DateUtils.isSameDay(_hovered, day)) {
+          if (MeridianDates.isSameDay(_hovered, day)) {
             setState(() => _hovered = null);
           }
         },
@@ -306,7 +309,7 @@ class _MeridianCalendarState extends State<MeridianCalendar> {
                 child: AnimatedContainer(
                   duration: meridianHoverDuration(
                     context,
-                    DateUtils.isSameDay(_hovered, day),
+                    MeridianDates.isSameDay(_hovered, day),
                   ),
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
@@ -353,7 +356,7 @@ Future<DateTime?> showMeridianDatePicker({
   String? cancelLabel,
   Locale? locale,
 }) {
-  var chosen = DateUtils.dateOnly(initialDate);
+  var chosen = MeridianDates.dateOnly(initialDate);
   Widget localized(BuildContext context, Widget child) => locale == null
       ? child
       : Localizations.override(context: context, locale: locale, child: child);
@@ -363,11 +366,11 @@ Future<DateTime?> showMeridianDatePicker({
       outerContext,
       Builder(
         builder: (dialogContext) {
-          final localizations = MaterialLocalizations.of(dialogContext);
+          final localizations = MeridianLocalizations.of(dialogContext);
           void confirm() => Navigator.of(dialogContext).pop(chosen);
           return StatefulBuilder(
             builder: (context, setState) => MeridianDialog(
-              title: title ?? localizations.datePickerHelpText,
+              title: title ?? localizations.datePickerTitle,
               width: MeridianLayout.datePickerWidth,
               onSubmit: confirm,
               content: Center(
@@ -381,12 +384,12 @@ Future<DateTime?> showMeridianDatePicker({
               ),
               actions: [
                 MeridianButton(
-                  label: cancelLabel ?? localizations.cancelButtonLabel,
+                  label: cancelLabel ?? localizations.cancel,
                   variant: MeridianButtonVariant.quiet,
                   onPressed: () => Navigator.of(dialogContext).pop(),
                 ),
                 MeridianButton(
-                  label: confirmLabel ?? localizations.okButtonLabel,
+                  label: confirmLabel ?? localizations.ok,
                   variant: MeridianButtonVariant.primary,
                   onPressed: confirm,
                 ),

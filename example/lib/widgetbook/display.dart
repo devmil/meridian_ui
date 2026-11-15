@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:meridian_ui/meridian_ui.dart';
 import 'package:widgetbook/widgetbook.dart';
 
@@ -7,6 +7,79 @@ import 'support.dart';
 WidgetbookFolder displayFolder() => WidgetbookFolder(
   name: 'Display',
   children: [
+    WidgetbookComponent(
+      name: 'Tooltip',
+      useCases: [
+        WidgetbookUseCase(
+          name: 'Playground',
+          builder: (context) {
+            final message = context.knobs.string(
+              label: 'Message',
+              initialValue: 'Fetch from origin',
+            );
+            final below = context.knobs.boolean(
+              label: 'Prefer below',
+              initialValue: true,
+            );
+            final excluded = context.knobs.boolean(
+              label: 'Exclude from semantics',
+              description: 'When the control already announces the text.',
+            );
+            return preview(
+              Center(
+                child: MeridianTooltip(
+                  message: message,
+                  preferBelow: below,
+                  excludeFromSemantics: excluded,
+                  child: MeridianIconButton(
+                    label: message,
+                    icon: MeridianIcons.refreshCw,
+                    onPressed: noop,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    ),
+    WidgetbookComponent(
+      name: 'Selectable text',
+      useCases: [
+        WidgetbookUseCase(
+          name: 'Playground',
+          builder: (context) {
+            final text = context.knobs.string(
+              label: 'Text',
+              initialValue: '3f2a9c1e7b4d',
+            );
+            final mono = context.knobs.boolean(
+              label: 'Monospace',
+              initialValue: true,
+            );
+            final maxLines = context.knobs.int.slider(
+              label: 'Max lines',
+              initialValue: 2,
+              min: 1,
+              max: 4,
+            );
+            return preview(
+              Builder(
+                builder: (context) => Center(
+                  child: MeridianSelectableText(
+                    text,
+                    maxLines: maxLines,
+                    style: mono
+                        ? context.meridian.text.code
+                        : context.meridian.text.body,
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+      ],
+    ),
     WidgetbookComponent(
       name: 'Avatar',
       useCases: [

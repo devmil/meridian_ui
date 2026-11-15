@@ -1,5 +1,5 @@
 import 'package:flutter/gestures.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:meridian_ui/meridian_ui.dart';
@@ -54,8 +54,8 @@ void main() {
           ),
         ),
       );
-      final value = tester.widget<SelectableText>(
-        find.widgetWithText(SelectableText, '1'),
+      final value = tester.widget<MeridianSelectableText>(
+        find.widgetWithText(MeridianSelectableText, '1'),
       );
       final meridian = MeridianTheme.of(tester.element(find.text('1')));
       expect(value.style?.fontFamily, meridian.text.code.fontFamily);
