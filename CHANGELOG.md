@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.1 - 2026-11-15
+
+**Fixed**
+
+- `MeridianTextField` shows no selection handles on desktop, like
+  `MeridianSelectionArea`. A selection set in code, such as a prefilled,
+  autofocused field, drew a touch drop under the caret on macOS, Linux and
+  Windows.
+
 ## 2.0.0 - 2026-11-14
 
 Meridian no longer depends on Material. Everything is built on Flutter's
@@ -82,9 +91,6 @@ widgets layer, so an app can drop `material.dart` (deprecated in Flutter
 - `MeridianSelectionArea` and `MeridianSelectableText` show no selection
   handles on desktop. A mouse selection drew the touch drops on macOS,
   Linux and Windows; Material's desktop controls drew none.
-- `MeridianTextField` shows no selection handles on desktop either. A
-  selection set in code, such as a prefilled, autofocused field, drew a
-  touch drop under the caret on macOS, Linux and Windows.
 - `MeridianScaffold`: the body no longer gets the safe-area padding the app
   bar and bottom bar already take. The view-inset removal copied the
   unpadded `MediaQuery` back, so a `SafeArea` body left a status-bar-high
