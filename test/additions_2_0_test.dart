@@ -206,6 +206,45 @@ void main() {
       ),
     );
 
+    testWidgets('the body does not get the padding the bars consume', (
+      tester,
+    ) async {
+      EdgeInsets? seen;
+      Future<void> pump({required bool resize}) async {
+        await tester.pumpWidget(
+          host(
+            MediaQuery(
+              data: const MediaQueryData(
+                size: Size(400, 600),
+                padding: EdgeInsets.only(top: 62, bottom: 34),
+                viewPadding: EdgeInsets.only(top: 62, bottom: 34),
+              ),
+              child: SizedBox(
+                width: 400,
+                height: 600,
+                child: MeridianScaffold(
+                  appBar: const MeridianAppBar(title: 'Library'),
+                  bottomBar: const SizedBox(height: 30),
+                  resizeToAvoidBottomInset: resize,
+                  body: Builder(
+                    builder: (context) {
+                      seen = MediaQuery.paddingOf(context);
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }
+
+      await pump(resize: true);
+      expect(seen, EdgeInsets.zero);
+      await pump(resize: false);
+      expect(seen, EdgeInsets.zero);
+    });
+
     testWidgets('stacks app bar, body and bottom bar', (tester) async {
       await tester.pumpWidget(
         scaffold(bottomBar: const SizedBox(height: 30, child: Text('Bar'))),

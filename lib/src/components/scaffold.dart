@@ -182,18 +182,19 @@ class MeridianScaffoldState extends State<MeridianScaffold>
     final keyboard = widget.resizeToAvoidBottomInset
         ? media.viewInsets.bottom
         : 0.0;
-    Widget body = widget.body ?? const SizedBox.shrink();
-    body = MediaQuery.removePadding(
-      context: context,
+    // One MediaQuery for the body: nested removePadding/removeViewInsets
+    // would each copy this context's data, and the inner one would put the
+    // padding the bars consume back.
+    var bodyMedia = media.removePadding(
       removeTop: widget.appBar != null,
       removeBottom: widget.bottomBar != null || keyboard > 0,
-      child: widget.resizeToAvoidBottomInset
-          ? MediaQuery.removeViewInsets(
-              context: context,
-              removeBottom: true,
-              child: body,
-            )
-          : body,
+    );
+    if (widget.resizeToAvoidBottomInset) {
+      bodyMedia = bodyMedia.removeViewInsets(removeBottom: true);
+    }
+    final body = MediaQuery(
+      data: bodyMedia,
+      child: widget.body ?? const SizedBox.shrink(),
     );
     Widget frame = ColoredBox(
       color: widget.backgroundColor ?? meridian.colors.ground,

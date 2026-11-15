@@ -82,6 +82,10 @@ widgets layer, so an app can drop `material.dart` (deprecated in Flutter
 - `MeridianSelectionArea` and `MeridianSelectableText` show no selection
   handles on desktop. A mouse selection drew the touch drops on macOS,
   Linux and Windows; Material's desktop controls drew none.
+- `MeridianScaffold`: the body no longer gets the safe-area padding the app
+  bar and bottom bar already take. The view-inset removal copied the
+  unpadded `MediaQuery` back, so a `SafeArea` body left a status-bar-high
+  gap under the app bar on phones.
 
 **Migrating an app**: `MaterialApp` → `MeridianApp`, `ThemeMode` →
 `MeridianThemeMode`, `Scaffold` → `MeridianScaffold` (`bottomNavigationBar`
