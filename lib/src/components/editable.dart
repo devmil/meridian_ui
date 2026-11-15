@@ -174,9 +174,18 @@ class _MeridianEditableTextState extends State<MeridianEditableText>
       cursorColor: colors.accent,
       backgroundCursorColor: colors.inkFaint,
       selectionColor: widget.focusNode.hasFocus ? colors.accentSoft : null,
-      selectionControls: selectionEnabled
-          ? meridianTextSelectionControls
-          : null,
+      // A mouse or keyboard selection has no handles: desktop gets none, as
+      // with Material's desktop controls; touch platforms get Meridian's
+      // drops. Flutter shows handles for a selection set in code, so the
+      // touch drops would otherwise appear under a prefilled caret.
+      selectionControls: !selectionEnabled
+          ? null
+          : switch (defaultTargetPlatform) {
+              TargetPlatform.macOS ||
+              TargetPlatform.linux ||
+              TargetPlatform.windows => emptyTextSelectionControls,
+              _ => meridianTextSelectionControls,
+            },
       enableInteractiveSelection: selectionEnabled,
       onSelectionChanged: _onSelectionChanged,
       onChanged: widget.onChanged,
