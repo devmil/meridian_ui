@@ -178,14 +178,9 @@ class _MeridianEditableTextState extends State<MeridianEditableText>
       // with Material's desktop controls; touch platforms get Meridian's
       // drops. Flutter shows handles for a selection set in code, so the
       // touch drops would otherwise appear under a prefilled caret.
-      selectionControls: !selectionEnabled
-          ? null
-          : switch (defaultTargetPlatform) {
-              TargetPlatform.macOS ||
-              TargetPlatform.linux ||
-              TargetPlatform.windows => emptyTextSelectionControls,
-              _ => meridianTextSelectionControls,
-            },
+      selectionControls: selectionEnabled
+          ? meridianPlatformTextSelectionControls()
+          : null,
       enableInteractiveSelection: selectionEnabled,
       onSelectionChanged: _onSelectionChanged,
       onChanged: widget.onChanged,

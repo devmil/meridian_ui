@@ -483,7 +483,9 @@ void main() {
       };
       expect(
         controls,
-        desktop ? emptyTextSelectionControls : meridianTextSelectionControls,
+        desktop
+            ? meridianDesktopTextSelectionControls
+            : meridianTextSelectionControls,
       );
     }, variant: TargetPlatformVariant.all());
 
@@ -508,7 +510,9 @@ void main() {
         };
         expect(
           controls,
-          desktop ? emptyTextSelectionControls : meridianTextSelectionControls,
+          desktop
+              ? meridianDesktopTextSelectionControls
+              : meridianTextSelectionControls,
         );
         final drops = find.byWidgetPredicate(
           (widget) =>
@@ -519,6 +523,53 @@ void main() {
       },
       variant: TargetPlatformVariant.all(),
     );
+
+    testWidgets('desktop text menus still open without handles', (
+      tester,
+    ) async {
+      final controller = TextEditingController(text: 'fix/transfer');
+      addTearDown(controller.dispose);
+      await tester.pumpWidget(
+        host(
+          Column(
+            children: [
+              MeridianTextField(controller: controller),
+              const MeridianSelectableText('3f2a9c1'),
+            ],
+          ),
+        ),
+      );
+      await tester.tap(find.byType(EditableText));
+      await tester.pump();
+      controller.selection = const TextSelection(
+        baseOffset: 0,
+        extentOffset: 3,
+      );
+      await tester.pump();
+      expect(
+        tester
+            .state<EditableTextState>(find.byType(EditableText))
+            .showToolbar(),
+        isTrue,
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(MeridianMenuSurface), findsOneWidget);
+
+      // Without TextSelectionHandleControls Flutter ignores the
+      // contextMenuBuilder and builds the controls' own (empty) toolbar.
+      expect(
+        tester
+            .widget<SelectableRegion>(find.byType(SelectableRegion))
+            .selectionControls,
+        isA<TextSelectionHandleControls>(),
+      );
+      await tester.tapAt(const Offset(1, 599));
+      await tester.pumpAndSettle();
+      expect(find.byType(MeridianMenuSurface), findsNothing);
+      await tester.tap(find.text('3f2a9c1'), buttons: kSecondaryMouseButton);
+      await tester.pumpAndSettle();
+      expect(find.byType(MeridianMenuSurface), findsOneWidget);
+    }, variant: TargetPlatformVariant.desktop());
 
     test('touch handles anchor like the platform', () {
       final controls = MeridianTextSelectionControls();
