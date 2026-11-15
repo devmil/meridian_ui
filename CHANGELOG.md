@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.1 - 2026-11-15
+
+**Fixed**
+
+- `MeridianTextField` shows no selection handles on desktop, like
+  `MeridianSelectionArea`. A selection set in code, such as a prefilled,
+  autofocused field, drew a touch drop under the caret on macOS, Linux and
+  Windows.
+
 ## 2.0.0 - 2026-11-14
 
 Meridian no longer depends on Material. Everything is built on Flutter's

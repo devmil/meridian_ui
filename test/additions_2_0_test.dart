@@ -487,6 +487,39 @@ void main() {
       );
     }, variant: TargetPlatformVariant.all());
 
+    testWidgets(
+      'text field handles: none on desktop, Meridian drops on touch',
+      (tester) async {
+        final controller = TextEditingController(text: 'fix/transfer');
+        addTearDown(controller.dispose);
+        await tester.pumpWidget(
+          host(MeridianTextField(controller: controller, autofocus: true)),
+        );
+        controller.selection = const TextSelection.collapsed(offset: 3);
+        await tester.pump();
+        final controls = tester
+            .widget<EditableText>(find.byType(EditableText))
+            .selectionControls;
+        final desktop = switch (defaultTargetPlatform) {
+          TargetPlatform.macOS ||
+          TargetPlatform.linux ||
+          TargetPlatform.windows => true,
+          _ => false,
+        };
+        expect(
+          controls,
+          desktop ? emptyTextSelectionControls : meridianTextSelectionControls,
+        );
+        final drops = find.byWidgetPredicate(
+          (widget) =>
+              widget is CustomPaint &&
+              widget.painter.runtimeType.toString() == '_HandlePainter',
+        );
+        expect(drops, desktop ? findsNothing : findsOneWidget);
+      },
+      variant: TargetPlatformVariant.all(),
+    );
+
     test('touch handles anchor like the platform', () {
       final controls = MeridianTextSelectionControls();
       expect(controls.getHandleSize(16), const Size(22, 22));
