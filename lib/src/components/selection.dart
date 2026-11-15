@@ -166,6 +166,43 @@ class MeridianTextSelectionControls extends TextSelectionControls
 /// The shared [MeridianTextSelectionControls].
 final meridianTextSelectionControls = MeridianTextSelectionControls();
 
+/// Selection controls for a mouse: no handles, like Material's desktop
+/// controls. Unlike Flutter's `emptyTextSelectionControls` they keep
+/// [TextSelectionHandleControls], so the field or region still shows its
+/// `contextMenuBuilder` menu.
+class MeridianDesktopTextSelectionControls extends TextSelectionControls
+    with TextSelectionHandleControls {
+  @override
+  Size getHandleSize(double textLineHeight) => Size.zero;
+
+  @override
+  Offset getHandleAnchor(TextSelectionHandleType type, double textLineHeight) =>
+      Offset.zero;
+
+  @override
+  Widget buildHandle(
+    BuildContext context,
+    TextSelectionHandleType type,
+    double textLineHeight, [
+    VoidCallback? onTap,
+  ]) => const SizedBox.shrink();
+}
+
+/// The shared [MeridianDesktopTextSelectionControls].
+final meridianDesktopTextSelectionControls =
+    MeridianDesktopTextSelectionControls();
+
+/// The selection controls Meridian uses on [platform]: no handles on macOS,
+/// Linux and Windows, Meridian's drops on touch platforms.
+TextSelectionControls meridianPlatformTextSelectionControls([
+  TargetPlatform? platform,
+]) => switch (platform ?? defaultTargetPlatform) {
+  TargetPlatform.macOS ||
+  TargetPlatform.linux ||
+  TargetPlatform.windows => meridianDesktopTextSelectionControls,
+  _ => meridianTextSelectionControls,
+};
+
 class _HandlePainter extends CustomPainter {
   const _HandlePainter(this.color);
 
@@ -242,12 +279,7 @@ class _MeridianSelectionAreaState extends State<MeridianSelectionArea> {
         focusNode: _focus,
         // A mouse selection has no handles: desktop gets none, as with
         // Material's desktop controls; touch platforms get Meridian's drops.
-        selectionControls: switch (defaultTargetPlatform) {
-          TargetPlatform.macOS ||
-          TargetPlatform.linux ||
-          TargetPlatform.windows => emptyTextSelectionControls,
-          _ => meridianTextSelectionControls,
-        },
+        selectionControls: meridianPlatformTextSelectionControls(),
         onSelectionChanged: widget.onSelectionChanged,
         contextMenuBuilder: (context, state) =>
             menu(context, MeridianTextMenuRequest.selectable(state)),

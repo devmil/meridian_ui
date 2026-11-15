@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.0.2 - 2026-11-15
+
+**Fixed**
+
+- Text menus open again on desktop. 2.0.0 (`MeridianSelectionArea`,
+  `MeridianSelectableText`) and 2.0.1 (`MeridianTextField`) hid the handles
+  with Flutter's `emptyTextSelectionControls`, which lack
+  `TextSelectionHandleControls`, so Flutter ignored the `contextMenuBuilder`
+  and a right-click or `showToolbar` opened no menu.
+
+**Added**
+
+- `MeridianDesktopTextSelectionControls` (`meridianDesktopTextSelectionControls`):
+  no handles, with the context menu kept. `meridianPlatformTextSelectionControls()`
+  picks them on macOS, Linux and Windows and Meridian's drops elsewhere.
+
 ## 2.0.1 - 2026-11-15
 
 **Fixed**
