@@ -79,6 +79,9 @@ widgets layer, so an app can drop `material.dart` (deprecated in Flutter
 - `MeridianLicenseDialog`: when the filter hides the shown package, the
   first match is shown instead, and Up and Down start from the top or the
   end of the filtered list.
+- `MeridianSelectionArea` and `MeridianSelectableText` show no selection
+  handles on desktop. A mouse selection drew the touch drops on macOS,
+  Linux and Windows; Material's desktop controls drew none.
 
 **Migrating an app**: `MaterialApp` → `MeridianApp`, `ThemeMode` →
 `MeridianThemeMode`, `Scaffold` → `MeridianScaffold` (`bottomNavigationBar`

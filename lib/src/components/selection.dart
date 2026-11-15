@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
@@ -239,7 +240,14 @@ class _MeridianSelectionAreaState extends State<MeridianSelectionArea> {
       cursorColor: colors.accent,
       child: SelectableRegion(
         focusNode: _focus,
-        selectionControls: meridianTextSelectionControls,
+        // A mouse selection has no handles: desktop gets none, as with
+        // Material's desktop controls; touch platforms get Meridian's drops.
+        selectionControls: switch (defaultTargetPlatform) {
+          TargetPlatform.macOS ||
+          TargetPlatform.linux ||
+          TargetPlatform.windows => emptyTextSelectionControls,
+          _ => meridianTextSelectionControls,
+        },
         onSelectionChanged: widget.onSelectionChanged,
         contextMenuBuilder: (context, state) =>
             menu(context, MeridianTextMenuRequest.selectable(state)),

@@ -429,6 +429,25 @@ void main() {
       }
     });
 
+    testWidgets('selection handles: none on desktop, Meridian drops on touch', (
+      tester,
+    ) async {
+      await tester.pumpWidget(host(const MeridianSelectableText('3f2a9c1')));
+      final controls = tester
+          .widget<SelectableRegion>(find.byType(SelectableRegion))
+          .selectionControls;
+      final desktop = switch (defaultTargetPlatform) {
+        TargetPlatform.macOS ||
+        TargetPlatform.linux ||
+        TargetPlatform.windows => true,
+        _ => false,
+      };
+      expect(
+        controls,
+        desktop ? emptyTextSelectionControls : meridianTextSelectionControls,
+      );
+    }, variant: TargetPlatformVariant.all());
+
     test('touch handles anchor like the platform', () {
       final controls = MeridianTextSelectionControls();
       expect(controls.getHandleSize(16), const Size(22, 22));
