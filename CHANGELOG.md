@@ -1,5 +1,24 @@
 # Changelog
 
+## Unreleased
+
+**Added**
+
+- Meridian for Qt Quick: the `Meridian` QML module in `qml/Meridian` for
+  Rust + Qt Quick desktop apps (MailLama's QML port first).
+  `tool/generate_qml.py` generates its tokens, colour and type roles, layout
+  metrics (from `meridian_layout.dart`) and Lucide outlines from the same
+  sources as the Flutter library. `tool/generate.py --check` covers them.
+  Hand-written `Theme` (brand, light/dark/system, density, reduce motion)
+  and `Motion` (durations, curves, springs as splines, reduced-motion
+  substitution). The first primitives are built on `QtQuick.Templates`:
+  Button, IconButton, TextField (default, search, plain), Switch, Segmented,
+  Chip, Spinner, ProgressBar, Banner, EmptyState, Island and Ground, with
+  Icon, Text, FocusRing and Shadow. The release also adds a gallery, 47 Qt
+  Quick Tests (including a gallery layout matrix at 390 px and 1280 px),
+  `tool/verify_qml.sh`, a QML guide (`design/project/guides/50-qml.md`) and a
+  CI job.
+
 ## 2.0.3 - 2026-11-21
 
 **Changed**

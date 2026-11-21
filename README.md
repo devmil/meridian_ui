@@ -9,6 +9,7 @@ This package holds three things:
 | `tokens/meridian.tokens.json` | The shared core: surfaces, ink, status and categorical colours for light and dark, the type scales (desktop and touch), spacing, radii, shadows, sizes, motion. The single token source. |
 | `tokens/brands/*.json` | One brand per app: its accent family for light and dark, fonts, radius scale, default density and optional own neutrals. |
 | `lib/` | The Flutter library: theme, tokens (generated), brands (generated), the interaction layer, icons and the primitive widgets. |
+| `qml/` | The Qt Quick (QML) library for Rust + Qt apps: the `Meridian` module with generated tokens, theme, motion, Lucide icons and primitives, its tests and gallery. See `design/project/guides/50-qml.md`. |
 | `design/` | The design system documentation (brand book, component guidelines) that is published as the Meridian Design System artifact. `design/project/tokens.json` is generated. |
 | `example/` | The gallery and Widgetbook component browser. |
 | `webfront/` | The public landing page, with a compiled Widgetbook published beneath it. |
