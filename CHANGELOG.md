@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.0.3 - 2026-11-21
+
+**Changed**
+
+- Meridian supports Flutter 3.47.8 and later again; its development pin moves
+  to Flutter 3.47.9. Flutter 3.50's new Linux renderer draws black frames and
+  black edges while a window is resized on Wayland, so apps can stay on 3.47.x
+  (3.47.8 carries the eMudhra certificate fix) until that is fixed upstream.
+  Meridian uses no 3.50-only API.
+
 ## 2.0.2 - 2026-11-15
 
 **Fixed**
