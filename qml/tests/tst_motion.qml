@@ -3,6 +3,7 @@ import QtTest
 import Meridian
 
 TestCase {
+    id: motionCase
     name: "Motion"
 
     function cleanup() {
@@ -63,7 +64,7 @@ TestCase {
 
     function test_reveal_collapses_and_grows_its_axis() {
         Theme.reducedMotion = false
-        const reveal = createTemporaryObject(revealComponent, testCase)
+        const reveal = createTemporaryObject(revealComponent, motionCase)
         compare(reveal.implicitWidth, 40)
         reveal.shown = false
         tryCompare(reveal, "implicitWidth", 0)
