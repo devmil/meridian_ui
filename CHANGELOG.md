@@ -4,6 +4,10 @@
 
 **Added**
 
+- `MeridianWheelScroll`: desktop wheel scrolling for Qt Quick views. A notch
+  moves `wheelScrollLines` lines and fast notches add up, instead of Qt's
+  velocity-capped flick; touchpads follow one to one and keep their momentum.
+  Meridian's dialogs, menus and lists use it.
 - Meridian for Qt Quick: the `Meridian` QML module in `qml/Meridian` for
   Rust + Qt Quick desktop apps (MailLama's QML port first).
   `tool/generate_qml.py` generates its tokens, colour and type roles, layout
