@@ -20,6 +20,13 @@ T.AbstractButton {
     property real turns: 0
     /// Nudge the icon 2px towards this direction on activation (-1, 0, 1).
     property int nudgeDirection: 0
+    /// Overrides the icon colour (a row's `secondary` ink, `accent-ink`).
+    property color iconColorOverride: "transparent"
+    /// The hover label; `text` by default.
+    property string tooltip
+    /// Why the command is unavailable; the tooltip while disabled.
+    property string disabledReason
+    property bool showTooltip: true
 
     readonly property bool onAccent: Qt.colorEqual(surfaceColor, Theme.colors.accent)
     property real extent: controlSize === MeridianButton.Small ? Theme.size.controlSmall : Theme.size.control
@@ -28,6 +35,8 @@ T.AbstractButton {
         const c = Theme.colors
         if (!enabled)
             return c.inkFaint
+        if (iconColorOverride.a > 0)
+            return iconColorOverride
         if (onAccent)
             return hovered ? c.onAccent : c.onAccentMuted
         if (active)
@@ -44,6 +53,13 @@ T.AbstractButton {
     Accessible.role: Accessible.Button
     Accessible.name: text
     Accessible.checkable: false
+    Accessible.description: !enabled && disabledReason.length > 0 ? disabledReason : ""
+
+    MeridianTooltip {
+        shown: control.showTooltip && control.hovered
+        text: !control.enabled && control.disabledReason.length > 0 ? control.disabledReason
+            : control.tooltip.length > 0 ? control.tooltip : control.text
+    }
 
     scale: down ? Motion.pressScale : 1
     Behavior on scale {
