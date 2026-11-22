@@ -37,6 +37,10 @@ TestCase {
         }
     }
     Component {
+        id: stepsComponent
+        MeridianSteps { steps: ["Pick", "Review", "Resolve", "Continue"]; current: 1 }
+    }
+    Component {
         id: kbdComponent
         MeridianKbd { keys: ["⌘", "K"] }
     }
@@ -135,6 +139,19 @@ TestCase {
         compare(cancelled.count, 1)
         verify(!field.recording)
         compare(recorded.count, 1)
+    }
+
+    function test_steps_show_every_label_or_only_the_current_one() {
+        const steps = createTemporaryObject(stepsComponent, host)
+        steps.width = steps.implicitWidth
+        verify(steps.allLabels)
+        steps.width = steps.fixedWidth + 40
+        verify(!steps.allLabels)
+        compare(steps.stateOf(0), 0)
+        compare(steps.stateOf(1), 1)
+        compare(steps.stateOf(3), 2)
+        steps.current = 4
+        compare(steps.stateOf(3), 0) // every step done
     }
 
     function test_kbd_draws_one_cap_per_key() {

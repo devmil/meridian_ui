@@ -181,6 +181,16 @@ MeridianGround {
                     }
                 }
                 Section {
+                    title: "Steps"
+                    Column {
+                        width: parent.width
+                        spacing: Theme.space.s4
+                        MeridianSteps { width: Math.min(implicitWidth, parent.width); steps: ["Pick", "Review", "Resolve", "Continue"]; current: 1 }
+                        MeridianSteps { width: Math.min(220, parent.width); steps: ["Pick", "Review", "Resolve", "Continue"]; current: 2 }
+                        MeridianSteps { width: Math.min(implicitWidth, parent.width); steps: ["Pick", "Review", "Resolve", "Continue"]; current: 4 }
+                    }
+                }
+                Section {
                     title: "Busy overlay"
                     Rectangle {
                         width: 360
