@@ -74,3 +74,4 @@ MeridianLicenseDialog 1.0 MeridianLicenseDialog.qml
 MeridianSectionHeader 1.0 MeridianSectionHeader.qml
 MeridianNudge 1.0 MeridianNudge.qml
 MeridianReveal 1.0 MeridianReveal.qml
+MeridianSwap 1.0 MeridianSwap.qml

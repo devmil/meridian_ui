@@ -74,4 +74,23 @@ TestCase {
         compare(reveal.implicitHeight, 10)
     }
 
+
+    Component {
+        id: swapComponent
+        MeridianSwap {
+            property string value: "a"
+            swapKey: value
+            Text { text: parent ? "x" : "" }
+        }
+    }
+
+    function test_swap_rises_new_content_in() {
+        Theme.reducedMotion = false
+        const swap = createTemporaryObject(swapComponent, motionCase)
+        verify(swap.implicitWidth > 0)
+        swap.value = "b"
+        const live = swap.children[1]
+        tryVerify(() => live.opacity === 1 && live.y === 0)
+    }
+
 }
