@@ -99,6 +99,9 @@ Item {
             mouseClick(page.cancel)
             compare(clicked.count, 1) // the action still works
             compare(page.overlay.Accessible.name, "Merging…")
+            verify(page.overlay.hasAction)
+            page.cancel.visible = false
+            verify(!page.overlay.hasAction)
         }
 
         function test_settings_dialog_sizes_the_shown_page_and_hides_an_empty_footer() {

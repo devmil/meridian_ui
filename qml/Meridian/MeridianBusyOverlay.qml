@@ -15,7 +15,8 @@ FocusScope {
     /// The one thing the user can still do, such as cancelling.
     default property alias action: actionSlot.data
 
-    readonly property bool hasAction: actionSlot.children.length > 0
+    /// A hidden action (Cancel when the work cannot stop) takes no room.
+    readonly property bool hasAction: actionSlot.visibleChildren.length > 0
 
     Accessible.role: Accessible.AlertMessage
     Accessible.name: message
@@ -49,8 +50,9 @@ FocusScope {
         Rectangle {
             id: card
             anchors.centerIn: parent
-            width: Math.min(row.implicitWidth + leftPad + rightPad, parent.width - 2 * Theme.space.s5)
-            height: row.implicitHeight + 2 * vPad
+            readonly property real actionGap: root.hasAction ? Theme.space.s4 : 0
+            width: Math.min(row.implicitWidth + actionGap + actionSlot.width + leftPad + rightPad, parent.width - 2 * Theme.space.s5)
+            height: Math.max(row.implicitHeight, actionSlot.height) + 2 * vPad
             radius: Theme.radius.xl
             color: Theme.colors.raised
             readonly property real leftPad: Theme.space.s6
@@ -71,19 +73,18 @@ FocusScope {
                     visible: root.message.length > 0
                     anchors.verticalCenter: parent.verticalCenter
                     width: Math.min(implicitWidth, card.parent.width - 2 * Theme.space.s5 - card.leftPad - card.rightPad
-                                    - Theme.size.icon - Theme.space.s4 - (root.hasAction ? actionSlot.width + Theme.space.s4 : 0))
+                                    - Theme.size.icon - Theme.space.s4 - card.actionGap - actionSlot.width)
                     role: MeridianText.BodyStrong
                     text: root.message
                 }
-                Item {
-                    id: actionSlot
-                    visible: root.hasAction
-                    anchors.verticalCenter: parent.verticalCenter
-                    implicitWidth: childrenRect.width
-                    implicitHeight: childrenRect.height
-                    width: implicitWidth
-                    height: implicitHeight
-                }
+            }
+            // Beside the row, not in it: a hidden action leaves no gap.
+            Item {
+                id: actionSlot
+                x: row.x + row.width + card.actionGap
+                anchors.verticalCenter: parent.verticalCenter
+                width: root.hasAction ? childrenRect.width : 0
+                height: root.hasAction ? childrenRect.height : 0
             }
         }
 
