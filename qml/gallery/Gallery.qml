@@ -302,6 +302,18 @@ MeridianGround {
                 }
 
                 Section {
+                    title: "Breadcrumbs"
+                    MeridianBreadcrumbs {
+                        width: Math.min(420, parent.width)
+                        crumbs: [
+                            { label: "Fix the parser", icon: "git-commit-horizontal", prefix: "1a2b3c4d5e", enabled: true },
+                            { label: "src", enabled: true },
+                            { label: "parser", enabled: true },
+                            { label: "lexer.rs", emphasis: true },
+                        ]
+                    }
+                }
+                Section {
                     title: "Rows"
                     Column {
                         width: Math.min(260, sections.width)

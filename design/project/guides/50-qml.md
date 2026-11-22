@@ -75,7 +75,8 @@ style a stock Qt Quick Controls control in an app: add or extend a primitive her
 | `MeridianMenu`, `MeridianMenuItem`, `MeridianMenuSeparator` | Menu | Type-ahead, submenus, `danger`, `shortcut`, `hint`, `dotColor`; `nativeMenu: true` uses Qt's platform menu |
 | `MeridianPopover` | Popover | One task with fields or its own layout |
 | `MeridianNavRow` | NavRow | `current`, `sidebarFocused` (solid accent), `depth`, expand with ←/→, `dropState` |
-| `MeridianListRow` | ListRow | Inset selection bar, `islandFocused`, `emphasized`, `dimmed`, `twoLine`, hover actions replace `meta` (give them `surfaceColor: row.fillColor`) |
+| `MeridianListRow` | ListRow | Inset selection bar, `islandFocused`, `emphasized`, `dimmed`, `twoLine`, hover actions replace `meta` (give them `surfaceColor: row.fillColor`); `leading`, `titleTrailing` and `trailing` components frame the title |
+| `MeridianBreadcrumbs` | `MeridianBreadcrumbs` | First and last crumb stay; middle crumbs fold into “…” (`overflowRequested` with their indices) from the left; the last crumb elides; crumbs are data (`label`, `icon`, `prefix`, `mono`, `emphasis`, `enabled`) |
 | `MeridianPagination` | Pagination | Seven pages in full, else first, last and neighbours |
 | `MeridianSelectionBar` | SelectionBar | Count, actions, clear; rises in on `spring-gentle` |
 | `MeridianDropZone` | DropZone | Idle/Active/Invalid; marching dashes; also a browse button |

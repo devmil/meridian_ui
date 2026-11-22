@@ -36,6 +36,18 @@ Item {
         }
     }
     Component {
+        id: crumbsComponent
+        MeridianBreadcrumbs {
+            width: 600
+            crumbs: [
+                { label: "Fix the parser", icon: "git-commit-horizontal", prefix: "1a2b3c4d5e", enabled: true },
+                { label: "src", enabled: true },
+                { label: "parser", enabled: true },
+                { label: "lexer.rs", emphasis: true },
+            ]
+        }
+    }
+    Component {
         id: islandComponent
         MeridianIsland {
             width: 400
@@ -155,6 +167,22 @@ Item {
             verify(markStart > leadingEnd + Theme.space.s4)
             verify(trailingStart > markStart)
             fuzzyCompare(trailingEnd, row.width - row.rightPadding, 0.5)
+        }
+
+        function test_breadcrumbs_fold_middle_crumbs_when_narrow() {
+            const trail = createTemporaryObject(crumbsComponent, host)
+            compare(trail.folded, 0)
+            const activated = createTemporaryObject(spyComponent, testCase, { target: trail, signalName: "activated" })
+            const overflow = createTemporaryObject(spyComponent, testCase, { target: trail, signalName: "overflowRequested" })
+            trail.width = 200
+            tryVerify(() => trail.folded > 0)
+            verify(trail.folded <= trail.count - 2)
+            trail.width = 600
+            tryCompare(trail, "folded", 0)
+            mouseClick(trail, 20, trail.height / 2)
+            compare(activated.count, 1)
+            compare(activated.signalArguments[0][0], 0)
+            compare(overflow.count, 0)
         }
 
         function test_list_row_heights_follow_density() {
