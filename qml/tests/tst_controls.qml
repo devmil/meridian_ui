@@ -15,6 +15,15 @@ TestCase {
     when: windowShown
 
     Component {
+        id: radiosComponent
+        Column {
+            property alias first: first
+            property alias second: second
+            MeridianRadio { id: first; text: "All changes"; checked: true }
+            MeridianRadio { id: second; text: "Selected files"; description: "Choose files below" }
+        }
+    }
+    Component {
         id: kbdComponent
         MeridianKbd { keys: ["⌘", "K"] }
     }
@@ -80,6 +89,15 @@ TestCase {
 
     function spy(target, signal) {
         return createTemporaryObject(spyComponent, testCase, { target: target, signalName: signal })
+    }
+
+    function test_radios_in_one_parent_are_exclusive() {
+        const group = createTemporaryObject(radiosComponent, host)
+        verify(group.first.checked)
+        mouseClick(group.second, 4, group.second.height / 2)
+        verify(group.second.checked)
+        verify(!group.first.checked)
+        compare(group.second.Accessible.role, Accessible.RadioButton)
     }
 
     function test_kbd_draws_one_cap_per_key() {

@@ -164,6 +164,14 @@ MeridianGround {
                 }
 
                 Section {
+                    title: "Radios"
+                    Column {
+                        MeridianRadio { text: "All changes"; checked: true }
+                        MeridianRadio { text: "Selected files"; description: "Choose the files to stash" }
+                        MeridianRadio { text: "Unavailable"; enabled: false }
+                    }
+                }
+                Section {
                     title: "Keys"
                     Row {
                         spacing: Theme.space.s5
