@@ -105,6 +105,36 @@ QtObject {
         return pressed(blend(onGround ? colors.ground : colors.pane, surface, 1))
     }
 
+    /// Escapes `text` for a Qt rich text label.
+    function escapeHtml(text) {
+        return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+    }
+
+    /// `text` as Qt styled text (which still elides) with the
+    /// case-insensitive occurrences of `query` set in `color`, bold and
+    /// underlined (Flutter's `text.match`). Text whose lower case changes
+    /// length stays plain.
+    function highlightMatches(text, query, color) {
+        const source = String(text)
+        const lowerText = source.toLowerCase()
+        const lowerQuery = String(query).toLowerCase()
+        if (lowerQuery.length === 0 || lowerText.length !== source.length || lowerQuery.length !== String(query).length)
+            return escapeHtml(source)
+        const open = "<font color=\"" + color + "\"><b><u>"
+        let out = ""
+        let offset = 0
+        while (offset < source.length) {
+            const index = lowerText.indexOf(lowerQuery, offset)
+            if (index < 0)
+                break
+            out += escapeHtml(source.slice(offset, index)) + open
+                + escapeHtml(source.slice(index, index + lowerQuery.length)) + "</u></b></font>"
+            offset = index + lowerQuery.length
+        }
+        return out + escapeHtml(source.slice(offset))
+    }
+
     function _densityFor(name) {
         switch (name) {
         case "compact": return Theme.Compact

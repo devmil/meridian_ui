@@ -25,6 +25,16 @@ Item {
         }
     }
     Component {
+        id: islandComponent
+        MeridianIsland {
+            width: 400
+            height: 200
+            title: "Recent repositories"
+            count: 3
+            Item { objectName: "islandContent"; anchors.fill: parent }
+        }
+    }
+    Component {
         id: paginationComponent
         MeridianPagination { previousLabel: "Previous page"; nextLabel: "Next page"; pageLabel: "Page %1" }
     }
@@ -348,6 +358,35 @@ Item {
             row.width = 700
             verify(row.stacked)
             Theme.density = -1
+        }
+    }
+
+    TestCase {
+        name: "RowsHeaderAndMatch"
+        when: windowShown
+
+        function test_list_row_highlights_its_match() {
+            const row = createTemporaryObject(listComponent, host, { match: "report" })
+            verify(row.match === "report")
+            let styled = false
+            const stack = [row.contentItem]
+            while (stack.length > 0) {
+                const item = stack.pop()
+                if (item.textFormat === Text.StyledText && String(item.text).indexOf("<u>report</u>") >= 0)
+                    styled = true
+                for (let i = 0; i < item.children.length; ++i)
+                    stack.push(item.children[i])
+            }
+            verify(styled, "the matched word is underlined")
+        }
+
+        function test_island_header_sits_above_the_content() {
+            const island = createTemporaryObject(islandComponent, host)
+            verify(island.hasHeader)
+            const content = findChild(island, "islandContent")
+            const top = content.mapToItem(island, 0, 0).y
+            compare(top, Theme.size.islandHeader + Metrics.hairline)
+            compare(content.height, island.height - top)
         }
     }
 }
