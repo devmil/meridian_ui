@@ -30,9 +30,9 @@ T.Control {
     readonly property real extent: controlSize === MeridianButton.Small ? Theme.size.controlSmall : Theme.size.control
     readonly property real inset: Metrics.segmentedTrackPadding
     property bool _keyboardNav: false
-    // Geometry of the selected segment, published by that delegate. (Holding
-    // a delegate reference from Repeater.itemAt in a binding crashes when the
-    // Repeater tears its delegates down.)
+    // Geometry of the selected segment, published by that delegate, so the
+    // tile follows it as segments resize (Repeater.itemAt in a binding would
+    // not re-evaluate).
     property real _tileX: 0
     property real _tileWidth: 0
 

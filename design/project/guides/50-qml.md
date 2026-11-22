@@ -96,9 +96,9 @@ Rules that the tests enforce:
   itself (a `Behavior` or a `to:` value). Never scale a reveal by the duration.
 - Keep `Easing.BezierSpline` lists short. Qt 6.12 corrupted its heap with
   45–70-segment splines. The generator emits 10, and `tst_motion` guards it.
-- Do not hold `Repeater.itemAt()` results in bindings. They outlive the
-  delegate during teardown and crashed Qt. Publish delegate geometry with
-  `Binding { when: … }` instead (see `MeridianSegmented`).
+- Publish a delegate's geometry to its owner with `Binding { when: … }`
+  (see `MeridianSegmented`) rather than reading `Repeater.itemAt()` in a
+  binding, which does not re-evaluate when the delegate moves or resizes.
 
 ## Verifying
 
