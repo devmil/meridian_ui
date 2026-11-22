@@ -22,16 +22,23 @@ Item {
     signal overflowRequested(var hidden, real x, real y)
 
     readonly property int count: crumbs.length
+    /// Each crumb's natural width, published by its delegate.
+    property var _widths: []
+    function _publishWidth(index, width) {
+        if (_widths[index] === width)
+            return
+        const next = _widths.slice(0, count)
+        next[index] = width
+        _widths = next
+    }
     readonly property real separatorWidth: Theme.size.iconSmall + 2 * Theme.space.s1
     /// How many crumbs after the first are folded into "…".
     readonly property int folded: {
         if (count < 3)
             return 0
         const widths = []
-        for (let i = 0; i < count; ++i) {
-            const item = repeater.itemAt(i)
-            widths.push(item ? item.crumbWidth : 0)
-        }
+        for (let i = 0; i < count; ++i)
+            widths.push(_widths[i] ?? 0)
         const total = f => {
             let sum = 0
             for (let i = 0; i < count; ++i)
@@ -127,7 +134,6 @@ Item {
         spacing: 0
 
         Repeater {
-            id: repeater
             model: root.count
             delegate: Row {
                 id: slot
@@ -135,6 +141,8 @@ Item {
                 readonly property bool hiddenCrumb: index >= 1 && index <= root.folded && index < root.count - 1
                 /// The crumb's natural width, without separators.
                 readonly property real crumbWidth: crumbItem.implicitWidth
+                onCrumbWidthChanged: root._publishWidth(index, crumbWidth)
+                Component.onCompleted: root._publishWidth(index, crumbWidth)
                 visible: !hiddenCrumb
                 height: trail.height
                 spacing: 0
