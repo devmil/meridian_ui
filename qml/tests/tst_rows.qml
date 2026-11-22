@@ -134,6 +134,31 @@ Item {
             verify(!findChild(pages, "paginationPrevious").enabled)
         }
 
+        function test_pagination_jump_field_clamps_and_restores() {
+            const pages = createTemporaryObject(paginationComponent, host,
+                                                { pageCount: 12, page: 5, jumpLabel: "Page",
+                                                  pageCountLabel: "of %1",
+                                                  jumpAccessibleName: "Page number, 1 to %1" })
+            const selected = spy(pages, "pageSelected")
+            const field = findChild(pages, "paginationJump")
+            verify(field.visible)
+            compare(field.text, "5")
+            compare(field.Accessible.name, "Page number, 1 to 12")
+            pages.submitJump("9")
+            compare(selected.signalArguments[0][0], 9)
+            pages.submitJump("400")
+            compare(selected.signalArguments[1][0], 12)
+            compare(field.text, "12")
+            pages.page = 3
+            compare(field.text, "3")
+            pages.submitJump("")
+            compare(field.text, "3")
+            pages.submitJump("3")
+            compare(selected.count, 2)
+            pages.jumpLabel = ""
+            verify(!field.visible)
+        }
+
         function test_selection_bar_clear() {
             const bar = createTemporaryObject(selectionComponent, host)
             const cleared = spy(bar, "clearRequested")

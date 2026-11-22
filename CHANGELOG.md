@@ -4,6 +4,9 @@
 
 **Added**
 
+- `MeridianPagination` (QML) gains Flutter's direct page field: `jumpLabel`,
+  `pageCountLabel` and `jumpAccessibleName`; Enter selects the typed page,
+  clamped to the range. Its groups sit 8 px apart, as in Flutter.
 - Meridian for Qt Quick: the `Meridian` QML module in `qml/Meridian` for
   Rust + Qt Quick desktop apps (MailLama's QML port first).
   `tool/generate_qml.py` generates its tokens, colour and type roles, layout
