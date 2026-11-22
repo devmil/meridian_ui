@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 2.1.0 - 2026-11-22
 
 **Added**
 
@@ -31,8 +31,14 @@
   continues a lifted gesture. `smoothScroll`, `syntheticMomentum`,
   `animating`, `stop()`. Meridian's dialogs, menus and lists use it.
   `qml/tools/scroll_lab.qml` compares it with Qt's handling on real devices.
+- QML primitives for ProcessLama's port: Avatar, BadgeDot, Checkbox, Count,
+  ColumnHeader, Disclosure, Hairline, LicenseDialog, MenuHeader, Meter,
+  NavSection, PropertyList, Select, SelectableText, SettingsDialog,
+  SettingsGroup, Slider, StatusBar and StatusBarText, StatusDot, SwapText,
+  Tabs, TabStrip, ToolbarButton and Tooltip. Dialogs size themselves and
+  keep their action order; menu separators draw a hairline.
 - Meridian for Qt Quick: the `Meridian` QML module in `qml/Meridian` for
-  Rust + Qt Quick desktop apps (MailLama's QML port first).
+  Rust + Qt Quick desktop apps (MailLama's and ProcessLama's ports first).
   `tool/generate_qml.py` generates its tokens, colour and type roles, layout
   metrics (from `meridian_layout.dart`) and Lucide outlines from the same
   sources as the Flutter library. `tool/generate.py --check` covers them.
@@ -44,7 +50,7 @@
   with its host, Dialog and Confirm, Menu (type-ahead, submenus, opt-in native
   popups), Popover, NavRow, ListRow, Pagination, SelectionBar, DropZone,
   DatePicker and SettingsRow, with Surface, Icon, Text, FocusRing and Shadow.
-  The release also adds a gallery, 69 Qt Quick Tests (including a gallery
+  The release also adds a gallery, 107 Qt Quick Tests (including a gallery
   layout matrix at 390 px and 1280 px),
   `tool/verify_qml.sh`, a QML guide (`design/project/guides/50-qml.md`) and a
   CI job. The `on-…` colour roles are `inkOnAccent`, `inkOnAccentMuted`,
