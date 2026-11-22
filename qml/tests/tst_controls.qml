@@ -24,6 +24,19 @@ TestCase {
         }
     }
     Component {
+        id: shortcutComponent
+        MeridianShortcutField {
+            id: shortcutField
+            width: 260
+            showLabel: false
+            label: "Open palette"; emptyLabel: "Not set"; recordingLabel: "Press keys"
+            preparingLabel: "Preparing"; clearLabel: "Clear"
+            onRecordRequested: recording = true
+            onCancelRecording: recording = false
+            onRecorded: (key, modifiers) => { recording = false; keys = ["Ctrl", "K"] }
+        }
+    }
+    Component {
         id: kbdComponent
         MeridianKbd { keys: ["⌘", "K"] }
     }
@@ -98,6 +111,30 @@ TestCase {
         verify(group.second.checked)
         verify(!group.first.checked)
         compare(group.second.Accessible.role, Accessible.RadioButton)
+    }
+
+    function test_shortcut_field_records_one_stroke_and_cancels_on_escape() {
+        const field = createTemporaryObject(shortcutComponent, host)
+        const recorded = spy(field, "recorded")
+        const cancelled = spy(field, "cancelRecording")
+        compare(field.valueText, "Not set")
+        mouseClick(field)
+        verify(field.recording)
+        compare(field.valueText, "Press keys")
+        keyPress(Qt.Key_Control)
+        compare(recorded.count, 0) // modifiers alone record nothing
+        keyClick(Qt.Key_K, Qt.ControlModifier)
+        compare(recorded.count, 1)
+        compare(recorded.signalArguments[0][0], Qt.Key_K)
+        verify(recorded.signalArguments[0][1] & Qt.ControlModifier)
+        verify(!field.recording)
+        compare(field.keys.length, 2)
+        mouseClick(field, 10, field.height / 2)
+        verify(field.recording)
+        keyClick(Qt.Key_Escape)
+        compare(cancelled.count, 1)
+        verify(!field.recording)
+        compare(recorded.count, 1)
     }
 
     function test_kbd_draws_one_cap_per_key() {

@@ -181,6 +181,24 @@ MeridianGround {
                     }
                 }
                 Section {
+                    title: "Shortcut field"
+                    MeridianShortcutField {
+                        id: galleryShortcut
+                        width: 280
+                        showLabel: false
+                        label: "Command palette"
+                        emptyLabel: "Not set"
+                        recordingLabel: "Press a key combination…"
+                        preparingLabel: "Preparing…"
+                        clearLabel: "Clear shortcut"
+                        keys: ["Ctrl", "Shift", "P"]
+                        onRecordRequested: recording = true
+                        onCancelRecording: recording = false
+                        onRecorded: (key, modifiers) => { recording = false }
+                        onCleared: keys = []
+                    }
+                }
+                Section {
                     title: "Text area"
                     MeridianTextArea {
                         width: Math.min(420, parent.width)
