@@ -1,5 +1,62 @@
 # Changelog
 
+## 2.1.0 - 2026-11-22
+
+**Added**
+
+- `MeridianScrollBar` (QML), Flutter's scrollbar thumb: a `line-strong`
+  pill that fades in while the view scrolls and out 600 ms after it stops,
+  thickening to 8 px in `control-edge` under the pointer or while dragged.
+  Wheel and keyboard scrolling that animates the content position reveal it
+  too; content that grows does not.
+  `visibility` adds Hover (bind `viewHovered`) and Always; it takes clicks
+  only while its thumb shows. The fade-out wait is a timer, so a scroll
+  during it can no longer leave the thumb stuck invisible.
+- `MeridianResizeHandle` (QML), Flutter's gutter resize handle: invisible at
+  rest, a 2px `accent` rule grows from the centre 150 ms into a hover,
+  full length while dragging or focused; `dragged(delta)`, arrow keys and
+  double click or Enter emit `reset`. Its API follows Flutter's:
+  `semanticLabel`, `orientation`, `thickness`.
+- `MeridianPagination` (QML) gains Flutter's direct page field: `jumpLabel`,
+  `pageCountLabel` and `jumpAccessibleName`; Enter selects the typed page,
+  clamped to the range. Its groups sit 8 px apart, as in Flutter.
+- `MeridianWheelScroll`: one wheel and touchpad scroller for Qt Quick views
+  on Linux, macOS and Windows, after KDE Kirigami's WheelHandler (VLC uses
+  it too). A wheel notch moves `verticalStepSize` (`wheelScrollLines`
+  lines, growing with the viewport as in GTK) and ignores Qt Wayland's
+  ~15 px pixel delta; it animates for at most 200 ms and the next notch
+  extends the target, so notches add up and the content stops when the
+  wheel stops. Touchpad gestures follow their pixel delta one to one;
+  macOS momentum is followed, and only Qt Wayland, which sends none,
+  continues a lifted gesture. `smoothScroll`, `syntheticMomentum`,
+  `animating`, `stop()`. Meridian's dialogs, menus and lists use it.
+  `qml/tools/scroll_lab.qml` compares it with Qt's handling on real devices.
+- QML primitives for ProcessLama's port: Avatar, BadgeDot, Checkbox, Count,
+  ColumnHeader, Disclosure, Hairline, LicenseDialog, MenuHeader, Meter,
+  NavSection, PropertyList, Select, SelectableText, SettingsDialog,
+  SettingsGroup, Slider, StatusBar and StatusBarText, StatusDot, SwapText,
+  Tabs, TabStrip, ToolbarButton and Tooltip. Dialogs size themselves and
+  keep their action order; menu separators draw a hairline.
+- Meridian for Qt Quick: the `Meridian` QML module in `qml/Meridian` for
+  Rust + Qt Quick desktop apps (MailLama's and ProcessLama's ports first).
+  `tool/generate_qml.py` generates its tokens, colour and type roles, layout
+  metrics (from `meridian_layout.dart`) and Lucide outlines from the same
+  sources as the Flutter library. `tool/generate.py --check` covers them.
+  Hand-written `Theme` (brand, light/dark/system, density, reduce motion)
+  and `Motion` (durations, curves, springs as splines, reduced-motion
+  substitution). The first primitives are built on `QtQuick.Templates`:
+  Button, IconButton, TextField (default, search, plain), Switch, Segmented,
+  Chip, Spinner, ProgressBar, Banner, EmptyState, Island and Ground, Toast
+  with its host, Dialog and Confirm, Menu (type-ahead, submenus, opt-in native
+  popups), Popover, NavRow, ListRow, Pagination, SelectionBar, DropZone,
+  DatePicker and SettingsRow, with Surface, Icon, Text, FocusRing and Shadow.
+  The release also adds a gallery, 107 Qt Quick Tests (including a gallery
+  layout matrix at 390 px and 1280 px),
+  `tool/verify_qml.sh`, a QML guide (`design/project/guides/50-qml.md`) and a
+  CI job. The `on-…` colour roles are `inkOnAccent`, `inkOnAccentMuted`,
+  `inkOnDanger` and `inkOnAttention` in QML, where `onAccent` would read as a
+  signal handler.
+
 ## 2.0.3 - 2026-11-21
 
 **Changed**

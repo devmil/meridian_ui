@@ -9,10 +9,11 @@ Reads tokens/meridian.tokens.json (the shared core) and tokens/brands/*.json
   design/project/motion.css                    the motion tokens as CSS custom properties
   design/project/tokens.json                   the Design System artifact's tokens (one light and
                                                one dark theme per brand)
+  qml/Meridian/*.qml (generated parts)         the QML rendition, via tool/generate_qml.py
 
 and checks every contrast floor in FLOORS for every brand in both themes.
 
-  python3 tool/generate.py            write everything, fail on a contrast miss
+  python3 tool/generate.py            write everything (Dart, web and QML), fail on a contrast miss
   python3 tool/generate.py --check    write nothing, fail if a generated file is stale or a floor is missed
 """
 from __future__ import annotations
@@ -646,6 +647,9 @@ def main() -> int:
         else:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(text)
+    # The QML rendition (no Dart needed for it; see tool/generate_qml.py).
+    import generate_qml
+    stale += generate_qml.write_or_check(check_only)
     failures = check_contrast(core, brands)
     for f in failures:
         print("contrast:", f)

@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Meridian UI is the shared Flutter design system for GitLama, CrossProton, Mimameidr, Nibluma, ShotLama, and VaultLama. Explore its tokens, brands, and components.">
+  <meta name="description" content="Meridian UI is the shared design system for GitLama, CrossProton, Mimameidr, Nibluma, ShotLama, and VaultLama, in Flutter and Qt Quick. Explore its tokens, brands, and components.">
   <meta name="theme-color" content="#e9eef2">
-  <title>Meridian UI | A shared Flutter design system</title>
+  <title>Meridian UI | One design system for Flutter and Qt Quick</title>
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Meridian UI | A shared Flutter design system">
-  <meta property="og:description" content="Tokens, brands, and Flutter components shared by GitLama, CrossProton, Mimameidr, Nibluma, ShotLama, and VaultLama.">
+  <meta property="og:title" content="Meridian UI | One design system for Flutter and Qt Quick">
+  <meta property="og:description" content="Tokens, brands, and components for Flutter and Qt Quick, shared by GitLama, CrossProton, Mimameidr, Nibluma, ShotLama, and VaultLama.">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="icons/meridian-32.png">
   <link rel="apple-touch-icon" href="icons/meridian-180.png">
@@ -24,6 +24,7 @@
       <a href="#live">Live</a>
       <a href="#tokens">Tokens</a>
       <a href="#brands">Brands</a>
+      <a href="#qt-quick">Qt Quick</a>
       <a class="nav-cta" href="widgetbook/">Open Widgetbook <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
@@ -32,9 +33,9 @@
       <div class="hero-copy">
         <p class="eyebrow"><span class="eyebrow-line"></span> THE SHARED SYSTEM</p>
         <h1>One language.<br><em>Many places.</em></h1>
-        <p class="lead">Meridian is the Flutter design system behind GitLama, CrossProton, Mimameidr, Nibluma, ShotLama, and VaultLama. A common set of tokens and controls, tuned to each app's character.</p>
+        <p class="lead">Meridian is the design system behind GitLama, CrossProton, Mimameidr, Nibluma, ShotLama, and VaultLama. A common set of tokens and controls, tuned to each app's character, for Flutter apps and for Rust apps built with Qt Quick.</p>
         <div class="hero-actions"><a class="button primary" href="widgetbook/">Explore components <span aria-hidden="true">↗</span></a><a class="text-link" href="#principles">How Meridian works <span aria-hidden="true">↓</span></a><a class="text-link" href="https://github.com/devmil/meridian_ui">View source on GitHub <span aria-hidden="true">↗</span></a></div>
-        <div class="hero-meta"><span>6 brands</span><i></i><span>242 icons</span><i></i><span>Light + dark</span><i></i><span>Desktop + touch</span></div>
+        <div class="hero-meta"><span>6 brands</span><i></i><span>242 icons</span><i></i><span>Light + dark</span><i></i><span>Desktop + touch</span><i></i><span>Flutter + Qt Quick</span></div>
       </div>
       <div class="hero-art" aria-label="Illustration of a Meridian interface with navigation, cards, and controls" role="img">
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
@@ -235,9 +236,74 @@ BorderRadius.circular(m.radius.lg);
 const SizedBox(width: MeridianSpace.space4);</code></pre></figure>
       </div>
     </section>
+    <section class="qt-quick section" id="qt-quick">
+      <div class="section-top"><div><p class="eyebrow">07 / QT QUICK</p><h2>The same system.<br><em>Native in QML.</em></h2></div><p>Rust desktop apps built with Qt Quick import Meridian as a QML module. The same token file, layout constants, and Lucide outlines generate its colours, type, metrics, and icons, so a brand looks the same in both toolkits. The primitives build on Qt Quick Templates: Qt supplies behaviour, keyboard handling, and accessibility, and Meridian draws every pixel.</p></div>
+      <div class="code-grid">
+        <figure><figcaption>Choose a brand once</figcaption><pre tabindex="0"><code>import Meridian
+
+ApplicationWindow {
+    color: Theme.colors.ground
+    Component.onCompleted: {
+        Theme.brand = "crossproton"
+        Theme.mode = Theme.System
+    }
+}</code></pre></figure>
+        <figure><figcaption>Build from primitives</figcaption><pre tabindex="0"><code>MeridianIsland {
+    ListView {
+        id: inbox
+        model: messages
+        delegate: MeridianListRow {
+            text: model.subject
+            subtitle: model.sender
+            meta: model.time
+        }
+        MeridianWheelScroll { flickable: inbox }
+        ScrollBar.vertical: MeridianScrollBar { }
+    }
+}</code></pre></figure>
+        <figure><figcaption>Read tokens from the theme</figcaption><pre tabindex="0"><code>MeridianText {
+    text: "Inbox"
+    role: MeridianText.BodyStrong
+    color: Theme.colors.inkMuted
+}
+Rectangle {
+    color: Theme.colors.paneAlt
+    radius: Theme.radius.lg
+}</code></pre></figure>
+      </div>
+      <div class="facts">
+        <div><b>60</b><span>QML primitives</span></div>
+        <div><b>1</b><span>token source for both toolkits</span></div>
+        <div><b>107</b><span>Qt Quick tests, run offscreen</span></div>
+        <div><b>3</b><span>desktops: Linux, macOS, Windows</span></div>
+      </div>
+      <div class="catalogue" aria-label="Qt Quick component groups">
+        <article class="catalogue-card">
+          <h3>Actions and inputs</h3>
+          <ul><li>Button</li><li>Icon button</li><li>Toolbar button</li><li>Text field</li><li>Checkbox</li><li>Switch</li><li>Segmented</li><li>Slider</li><li>Select</li><li>Date picker</li><li>Drop zone</li></ul>
+        </article>
+        <article class="catalogue-card">
+          <h3>Navigation</h3>
+          <ul><li>Nav row</li><li>Nav section</li><li>List row</li><li>Tabs</li><li>Tab strip</li><li>Pagination</li><li>Selection bar</li></ul>
+        </article>
+        <article class="catalogue-card">
+          <h3>Display and feedback</h3>
+          <ul><li>Avatar</li><li>Count</li><li>Chip</li><li>Status dot</li><li>Tooltip</li><li>Banner</li><li>Toast</li><li>Progress bar</li><li>Meter</li><li>Spinner</li><li>Empty state</li></ul>
+        </article>
+        <article class="catalogue-card">
+          <h3>Containers</h3>
+          <ul><li>Island and ground</li><li>Dialog and confirm</li><li>Menu</li><li>Popover</li><li>Disclosure</li><li>Settings dialog</li><li>License dialog</li></ul>
+        </article>
+        <article class="catalogue-card">
+          <h3>Data and window</h3>
+          <ul><li>Property list</li><li>Column header</li><li>Resize handle</li><li>Status bar</li><li>Scroll bar</li><li>Wheel scroll</li></ul>
+          <a href="https://github.com/devmil/meridian_ui/tree/main/qml">Browse the QML source <span aria-hidden="true">↗</span></a>
+        </article>
+      </div>
+    </section>
     <section class="closing"><p class="eyebrow">SEE IT IN CONTEXT</p><h2>Every detail,<br><em>ready to inspect.</em></h2><p>Browse isolated Flutter components, switch brands and themes, and try the controls yourself.</p><a class="button light" href="widgetbook/">Open Widgetbook <span aria-hidden="true">↗</span></a></section>
   </main>
-  <footer><a class="wordmark" href="#top"><span class="mark" aria-hidden="true"><span></span></span>meridian<span class="wordmark-ui">/ui</span></a><p>Shared design for Devmil Flutter apps.</p><a href="https://github.com/devmil/meridian_ui">GitHub ↗</a><a href="widgetbook/">Component browser ↗</a></footer>
+  <footer><a class="wordmark" href="#top"><span class="mark" aria-hidden="true"><span></span></span>meridian<span class="wordmark-ui">/ui</span></a><p>Shared design for Devmil Flutter and Qt Quick apps.</p><a href="https://github.com/devmil/meridian_ui">GitHub ↗</a><a href="widgetbook/">Component browser ↗</a></footer>
   <script src="site.js" defer></script>
 </body>
 </html>
