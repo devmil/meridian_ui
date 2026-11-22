@@ -13,9 +13,12 @@
   and `Motion` (durations, curves, springs as splines, reduced-motion
   substitution). The first primitives are built on `QtQuick.Templates`:
   Button, IconButton, TextField (default, search, plain), Switch, Segmented,
-  Chip, Spinner, ProgressBar, Banner, EmptyState, Island and Ground, with
-  Icon, Text, FocusRing and Shadow. The release also adds a gallery, 47 Qt
-  Quick Tests (including a gallery layout matrix at 390 px and 1280 px),
+  Chip, Spinner, ProgressBar, Banner, EmptyState, Island and Ground, Toast
+  with its host, Dialog and Confirm, Menu (type-ahead, submenus, opt-in native
+  popups), Popover, NavRow, ListRow, Pagination, SelectionBar, DropZone,
+  DatePicker and SettingsRow, with Surface, Icon, Text, FocusRing and Shadow.
+  The release also adds a gallery, 69 Qt Quick Tests (including a gallery
+  layout matrix at 390 px and 1280 px),
   `tool/verify_qml.sh`, a QML guide (`design/project/guides/50-qml.md`) and a
   CI job.
 

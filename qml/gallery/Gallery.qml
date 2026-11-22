@@ -267,6 +267,112 @@ MeridianGround {
                 }
 
                 Section {
+                    title: "Overlays"
+                    MeridianButton {
+                        text: "Show a toast"
+                        onActivated: toasts.show("Archived 3 messages", MeridianToast.Success, "Undo")
+                    }
+                    MeridianButton {
+                        text: "Delete 3 messages…"
+                        variant: MeridianButton.DangerQuiet
+                        onActivated: confirm.open()
+                    }
+                    MeridianButton {
+                        id: menuAnchor
+                        text: "Actions"
+                        trailingIconName: "chevron-down"
+                        onActivated: actionMenu.popup(menuAnchor, 0, menuAnchor.height + Theme.space.s2)
+                    }
+                    MeridianButton {
+                        id: popoverAnchor
+                        text: "Snooze until…"
+                        iconName: "clock"
+                        onActivated: popover.open()
+                        MeridianPopover {
+                            id: popover
+                            width: datePicker.implicitWidth + 2 * padding
+                            MeridianDatePicker {
+                                id: datePicker
+                                previousMonthLabel: "Previous month"
+                                nextMonthLabel: "Next month"
+                                onDateChosen: popover.close()
+                            }
+                        }
+                    }
+                }
+
+                Section {
+                    title: "Rows"
+                    Column {
+                        width: Math.min(260, sections.width)
+                        MeridianNavRow { width: parent.width; text: "Inbox"; iconName: "inbox"; count: 12; countEmphasized: true; current: true }
+                        MeridianNavRow { width: parent.width; text: "Projects"; iconName: "folder"; expandable: true; expanded: true }
+                        MeridianNavRow { width: parent.width; text: "Quarterly"; iconName: "folder"; depth: 1 }
+                        MeridianNavRow { width: parent.width; text: "Work"; iconName: "tag"; iconColor: Theme.colors.series3 }
+                        MeridianNavRow { width: parent.width; text: "Archive"; iconName: "archive"; dropState: MeridianNavRow.Accept }
+                    }
+                    MeridianIsland {
+                        width: Math.min(460, sections.width)
+                        height: listColumn.height + 2 * Theme.space.s3
+                        Column {
+                            id: listColumn
+                            x: Theme.space.s3
+                            y: Theme.space.s3
+                            width: parent.width - 2 * Theme.space.s3
+                            MeridianListRow {
+                                id: firstRow
+                                width: parent.width
+                                text: "Quarterly report"
+                                subtitle: "Anna Berger"
+                                meta: "09:41"
+                                emphasized: true
+                                MeridianIconButton { iconName: "archive"; text: "Archive"; controlSize: MeridianButton.Small; surfaceColor: firstRow.fillColor }
+                                MeridianIconButton { iconName: "trash-2"; text: "Delete"; controlSize: MeridianButton.Small; surfaceColor: firstRow.fillColor }
+                            }
+                            MeridianListRow { width: parent.width; text: "Travel plans"; subtitle: "Ben Okafor"; meta: "Yesterday"; selected: true; islandFocused: true }
+                            MeridianListRow { width: parent.width; text: "Invoice 2025-114"; subtitle: "Billing"; meta: "Mon"; selected: true }
+                            MeridianListRow { width: parent.width; text: "Filtered out"; subtitle: "Hidden by the filter"; meta: "Sep 3"; dimmed: true }
+                            MeridianListRow { width: parent.width; text: "Release notes"; subtitle: "Two lines, the subtitle below"; meta: "Aug 28"; twoLine: true; iconName: "file-text" }
+                        }
+                    }
+                    MeridianSelectionBar { width: Math.min(460, sections.width); label: "3 selected"; clearLabel: "Clear selection"
+                        MeridianIconButton { iconName: "archive"; text: "Archive"; controlSize: MeridianButton.Small; surfaceColor: Theme.colors.accentSoft }
+                        MeridianIconButton { iconName: "trash-2"; text: "Delete"; controlSize: MeridianButton.Small; surfaceColor: Theme.colors.accentSoft }
+                    }
+                    MeridianPagination {
+                        page: 5; pageCount: 20
+                        previousLabel: "Previous page"; nextLabel: "Next page"; pageLabel: "Page %1"
+                        onPageSelected: p => page = p
+                    }
+                }
+
+                Section {
+                    title: "Drop zone and settings"
+                    MeridianDropZone { width: Math.min(320, sections.width); text: "Drop files to attach"; message: "Up to 25 MB" }
+                    MeridianDropZone { width: Math.min(320, sections.width); text: "Release to attach"; dropState: MeridianDropZone.Active }
+                    Column {
+                        width: Math.min(640, sections.width)
+                        spacing: Theme.space.s6
+                        MeridianSettingsRow {
+                            width: parent.width
+                            label: "Check mail"
+                            help: "New mail arrives as it comes."
+                            MeridianSwitch { text: "Check mail"; showLabel: false; checked: true }
+                        }
+                        MeridianSettingsRow {
+                            width: parent.width
+                            label: "Density"
+                            MeridianSegmented {
+                                label: "Density"
+                                segments: [{ value: 0, label: "Comfortable" }, { value: 1, label: "Compact" }]
+                                value: 0
+                                onActivated: v => value = v
+                            }
+                        }
+                    }
+                }
+
+                Section {
                     objectName: "galleryIcons"
                     title: "Icons (Lucide " + IconData.lucideVersion + ")"
                     Repeater {
@@ -308,5 +414,33 @@ MeridianGround {
                 }
             }
         }
+    }
+
+    MeridianMenu {
+        id: actionMenu
+        MeridianMenuItem { text: "Reply"; iconName: "reply"; shortcut: "R" }
+        MeridianMenuItem { text: "Forward"; iconName: "forward"; shortcut: "F" }
+        MeridianMenu {
+            title: "Label as"
+            MeridianMenuItem { text: "Work"; dotColor: Theme.colors.series3; checkable: true; checked: true }
+            MeridianMenuItem { text: "Travel"; dotColor: Theme.colors.series5; checkable: true }
+        }
+        MeridianMenuItem { text: "Mark as unread"; iconName: "mail"; hint: "3" }
+        MeridianMenuSeparator {}
+        MeridianMenuItem { text: "Delete"; iconName: "trash-2"; danger: true }
+    }
+
+    MeridianConfirm {
+        id: confirm
+        title: "Delete 3 messages"
+        description: "They are removed from every device. This cannot be undone."
+        confirmLabel: "Delete 3 messages"
+        cancelLabel: "Cancel"
+        destructive: true
+    }
+
+    MeridianToastHost {
+        id: toasts
+        anchors.fill: parent
     }
 }

@@ -64,7 +64,18 @@ style a stock Qt Quick Controls control in an app: add or extend a primitive her
 | `MeridianBanner` | `MeridianBanner` | Tones, up to two actions, reveal and collapse |
 | `MeridianEmptyState` | `MeridianEmptyState` | `progress`, `compact`, `headline`; staggered entrance once |
 | `MeridianIsland`, `MeridianGround` | Island, Ground | `shadow-pane` edge; focus halo |
-| `MeridianIcon`, `MeridianText`, `MeridianFocusRing`, `MeridianShadow` | — | Building blocks for app components |
+| `MeridianToast` + `MeridianToastHost` | Toast | One at a time; `show()` returns an id that `actionTriggered` reports (Undo); hover or focus pauses the countdown |
+| `MeridianDialog`, `MeridianConfirm` | Dialog, showMeridianConfirm | Width classes Confirm/Form/Workflow; Enter submits or shakes when `submitDisabled`; a destructive confirm starts on Cancel |
+| `MeridianMenu`, `MeridianMenuItem`, `MeridianMenuSeparator` | Menu | Type-ahead, submenus, `danger`, `shortcut`, `hint`, `dotColor`; `nativeMenu: true` uses Qt's platform menu |
+| `MeridianPopover` | Popover | One task with fields or its own layout |
+| `MeridianNavRow` | NavRow | `current`, `sidebarFocused` (solid accent), `depth`, expand with ←/→, `dropState` |
+| `MeridianListRow` | ListRow | Inset selection bar, `islandFocused`, `emphasized`, `dimmed`, `twoLine`, hover actions replace `meta` (give them `surfaceColor: row.fillColor`) |
+| `MeridianPagination` | Pagination | Seven pages in full, else first, last and neighbours |
+| `MeridianSelectionBar` | SelectionBar | Count, actions, clear; rises in on `spring-gentle` |
+| `MeridianDropZone` | DropZone | Idle/Active/Invalid; marching dashes; also a browse button |
+| `MeridianDatePicker` | DatePicker | Locale-aware weeks; one tab stop with arrow, Page and Home/End keys; range limits |
+| `MeridianSettingsRow` | SettingsRow | 200px label column; stacks below 520px and at touch density |
+| `MeridianSurface`, `MeridianIcon`, `MeridianText`, `MeridianFocusRing`, `MeridianShadow` | — | Building blocks for app components. `MeridianText.tabular` gives tabular figures without replacing the role's font |
 
 Domain components (a mail row, a recipient field) belong in the app, built
 from these primitives and the tokens.

@@ -8,6 +8,26 @@ Text {
     enum Role { Display, Title, Heading, Body, BodyStrong, Label, Caption, Overline, Code, CodeSm, Reading }
 
     property int role: MeridianText.Body
+    /// Tabular figures (times, counts, sizes) so digits line up.
+    /// Set this, not `font.features`, which would replace the role's font.
+    property bool tabular: false
+
+    readonly property font roleFont: {
+        const t = Theme.type
+        switch (role) {
+        case MeridianText.Display: return t.display
+        case MeridianText.Title: return t.title
+        case MeridianText.Heading: return t.heading
+        case MeridianText.BodyStrong: return t.bodyStrong
+        case MeridianText.Label: return t.label
+        case MeridianText.Caption: return t.caption
+        case MeridianText.Overline: return t.overline
+        case MeridianText.Code: return t.code
+        case MeridianText.CodeSm: return t.codeSm
+        case MeridianText.Reading: return t.reading
+        default: return t.body
+        }
+    }
 
     readonly property real roleLineHeight: {
         const t = Theme.type
@@ -26,22 +46,10 @@ Text {
         }
     }
 
-    font: {
-        const t = Theme.type
-        switch (role) {
-        case MeridianText.Display: return t.display
-        case MeridianText.Title: return t.title
-        case MeridianText.Heading: return t.heading
-        case MeridianText.BodyStrong: return t.bodyStrong
-        case MeridianText.Label: return t.label
-        case MeridianText.Caption: return t.caption
-        case MeridianText.Overline: return t.overline
-        case MeridianText.Code: return t.code
-        case MeridianText.CodeSm: return t.codeSm
-        case MeridianText.Reading: return t.reading
-        default: return t.body
-        }
-    }
+    font: tabular ? Qt.font({ family: roleFont.family, pixelSize: roleFont.pixelSize, weight: roleFont.weight,
+                              letterSpacing: roleFont.letterSpacing, capitalization: roleFont.capitalization,
+                              features: { "tnum": 1 } })
+                  : roleFont
     color: Theme.colors.ink
     // Fixed line boxes keep rows on the token grid; a larger line count still
     // grows the item.

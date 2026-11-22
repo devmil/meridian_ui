@@ -74,6 +74,16 @@ TestCase {
         compare(Theme.type.bodyStrong.weight, 600)
     }
 
+    Component { id: textComponent; MeridianText { role: MeridianText.Caption; text: "09:41" } }
+
+    function test_tabular_text_keeps_its_role_font() {
+        const label = createTemporaryObject(textComponent, null)
+        label.tabular = true
+        compare(label.font.pixelSize, Theme.type.caption.pixelSize)
+        compare(label.font.weight, Theme.type.caption.weight)
+        compare(label.font.features["tnum"], 1)
+    }
+
     function test_layout_metrics_are_generated() {
         compare(Metrics.focusRingWidth, 2)
         compare(Metrics.focusRingOffset, 1)
