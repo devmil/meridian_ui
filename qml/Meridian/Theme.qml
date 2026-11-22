@@ -28,6 +28,9 @@ QtObject {
     /// Multiplies type sizes: the platform's text scale (GTK's
     /// text-scaling-factor on Linux). Layout sizes stay put.
     property real textScale: 1
+    /// An app's semantic icon names for Lucide icons (`fetch` →
+    /// `arrow-down-to-line`), as Flutter's `MeridianTheme.resolve(icons:)`.
+    property var iconAliases: ({})
 
     readonly property var brandInfo: Tokens.brands[brand] ?? Tokens.brands[Tokens.brandIds[0]]
     readonly property bool dark: mode === Theme.Dark || (mode === Theme.System && systemDark)
