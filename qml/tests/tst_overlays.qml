@@ -8,6 +8,13 @@ Item {
     height: 700
 
     Component { id: spyComponent; SignalSpy {} }
+    Component {
+        id: licenseComponent
+        MeridianLicenseDialog {
+            packages: [{ name: "Beta", licenses: ["B1", "B2"] }, { name: "alpha", licenses: ["A"] }]
+            applicationName: "App"
+        }
+    }
     Component { id: toastHostComponent; MeridianToastHost { anchors.fill: parent } }
     Component {
         id: dialogComponent
@@ -51,6 +58,18 @@ Item {
 
         function spy(target, signal) {
             return createTemporaryObject(spyComponent, testCase, { target: target, signalName: signal })
+        }
+
+        function test_license_dialog_filters_and_counts_licenses() {
+            const dialog = createTemporaryObject(licenseComponent, host)
+            compare(dialog.selected, "Beta")
+            compare(dialog.countText(1), "1 license")
+            compare(dialog.countText(2), "2 licenses")
+            dialog.query = "ALP"
+            compare(dialog.visiblePackages.length, 1)
+            compare(dialog.visiblePackages[0].name, "alpha")
+            dialog.countText = count => count + " Lizenzen"
+            compare(dialog.countText(3), "3 Lizenzen")
         }
 
         function test_toast_replaces_pauses_and_reports_action() {
