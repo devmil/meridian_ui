@@ -164,6 +164,14 @@ MeridianGround {
                 }
 
                 Section {
+                    title: "Text area"
+                    MeridianTextArea {
+                        width: Math.min(420, parent.width)
+                        placeholderText: "Description"
+                        Accessible.name: "Description"
+                    }
+                }
+                Section {
                     title: "Selection"
                     MeridianSwitch { text: "Check mail automatically"; checked: true }
                     MeridianSwitch {

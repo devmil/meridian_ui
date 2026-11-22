@@ -15,6 +15,10 @@ TestCase {
     when: windowShown
 
     Component {
+        id: textAreaComponent
+        MeridianTextArea { width: 300; placeholderText: "Description"; minimumLines: 2; maximumLines: 4 }
+    }
+    Component {
         id: buttonComponent
         MeridianButton { text: "Move 3 messages to archive" }
     }
@@ -72,6 +76,18 @@ TestCase {
 
     function spy(target, signal) {
         return createTemporaryObject(spyComponent, testCase, { target: target, signalName: signal })
+    }
+
+    function test_text_area_grows_between_its_line_limits() {
+        const area = createTemporaryObject(textAreaComponent, testCase)
+        const two = area.height
+        compare(two, area.chrome + 2 * area.lineHeight)
+        area.text = "one\ntwo\nthree"
+        tryCompare(area, "height", area.chrome + 3 * area.lineHeight)
+        area.text = "1\n2\n3\n4\n5\n6\n7"
+        tryCompare(area, "height", area.chrome + 4 * area.lineHeight)
+        area.forceActiveFocus()
+        verify(area.textArea.activeFocus)
     }
 
     function test_button_pointer_and_keyboard_activation() {
