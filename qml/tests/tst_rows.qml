@@ -28,6 +28,10 @@ Item {
         MeridianPagination { previousLabel: "Previous page"; nextLabel: "Next page"; pageLabel: "Page %1" }
     }
     Component {
+        id: resizeComponent
+        MeridianResizeHandle { width: 12; height: 400; accessibleName: "Resize sidebar" }
+    }
+    Component {
         id: selectionComponent
         MeridianSelectionBar { width: 400; label: "3 selected"; clearLabel: "Clear selection" }
     }
@@ -157,6 +161,40 @@ Item {
             compare(selected.count, 2)
             pages.jumpLabel = ""
             verify(!field.visible)
+        }
+
+        function test_resize_handle_grows_on_hover_and_reports_drags() {
+            const handle = createTemporaryObject(resizeComponent, host)
+            const rule = findChild(handle, "resizeRule")
+            const moved = spy(handle, "dragged")
+            const reset = spy(handle, "resetRequested")
+            compare(handle.implicitWidth, Theme.space.s3)
+            verify(!rule.visible)
+            mouseMove(handle, 6, 200)
+            // The rule waits out the hover delay, then grows from the centre.
+            compare(handle.grow, 0)
+            tryCompare(handle, "grow", 1, 1000)
+            compare(rule.height, 400 - 2 * Theme.space.s5)
+            compare(rule.width, Metrics.resizeRule)
+            verify(Qt.colorEqual(rule.color, Theme.colors.accent))
+            mousePress(handle, 6, 200)
+            mouseMove(handle, 26, 200)
+            mouseRelease(handle, 26, 200)
+            verify(moved.count >= 1)
+            let total = 0
+            for (let i = 0; i < moved.count; ++i)
+                total += moved.signalArguments[i][0]
+            compare(total, 20)
+            mouseDoubleClickSequence(handle, 6, 200)
+            verify(reset.count >= 1)
+            mouseMove(host, 300, 10)
+            tryCompare(handle, "grow", 0, 1000)
+            handle.forceActiveFocus(Qt.TabFocusReason)
+            const before = moved.count
+            keyClick(Qt.Key_Left)
+            compare(moved.count, before + 1)
+            compare(moved.signalArguments[before][0], -Metrics.resizeKeyboardStep)
+            compare(rule.height, 400 - 2 * Theme.space.s5)
         }
 
         function test_selection_bar_clear() {

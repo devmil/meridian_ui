@@ -43,3 +43,4 @@ MeridianSelectionBar 1.0 MeridianSelectionBar.qml
 MeridianDropZone 1.0 MeridianDropZone.qml
 MeridianDatePicker 1.0 MeridianDatePicker.qml
 MeridianSettingsRow 1.0 MeridianSettingsRow.qml
+MeridianResizeHandle 1.0 MeridianResizeHandle.qml

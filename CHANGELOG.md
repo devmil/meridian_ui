@@ -4,6 +4,10 @@
 
 **Added**
 
+- `MeridianResizeHandle` (QML), Flutter's gutter resize handle: invisible at
+  rest, a 2px `accent` rule grows from the centre 150 ms into a hover,
+  full length while dragging or focused; `dragged(delta)`, arrow keys and
+  double click or Enter to reset.
 - `MeridianPagination` (QML) gains Flutter's direct page field: `jumpLabel`,
   `pageCountLabel` and `jumpAccessibleName`; Enter selects the typed page,
   clamped to the range. Its groups sit 8 px apart, as in Flutter.
