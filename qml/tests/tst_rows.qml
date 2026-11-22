@@ -25,6 +25,17 @@ Item {
         }
     }
     Component {
+        id: slotsComponent
+        MeridianListRow {
+            width: 400
+            text: "main"
+            meta: "3"
+            leading: Rectangle { objectName: "leadingMark"; width: 20; height: 12 }
+            titleTrailing: Rectangle { objectName: "titleMark"; width: 8; height: 8 }
+            trailing: Rectangle { objectName: "trailingMark"; width: 30; height: 10 }
+        }
+    }
+    Component {
         id: islandComponent
         MeridianIsland {
             width: 400
@@ -129,6 +140,21 @@ Item {
             row.islandFocused = true
             verify(Qt.colorEqual(row.inkColor, Theme.colors.inkOnAccent))
             verify(Qt.colorEqual(action.iconColor, Theme.colors.inkOnAccentMuted) || Qt.colorEqual(action.iconColor, Theme.colors.inkOnAccent))
+        }
+
+        function test_list_row_slots_frame_the_title() {
+            const row = createTemporaryObject(slotsComponent, host)
+            const leading = findChild(row, "leadingMark")
+            const titleMark = findChild(row, "titleMark")
+            const trailing = findChild(row, "trailingMark")
+            verify(leading && titleMark && trailing)
+            const leadingEnd = leading.mapToItem(row, leading.width, 0).x
+            const markStart = titleMark.mapToItem(row, 0, 0).x
+            const trailingStart = trailing.mapToItem(row, 0, 0).x
+            const trailingEnd = trailing.mapToItem(row, trailing.width, 0).x
+            verify(markStart > leadingEnd + Theme.space.s4)
+            verify(trailingStart > markStart)
+            fuzzyCompare(trailingEnd, row.width - row.rightPadding, 0.5)
         }
 
         function test_list_row_heights_follow_density() {
