@@ -242,7 +242,7 @@ def gen_type_scale(core) -> str:
         out.append(f"    /// {first}\n")
         out.append(
             f"    readonly property font {name}: Qt.font({{ family: {family}, "
-            f"pixelSize: (touch ? {num(ts)} : {num(ds)}) * scale, weight: touch ? {t['fontWeight']} : {s['fontWeight']}, "
+            f"pixelSize: Math.round((touch ? {num(ts)} : {num(ds)}) * scale), weight: touch ? {t['fontWeight']} : {s['fontWeight']}, "
             f"letterSpacing: (touch ? {num(spacing(t))} : {num(spacing(s))}) * scale"
             + (", capitalization: Font.AllUppercase" if base == "overline" else "") + " })\n")
         out.append(f"    readonly property real {name}LineHeight: Math.round((touch ? {num(tl)} : {num(dl)}) * scale)\n")
