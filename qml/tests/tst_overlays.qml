@@ -9,6 +9,18 @@ Item {
 
     Component { id: spyComponent; SignalSpy {} }
     Component {
+        id: settingsComponent
+        MeridianSettingsDialog {
+            title: "Settings"
+            pages: [{ label: "One" }, { label: "Two" }]
+            property alias failureText: failure
+            footerShown: failure.text.length > 0
+            footerContent: [Text { id: failure }]
+            Item { objectName: "short"; height: 40 }
+            Item { objectName: "tall"; height: 900 }
+        }
+    }
+    Component {
         id: licenseComponent
         MeridianLicenseDialog {
             packages: [{ name: "Beta", licenses: ["B1", "B2"] }, { name: "alpha", licenses: ["A"] }]
@@ -58,6 +70,20 @@ Item {
 
         function spy(target, signal) {
             return createTemporaryObject(spyComponent, testCase, { target: target, signalName: signal })
+        }
+
+        function test_settings_dialog_sizes_the_shown_page_and_hides_an_empty_footer() {
+            const dialog = createTemporaryObject(settingsComponent, host)
+            dialog.open()
+            tryVerify(() => dialog.opened)
+            const body = findChild(dialog.contentItem, "settingsBody")
+            compare(body.contentHeight, 40 + body.pageTop + 2 * dialog.inset)
+            dialog.currentPage = 1
+            tryCompare(body, "contentHeight", 900 + body.pageTop + 2 * dialog.inset)
+            const footer = findChild(dialog.contentItem, "settingsFooter")
+            verify(!footer.visible)
+            dialog.failureText.text = "Could not save"
+            tryVerify(() => footer.visible)
         }
 
         function test_license_dialog_filters_and_counts_licenses() {
