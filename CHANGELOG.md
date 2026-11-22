@@ -7,6 +7,8 @@
 - `MeridianScrollBar` (QML), Flutter's scrollbar thumb: a `line-strong`
   pill that fades in while the view scrolls and out 600 ms after it stops,
   thickening to 8 px in `control-edge` under the pointer or while dragged.
+  Wheel and keyboard scrolling that animates the content position reveal it
+  too; content that grows does not.
   `visibility` adds Hover (bind `viewHovered`) and Always; it takes clicks
   only while its thumb shows.
 - `MeridianResizeHandle` (QML), Flutter's gutter resize handle: invisible at

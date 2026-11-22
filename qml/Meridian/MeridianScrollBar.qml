@@ -30,8 +30,12 @@ T.ScrollBar {
     /// The view has more than it shows.
     readonly property bool needed: size < 1
     readonly property bool emphasised: pressed || (hovered && thumbOpacity > 0)
+    /// The view scrolled within the last moment. `active` only follows
+    /// flicks and drags; this also catches wheel and keyboard scrolling that
+    /// animates the view's content position.
+    readonly property bool scrolling: settleTimer.running
     readonly property bool shown: needed
-        && (active || emphasised
+        && (active || scrolling || emphasised
             || visibility === MeridianScrollBar.Always
             || (visibility === MeridianScrollBar.Hover && viewHovered))
     /// 0 hidden, 1 fully shown.
@@ -46,6 +50,21 @@ T.ScrollBar {
                             : Metrics.scrollbarMinLength / Math.max(1, height)
     interactive: thumbOpacity > 0
     hoverEnabled: true
+
+    // A position change at an unchanged size is a scroll; a size change is
+    // content that grew or shrank, which does not reveal the thumb.
+    property real _lastSize: size
+    onPositionChanged: {
+        if (size === _lastSize)
+            settleTimer.restart()
+        _lastSize = size
+    }
+    onSizeChanged: _lastSize = size
+    Timer {
+        id: settleTimer
+        // Long enough for the fade-in to finish after a single step.
+        interval: Math.max(Motion.overlay, root.fadeDuration)
+    }
 
     states: State {
         name: "shown"

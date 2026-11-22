@@ -209,6 +209,19 @@ Item {
             verify(!bar.interactive)
         }
 
+        function test_scroll_bar_shows_for_programmatic_scrolling_but_not_for_growth() {
+            const view = createTemporaryObject(scrollComponent, host)
+            const bar = view.ScrollBar.vertical
+            view.model = 150
+            wait(50)
+            compare(bar.thumbOpacity, 0)
+            // Wheel scrolling animates contentY without flicking.
+            view.contentY = 200
+            verify(bar.scrolling)
+            tryCompare(bar, "thumbOpacity", 1)
+            tryCompare(bar, "thumbOpacity", 0, bar.fadeDelay + bar.fadeDuration + 1000)
+        }
+
         function test_scroll_bar_stays_hidden_when_everything_fits() {
             const view = createTemporaryObject(shortScrollComponent, host)
             const bar = view.ScrollBar.vertical
