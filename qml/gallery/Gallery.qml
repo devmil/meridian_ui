@@ -181,6 +181,14 @@ MeridianGround {
                     }
                 }
                 Section {
+                    title: "Panel"
+                    MeridianPanel {
+                        width: Math.min(320, parent.width)
+                        title: "Logbook"
+                        MeridianText { width: parent.width; text: "Fetch origin · 1.2 s"; color: Theme.colors.inkMuted }
+                    }
+                }
+                Section {
                     title: "Steps"
                     Column {
                         width: parent.width

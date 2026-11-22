@@ -9,6 +9,14 @@ Item {
 
     Component { id: spyComponent; SignalSpy {} }
     Component {
+        id: panelComponent
+        MeridianPanel {
+            title: "Logbook"
+            width: 300
+            Rectangle { objectName: "panelBody"; width: 280; height: 120 }
+        }
+    }
+    Component {
         id: busyComponent
         Item {
             anchors.fill: parent
@@ -86,6 +94,20 @@ Item {
 
         function spy(target, signal) {
             return createTemporaryObject(spyComponent, testCase, { target: target, signalName: signal })
+        }
+
+        function test_panel_enters_closes_on_escape_and_reports_its_exit() {
+            const panel = createTemporaryObject(panelComponent, host)
+            tryCompare(panel, "opacity", 1)
+            compare(panel.height, panel.headerHeight + 120 + panel.bottomPadding)
+            const closes = spy(panel, "closeRequested")
+            panel.forceActiveFocus()
+            keyClick(Qt.Key_Escape)
+            compare(closes.count, 1)
+            const hidden = spy(panel, "hidden")
+            panel.shown = false
+            tryCompare(hidden, "count", 1)
+            compare(panel.opacity, 0)
         }
 
         function test_busy_overlay_blocks_at_once_and_shows_after_the_delay() {
