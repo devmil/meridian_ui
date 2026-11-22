@@ -164,6 +164,15 @@ MeridianGround {
                 }
 
                 Section {
+                    title: "Keys"
+                    Row {
+                        spacing: Theme.space.s5
+                        MeridianKbd { keys: ["⌘", "K"] }
+                        MeridianKbd { keys: ["esc"] }
+                        MeridianKbd { keys: ["Ctrl", "Shift", "P"]; pressed: true }
+                    }
+                }
+                Section {
                     title: "Text area"
                     MeridianTextArea {
                         width: Math.min(420, parent.width)

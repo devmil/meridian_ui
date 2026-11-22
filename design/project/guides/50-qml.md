@@ -76,6 +76,7 @@ style a stock Qt Quick Controls control in an app: add or extend a primitive her
 | `MeridianPopover` | Popover | One task with fields or its own layout |
 | `MeridianNavRow` | NavRow | `current`, `sidebarFocused` (solid accent), `depth`, expand with ←/→, `dropState` |
 | `MeridianListRow` | ListRow | Inset selection bar, `islandFocused`, `emphasized`, `dimmed`, `twoLine`, hover actions replace `meta` (give them `surfaceColor: row.fillColor`); `leading`, `titleTrailing` and `trailing` components frame the title |
+| `MeridianKbd` | `MeridianKbd` | One `pane-alt` cap per key with a `line-strong` edge and bottom shadow; `pressed` sinks it; `onAccent` on accent fills. Modifier-hold reveal stays with the caller |
 | `MeridianTextArea` | `MeridianTextField` (`maxLines` > 1) | Default field edge, focus edge and halo; grows from `minimumLines` to `maximumLines`, then scrolls; an explicit height fills; set `Accessible.name` |
 | `MeridianBreadcrumbs` | `MeridianBreadcrumbs` | First and last crumb stay; middle crumbs fold into “…” (`overflowRequested` with their indices) from the left; the last crumb elides; crumbs are data (`label`, `icon`, `prefix`, `mono`, `emphasis`, `enabled`) |
 | `MeridianPagination` | Pagination | Seven pages in full, else first, last and neighbours |

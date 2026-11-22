@@ -15,6 +15,10 @@ TestCase {
     when: windowShown
 
     Component {
+        id: kbdComponent
+        MeridianKbd { keys: ["⌘", "K"] }
+    }
+    Component {
         id: textAreaComponent
         MeridianTextArea { width: 300; placeholderText: "Description"; minimumLines: 2; maximumLines: 4 }
     }
@@ -76,6 +80,15 @@ TestCase {
 
     function spy(target, signal) {
         return createTemporaryObject(spyComponent, testCase, { target: target, signalName: signal })
+    }
+
+    function test_kbd_draws_one_cap_per_key() {
+        const kbd = createTemporaryObject(kbdComponent, testCase)
+        compare(kbd.children.length - 1, 2) // the repeater and two caps
+        verify(kbd.implicitWidth >= 2 * Metrics.kbdMinWidth + Metrics.kbdGap)
+        verify(kbd.implicitHeight >= Metrics.kbdHeight)
+        kbd.keys = ["esc"]
+        tryCompare(kbd, "implicitWidth", kbd.children[0].implicitWidth)
     }
 
     function test_text_area_grows_between_its_line_limits() {
