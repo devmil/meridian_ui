@@ -52,4 +52,25 @@ TestCase {
         verify(Math.max(...Tokens.springs.pop.curve.filter((_, i) => i % 2 === 1)) > 1.1)
         verify(Math.max(...Tokens.springs.snappy.curve.filter((_, i) => i % 2 === 1)) < 1.01)
     }
+
+    Component {
+        id: revealComponent
+        MeridianReveal {
+            axis: MeridianReveal.Horizontal
+            Rectangle { implicitWidth: 40; implicitHeight: 10 }
+        }
+    }
+
+    function test_reveal_collapses_and_grows_its_axis() {
+        Theme.reducedMotion = false
+        const reveal = createTemporaryObject(revealComponent, testCase)
+        compare(reveal.implicitWidth, 40)
+        reveal.shown = false
+        tryCompare(reveal, "implicitWidth", 0)
+        verify(!reveal.visible)
+        reveal.shown = true
+        tryCompare(reveal, "implicitWidth", 40)
+        compare(reveal.implicitHeight, 10)
+    }
+
 }
