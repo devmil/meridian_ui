@@ -270,5 +270,31 @@ TestCase {
         tryVerify(() => banner.height > 0)
         compare(dismissed.count, 0)
     }
+
+    Component { id: badgeButton; MeridianIconButton { text: "Operations"; iconName: "history" } }
+
+    function test_icon_button_badge_pops_in_and_leaves() {
+        const button = createTemporaryObject(badgeButton, host)
+        let dot = null
+        for (let i = 0; i < button.children.length; ++i)
+            if (button.children[i].hasOwnProperty("tone") && button.children[i].hasOwnProperty("count"))
+                dot = button.children[i]
+        verify(dot !== null, "the button has a badge")
+        verify(!dot.visible)
+        button.badge = 3
+        tryVerify(() => dot.visible && dot.opacity === 1)
+        button.badge = 0
+        tryVerify(() => !dot.visible)
+    }
+
+    function test_spinning_finishes_its_turn() {
+        const button = createTemporaryObject(badgeButton, host)
+        Theme.reducedMotion = false
+        button.spinning = true
+        tryVerify(() => button._spin > 0.1, 3000, "spin " + button._spin + " reduced " + Motion.reduced)
+        button.spinning = false
+        tryVerify(() => Math.abs(button._spin - Math.round(button._spin)) < 0.001, 3000, "end " + button._spin)
+    }
+
 }
 }
