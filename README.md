@@ -89,7 +89,7 @@ MeridianTheme.resolve(
 | Documents | `MeridianCanvas`, `MeridianPaper`, `MeridianToolDock` / `MeridianToolDockDivider` |
 | Containers | `MeridianGround`, `MeridianIsland`, `MeridianSectionHeader`, `MeridianSplitPane`, `MeridianDisclosure`, `MeridianDialog` / `MeridianDialogSurface` / `showMeridianDialog` / `showMeridianConfirm` / `MeridianDialogSubmitScope`, `MeridianSheet` / `showMeridianSheet`, `MeridianPanel`, `MeridianSettingsGroup`, `MeridianSettingsRow`, `MeridianSettingsDialog`, `MeridianLicenseDialog` / `showMeridianLicenses`, `MeridianScrollbar` |
 | Data | `MeridianPropertyList` / `MeridianProperty`, `MeridianColumnHeader`, `MeridianCodeLines` / `MeridianCodeGutter` / `MeridianLineMarks` / `MeridianSharedHorizontalScroll` / `MeridianHorizontalShift` |
-| Window | `MeridianResizeHandle`, `MeridianStatusBar` / `MeridianStatusBarItem` |
+| Window | `MeridianResizeHandle`, `MeridianScrollBar`, `MeridianStatusBar` / `MeridianStatusBarItem` |
 
 Every control has rest, hover, pressed, keyboard focus, disabled and (where it applies) loading and error states. There is no ripple anywhere. At touch density every control keeps a 48px hit target.
 

@@ -1,5 +1,6 @@
 import QtQuick
 import QtTest
+import QtQuick.Templates
 import Meridian
 
 Item {
@@ -26,6 +27,26 @@ Item {
     Component {
         id: paginationComponent
         MeridianPagination { previousLabel: "Previous page"; nextLabel: "Next page"; pageLabel: "Page %1" }
+    }
+    Component {
+        id: scrollComponent
+        ListView {
+            width: 300
+            height: 200
+            model: 100
+            delegate: Item { width: 300; height: 20 }
+            ScrollBar.vertical: MeridianScrollBar { objectName: "bar" }
+        }
+    }
+    Component {
+        id: shortScrollComponent
+        ListView {
+            width: 300
+            height: 200
+            model: 3
+            delegate: Item { width: 300; height: 20 }
+            ScrollBar.vertical: MeridianScrollBar { objectName: "bar"; visibility: MeridianScrollBar.Always }
+        }
     }
     Component {
         id: resizeComponent
@@ -161,6 +182,39 @@ Item {
             compare(selected.count, 2)
             pages.jumpLabel = ""
             verify(!field.visible)
+        }
+
+        function test_scroll_bar_shows_while_scrolling_and_fades_after() {
+            const view = createTemporaryObject(scrollComponent, host)
+            const bar = view.ScrollBar.vertical
+            verify(bar)
+            compare(bar.thumbOpacity, 0)
+            verify(!bar.interactive)
+            compare(bar.implicitWidth, Metrics.scrollbarThicknessHover + 2 * Metrics.scrollbarMargin)
+
+            view.flick(0, -2000)
+            tryCompare(bar, "thumbOpacity", 1)
+            verify(bar.interactive)
+            const thumb = findChild(bar, "scrollBarThumb")
+            compare(thumb.width, Metrics.scrollbarThickness)
+            compare(thumb.color, Theme.colors.lineStrong)
+
+            view.cancelFlick()
+            view.contentY = view.contentY
+            tryCompare(view, "moving", false)
+            // It stays for the fade delay, then fades out.
+            wait(bar.fadeDelay / 2)
+            compare(bar.thumbOpacity, 1)
+            tryCompare(bar, "thumbOpacity", 0, bar.fadeDelay + bar.fadeDuration + 1000)
+            verify(!bar.interactive)
+        }
+
+        function test_scroll_bar_stays_hidden_when_everything_fits() {
+            const view = createTemporaryObject(shortScrollComponent, host)
+            const bar = view.ScrollBar.vertical
+            verify(!bar.needed)
+            verify(!bar.shown)
+            compare(bar.thumbOpacity, 0)
         }
 
         function test_resize_handle_grows_on_hover_and_reports_drags() {
