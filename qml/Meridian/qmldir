@@ -75,3 +75,6 @@ MeridianSectionHeader 1.0 MeridianSectionHeader.qml
 MeridianNudge 1.0 MeridianNudge.qml
 MeridianReveal 1.0 MeridianReveal.qml
 MeridianSwap 1.0 MeridianSwap.qml
+internal TabStripPill TabStripPill.qml
+internal TabStripChip TabStripChip.qml
+internal TabStripNameField TabStripNameField.qml
