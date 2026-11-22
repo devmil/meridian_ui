@@ -29,6 +29,8 @@ T.Button {
     property bool onGround: false
     /// Why the command is unavailable; announced and used as the tooltip.
     property string disabledReason
+    /// A hover label, shown for icon-only buttons by default.
+    property string tooltip
 
     signal successFinished()
     /// The command. Unlike `clicked`, it does not fire while `loading`: focus
@@ -128,6 +130,12 @@ T.Button {
     Accessible.role: Accessible.Button
     Accessible.name: text
     Accessible.description: !enabled && disabledReason.length > 0 ? disabledReason : ""
+
+    MeridianTooltip {
+        shown: control.hovered
+        text: !control.enabled && control.disabledReason.length > 0 ? control.disabledReason
+            : control.tooltip.length > 0 ? control.tooltip : control.iconOnly ? control.text : ""
+    }
 
     scale: down && active ? Motion.pressScale : 1
     Behavior on scale {

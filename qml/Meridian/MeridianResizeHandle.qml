@@ -7,15 +7,20 @@ import QtQuick
 // 2px `accent` rule grows from the centre; dragging shows it full length,
 // keyboard focus shows it in `focus`. Dragging reports the pointer's
 // movement along `orientation` through `dragged(delta)`; the arrow keys move
-// it by `keyboardStep`; a double click or Enter emits `resetRequested`.
+// it by `keyboardStep`; a double click or Enter emits `reset`.
+//
+// The API follows Flutter's: `semanticLabel`, `orientation` (Flutter's
+// `direction`), `thickness`, `dragged`/`dragStarted`/`dragFinished`, `reset`.
 Item {
     id: root
 
     /// Qt.Horizontal: a vertical gutter between side-by-side islands.
     /// Qt.Vertical: a horizontal gutter between stacked islands.
     property int orientation: Qt.Horizontal
+    /// The gutter's width across the drag axis.
+    property real thickness: Theme.space.s3
     property real keyboardStep: Metrics.resizeKeyboardStep
-    property string accessibleName
+    property string semanticLabel
 
     readonly property bool horizontal: orientation === Qt.Horizontal
     readonly property bool hovered: area.containsMouse
@@ -26,14 +31,14 @@ Item {
     signal dragged(real delta)
     signal dragStarted()
     signal dragFinished()
-    signal resetRequested()
+    signal reset()
 
-    implicitWidth: horizontal ? Theme.space.s3 : 0
-    implicitHeight: horizontal ? 0 : Theme.space.s3
+    implicitWidth: horizontal ? thickness : 0
+    implicitHeight: horizontal ? 0 : thickness
     activeFocusOnTab: true
 
     Accessible.role: Accessible.Slider
-    Accessible.name: accessibleName
+    Accessible.name: semanticLabel
     Accessible.focusable: true
 
     Keys.onPressed: event => {
@@ -46,7 +51,7 @@ Item {
             dragged(keyboardStep)
             event.accepted = true
         } else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
-            resetRequested()
+            reset()
             event.accepted = true
         }
     }
@@ -139,6 +144,6 @@ Item {
         }
         onReleased: root.dragFinished()
         onCanceled: root.dragFinished()
-        onDoubleClicked: root.resetRequested()
+        onDoubleClicked: root.reset()
     }
 }

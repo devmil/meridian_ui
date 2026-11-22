@@ -20,14 +20,27 @@ T.AbstractButton {
     property real turns: 0
     /// Nudge the icon 2px towards this direction on activation (-1, 0, 1).
     property int nudgeDirection: 0
+    /// Overrides the icon colour (a row's `secondary` ink, `accent-ink`).
+    property color iconColorOverride: "transparent"
+    /// The hover label; `text` by default.
+    property string tooltip
+    /// Why the command is unavailable; the tooltip while disabled.
+    property string disabledReason
+    property bool showTooltip: true
 
     readonly property bool onAccent: Qt.colorEqual(surfaceColor, Theme.colors.accent)
+    property real _hoverWeight: hovered && enabled ? 1 : 0
+    Behavior on _hoverWeight { NumberAnimation { duration: Motion.hoverFor(control.hovered || control.down) } }
+    property real _activeWeight: active && enabled ? 1 : 0
+    Behavior on _activeWeight { NumberAnimation { duration: Motion.select } }
     property real extent: controlSize === MeridianButton.Small ? Theme.size.controlSmall : Theme.size.control
     readonly property color hoverFill: Theme.hoverFillOn(surfaceColor, onGround)
     readonly property color iconColor: {
         const c = Theme.colors
         if (!enabled)
             return c.inkFaint
+        if (iconColorOverride.a > 0)
+            return iconColorOverride
         if (onAccent)
             return hovered ? c.inkOnAccent : c.inkOnAccentMuted
         if (active)
@@ -44,6 +57,13 @@ T.AbstractButton {
     Accessible.role: Accessible.Button
     Accessible.name: text
     Accessible.checkable: false
+    Accessible.description: !enabled && disabledReason.length > 0 ? disabledReason : ""
+
+    MeridianTooltip {
+        shown: control.showTooltip && control.hovered
+        text: !control.enabled && control.disabledReason.length > 0 ? control.disabledReason
+            : control.tooltip.length > 0 ? control.tooltip : control.text
+    }
 
     scale: down ? Motion.pressScale : 1
     Behavior on scale {
@@ -67,7 +87,12 @@ T.AbstractButton {
             Behavior on rotation {
                 NumberAnimation { duration: Motion.quick; easing.type: Easing.BezierSpline; easing.bezierCurve: Motion.standard }
             }
-            Behavior on color { ColorAnimation { duration: Motion.select } }
+            // An override follows the data it shows (a row's ink) and swaps
+            // at once; only the interaction states fade.
+            Behavior on color {
+                enabled: control.iconColorOverride.a === 0
+                ColorAnimation { duration: Motion.select }
+            }
             transform: Translate { id: shift }
         }
         SequentialAnimation {
@@ -92,14 +117,13 @@ T.AbstractButton {
             width: control.extent
             height: control.extent
             radius: Theme.radius.md
+            // The interaction states animate as weights, so a surface that
+            // changes with data (a heat-tinted row) moves the fill at once
+            // instead of restarting a fade, and redrawing, on every change.
             color: !control.enabled ? Theme.clear(control.hoverFill)
-                 : control.active ? Theme.colors.accentSoft
                  : control.down ? Theme.pressed(control.hoverFill)
-                 : control.hovered ? control.hoverFill
-                 : Theme.clear(control.hoverFill)
-            Behavior on color {
-                ColorAnimation { duration: control.active ? Motion.select : Motion.hoverFor(control.hovered || control.down) }
-            }
+                 : Theme.blend(Theme.blend(Theme.clear(control.hoverFill), control.hoverFill, control._hoverWeight),
+                               Theme.colors.accentSoft, control._activeWeight)
             MeridianFocusRing {
                 target: control
                 shown: control.visualFocus

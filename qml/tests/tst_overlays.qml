@@ -149,6 +149,46 @@ Item {
             tryVerify(() => !menu.visible)
         }
 
+        function test_pointer_opened_menu_highlights_nothing() {
+            const menu = createTemporaryObject(menuComponent, host)
+            menu.popup(host, 40, 40)
+            tryVerify(() => menu.opened)
+            compare(menu.currentIndex, -1)
+            for (let i = 0; i < menu.count; ++i) {
+                const item = menu.itemAt(i)
+                verify(!item.highlighted && !item.highlightedRow, "item " + i + " starts highlighted")
+            }
+            // Keyboard navigation still starts at the first command.
+            keyClick(Qt.Key_Down)
+            compare(menu.currentIndex, 0)
+        }
+
+        function test_menu_under_a_resting_pointer_waits_for_movement() {
+            const menu = createTemporaryObject(menuComponent, host)
+            menu.popup(host, 50, 50)
+            tryVerify(() => menu.opened)
+            const first = menu.itemAt(0)
+            const inside = first.mapToItem(host, first.width / 2, first.height / 2)
+            // Hover reaches the scene once per frame: wait for each position.
+            mouseMove(host, inside.x, inside.y)
+            tryVerify(() => first.hovered)
+            wait(50)
+            verify(!first.highlightedRow, "highlighted before the pointer moved")
+            mouseMove(host, inside.x + 8, inside.y)
+            tryVerify(() => menu.pointerArmed)
+            verify(first.highlightedRow)
+        }
+
+        function test_menu_separator_draws_a_hairline() {
+            const menu = createTemporaryObject(menuComponent, host)
+            menu.popup(host, 40, 40)
+            tryVerify(() => menu.opened)
+            const separator = menu.itemAt(3)
+            const rule = separator.contentItem.children.length > 0 ? separator.contentItem.children[0] : separator.contentItem
+            compare(rule.height, 1)
+            verify(separator.height > rule.height)
+        }
+
         function test_menu_items_paint_danger_and_check() {
             const menu = createTemporaryObject(menuComponent, host)
             const danger = menu.itemAt(4)

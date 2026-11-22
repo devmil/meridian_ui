@@ -10,14 +10,20 @@
   Wheel and keyboard scrolling that animates the content position reveal it
   too; content that grows does not.
   `visibility` adds Hover (bind `viewHovered`) and Always; it takes clicks
-  only while its thumb shows.
+  only while its thumb shows. The fade-out wait is a timer, so a scroll
+  during it can no longer leave the thumb stuck invisible.
 - `MeridianResizeHandle` (QML), Flutter's gutter resize handle: invisible at
   rest, a 2px `accent` rule grows from the centre 150 ms into a hover,
   full length while dragging or focused; `dragged(delta)`, arrow keys and
-  double click or Enter to reset.
+  double click or Enter emit `reset`. Its API follows Flutter's:
+  `semanticLabel`, `orientation`, `thickness`.
 - `MeridianPagination` (QML) gains Flutter's direct page field: `jumpLabel`,
   `pageCountLabel` and `jumpAccessibleName`; Enter selects the typed page,
   clamped to the range. Its groups sit 8 px apart, as in Flutter.
+- `MeridianWheelScroll`: desktop wheel scrolling for Qt Quick views. A notch
+  moves `wheelScrollLines` lines and fast notches add up, instead of Qt's
+  velocity-capped flick; touchpads follow one to one and keep their momentum.
+  Meridian's dialogs, menus and lists use it.
 - Meridian for Qt Quick: the `Meridian` QML module in `qml/Meridian` for
   Rust + Qt Quick desktop apps (MailLama's QML port first).
   `tool/generate_qml.py` generates its tokens, colour and type roles, layout

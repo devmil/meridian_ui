@@ -28,12 +28,15 @@ T.TextField {
     property bool monospace: false
     /// Increment to shake the field once (a rejected submit).
     property int rejectCount: 0
+    /// Items after the clear button (a search-options menu button).
+    property alias trailingContent: trailingSlot.data
 
     readonly property real extent: controlSize === MeridianButton.Small ? Theme.size.controlSmall : Theme.size.control
     readonly property bool plain: variant === MeridianTextField.Plain
     readonly property bool search: variant === MeridianTextField.Search
     readonly property real leadingWidth: iconName.length > 0 ? Theme.size.iconSmall + Theme.space.s3 : 0
     readonly property real trailingWidth: (clearButton.visible ? clearButton.width + Theme.space.s1 : 0) + (trailingLabel.visible ? trailingLabel.implicitWidth + Theme.space.s3 : 0)
+        + (trailingSlot.width > 0 ? trailingSlot.width + Theme.space.s1 : 0)
 
     hoverEnabled: true
     implicitWidth: Math.max(Metrics.textFieldMinWidth, contentWidth + leftPadding + rightPadding)
@@ -85,6 +88,21 @@ T.TextField {
 
     background: Item {
         implicitHeight: control.extent
+        // The template draws no placeholder; it sits where the text starts
+        // and elides before the trailing controls.
+        Text {
+            z: 1
+            visible: control.text.length === 0 && control.preeditText.length === 0
+            x: control.leftPadding
+            width: Math.max(0, parent.width - control.leftPadding - control.rightPadding)
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
+            elide: Text.ElideRight
+            font: control.font
+            color: control.placeholderTextColor
+            text: control.placeholderText
+            Accessible.ignored: true
+        }
         Rectangle {
             id: well
             anchors.fill: parent
@@ -162,6 +180,11 @@ T.TextField {
                 control.clear();
                 control.forceActiveFocus();
             }
+        }
+        Row {
+            id: trailingSlot
+            anchors.verticalCenter: parent.verticalCenter
+            spacing: Theme.space.s1
         }
     }
 }

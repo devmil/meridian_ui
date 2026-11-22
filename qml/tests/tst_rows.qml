@@ -50,7 +50,7 @@ Item {
     }
     Component {
         id: resizeComponent
-        MeridianResizeHandle { width: 12; height: 400; accessibleName: "Resize sidebar" }
+        MeridianResizeHandle { width: 12; height: 400; semanticLabel: "Resize sidebar" }
     }
     Component {
         id: selectionComponent
@@ -222,6 +222,21 @@ Item {
             tryCompare(bar, "thumbOpacity", 0, bar.fadeDelay + bar.fadeDuration + 1000)
         }
 
+        function test_scroll_bar_scrolling_during_the_fade_delay_keeps_it_shown() {
+            const view = createTemporaryObject(scrollComponent, host)
+            const bar = view.ScrollBar.vertical
+            view.contentY = 200
+            tryCompare(bar, "thumbOpacity", 1)
+            // Wait until the bar is lingering in its fade delay, then scroll
+            // again: it must stay shown, not stick at a partial or zero fade.
+            tryVerify(() => !bar.wanted && bar.shown, 2000)
+            view.contentY = 400
+            verify(bar.wanted)
+            wait(bar.fadeDuration + 50)
+            compare(bar.thumbOpacity, 1)
+            tryCompare(bar, "thumbOpacity", 0, bar.fadeDelay + bar.fadeDuration + 1000)
+        }
+
         function test_scroll_bar_stays_hidden_when_everything_fits() {
             const view = createTemporaryObject(shortScrollComponent, host)
             const bar = view.ScrollBar.vertical
@@ -234,7 +249,7 @@ Item {
             const handle = createTemporaryObject(resizeComponent, host)
             const rule = findChild(handle, "resizeRule")
             const moved = spy(handle, "dragged")
-            const reset = spy(handle, "resetRequested")
+            const reset = spy(handle, "reset")
             compare(handle.implicitWidth, Theme.space.s3)
             verify(!rule.visible)
             mouseMove(handle, 6, 200)

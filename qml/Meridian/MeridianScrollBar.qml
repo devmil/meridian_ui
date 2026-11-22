@@ -2,9 +2,9 @@ import QtQuick
 import QtQuick.Templates as T
 
 // Meridian's scrollbar (Flutter: MeridianScrollbarThumb, MeridianScrollbar):
-// a pill thumb in `line-strong` that thickens and darkens to `control-edge`
-// while the pointer is over it or drags it. It fades in while the view
-// scrolls and fades out `fadeDelay` ms after it stops.
+// a pill thumb in `line-strong`, no track, that thickens and darkens to
+// `control-edge` while the pointer is over it or drags it. It fades in while
+// the view scrolls and fades out `fadeDelay` ms after it stops.
 //
 // Attach it like any scroll bar:
 //     ListView { ScrollBar.vertical: MeridianScrollBar { } }
@@ -31,15 +31,18 @@ T.ScrollBar {
     readonly property bool needed: size < 1
     readonly property bool emphasised: pressed || (hovered && thumbOpacity > 0)
     /// The view scrolled within the last moment. `active` only follows
-    /// flicks and drags; this also catches wheel and keyboard scrolling that
-    /// animates the view's content position.
+    /// flicks and drags; this also catches wheel (MeridianWheelScroll),
+    /// keyboard and programmatic scrolling that moves the content position.
     readonly property bool scrolling: settleTimer.running
-    readonly property bool shown: needed
+    /// A reason to show the thumb right now.
+    readonly property bool wanted: needed
         && (active || scrolling || emphasised
             || visibility === MeridianScrollBar.Always
             || (visibility === MeridianScrollBar.Hover && viewHovered))
+    /// Wanted, or still lingering `fadeDelay` ms after the last reason went.
+    readonly property bool shown: wanted || (needed && lingerTimer.running)
     /// 0 hidden, 1 fully shown.
-    property real thumbOpacity: 0
+    property real thumbOpacity: shown ? 1 : 0
     readonly property real thickness: emphasised ? Metrics.scrollbarThicknessHover
                                                  : Metrics.scrollbarThickness
 
@@ -66,24 +69,20 @@ T.ScrollBar {
         interval: Math.max(Motion.overlay, root.fadeDuration)
     }
 
-    states: State {
-        name: "shown"
-        when: root.shown
-        PropertyChanges { root.thumbOpacity: 1 }
+    // The fade-out wait is a timer, not a PauseAnimation in a transition:
+    // a paused fade restarted while pending could leave the thumb stuck
+    // invisible while the view scrolls.
+    onWantedChanged: {
+        if (wanted)
+            lingerTimer.stop()
+        else
+            lingerTimer.restart()
     }
-    transitions: [
-        Transition {
-            to: "shown"
-            NumberAnimation { property: "thumbOpacity"; duration: root.fadeDuration }
-        },
-        Transition {
-            from: "shown"
-            SequentialAnimation {
-                PauseAnimation { duration: root.fadeDelay }
-                NumberAnimation { property: "thumbOpacity"; duration: root.fadeDuration }
-            }
-        }
-    ]
+    Timer {
+        id: lingerTimer
+        interval: root.fadeDelay
+    }
+    Behavior on thumbOpacity { NumberAnimation { duration: root.fadeDuration } }
 
     contentItem: Item {
         implicitWidth: root.horizontal ? Metrics.scrollbarMinLength : Metrics.scrollbarThicknessHover
