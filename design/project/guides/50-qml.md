@@ -30,6 +30,12 @@ ApplicationWindow {
 The app supplies `Theme.reducedMotion` from its preference OR'd with the
 platform setting. Qt has no portable reduce-motion signal.
 
+Colour roles keep their token names in camel case, except the `on-…` roles:
+QML reads a property named `on` + capital letter as a signal handler, so
+`on-accent`, `on-accent-muted`, `on-danger` and `on-attention` are
+`Theme.colors.inkOnAccent`, `inkOnAccentMuted`, `inkOnDanger` and
+`inkOnAttention`.
+
 Read values through the theme, never as literals: `Theme.colors.paneAlt`,
 `Theme.type.bodyStrong` with `Theme.type.bodyStrongLineHeight`,
 `Theme.radius.lg`, `Theme.space.s4`, `Theme.size.row` (density-resolved),

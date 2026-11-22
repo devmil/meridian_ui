@@ -143,7 +143,7 @@ TestCase {
         button.active = true
         verify(Qt.colorEqual(button.iconColor, Theme.colors.accentInk))
         button.surfaceColor = Theme.colors.accent
-        verify(Qt.colorEqual(button.iconColor, Theme.colors.onAccentMuted))
+        verify(Qt.colorEqual(button.iconColor, Theme.colors.inkOnAccentMuted))
     }
 
     function test_switch_toggles_and_thumb_reaches_terminal_state() {

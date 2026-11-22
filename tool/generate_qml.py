@@ -49,6 +49,14 @@ def camel(name: str) -> str:
     return core_gen.camel(name)
 
 
+def role(name: str) -> str:
+    """The QML property name of a colour role. QML reads a property named
+    `on` + capital letter as a signal handler, so `on-accent` becomes
+    `inkOnAccent` (likewise on-accent-muted, on-danger, on-attention)."""
+    c = camel(name)
+    return "ink" + c[0].upper() + c[1:] if re.match(r"on[A-Z]", c) else c
+
+
 def qml_color(value: str) -> str:
     r, g, b, a = core_gen.parse_color(value)
     if a >= 1:
@@ -132,7 +140,7 @@ def gen_tokens(core, brands) -> str:
     brand_meta = {}
     for b in brands:
         palettes[b["id"]] = {
-            theme: {camel(k): qml_color(v) for k, v in core_gen.palette(core, b, theme).items()}
+            theme: {role(k): qml_color(v) for k, v in core_gen.palette(core, b, theme).items()}
             for theme in ("light", "dark")
         }
         fonts = b.get("fonts") or {}
@@ -196,7 +204,7 @@ def gen_color_scheme(core) -> str:
     for n in names:
         first = re.split(r"(?<=\.)\s", usage[n].strip())[0]
         out.append(f"    /// {first}\n")
-        out.append(f"    readonly property color {camel(n)}: palette.{camel(n)} ?? \"transparent\"\n")
+        out.append(f"    readonly property color {role(n)}: palette.{role(n)} ?? \"transparent\"\n")
     out.append("}\n")
     return "".join(out)
 

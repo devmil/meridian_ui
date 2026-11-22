@@ -16,9 +16,9 @@ T.MenuItem {
 
     readonly property bool highlightedRow: highlighted && enabled
     readonly property color inkColor: !enabled ? Theme.colors.inkFaint
-        : highlightedRow ? (danger ? Theme.colors.onDanger : Theme.colors.onAccent)
+        : highlightedRow ? (danger ? Theme.colors.inkOnDanger : Theme.colors.inkOnAccent)
         : danger ? Theme.colors.danger : Theme.colors.ink
-    readonly property color mutedInk: highlightedRow ? (danger ? Theme.colors.onDanger : Theme.colors.onAccentMuted)
+    readonly property color mutedInk: highlightedRow ? (danger ? Theme.colors.inkOnDanger : Theme.colors.inkOnAccentMuted)
         : Theme.colors.inkMuted
 
     icon.name: iconName

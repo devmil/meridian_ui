@@ -92,8 +92,8 @@ Item {
             tryVerify(() => action.visible)
             row.selected = true
             row.islandFocused = true
-            verify(Qt.colorEqual(row.inkColor, Theme.colors.onAccent))
-            verify(Qt.colorEqual(action.iconColor, Theme.colors.onAccentMuted) || Qt.colorEqual(action.iconColor, Theme.colors.onAccent))
+            verify(Qt.colorEqual(row.inkColor, Theme.colors.inkOnAccent))
+            verify(Qt.colorEqual(action.iconColor, Theme.colors.inkOnAccentMuted) || Qt.colorEqual(action.iconColor, Theme.colors.inkOnAccent))
         }
 
         function test_list_row_heights_follow_density() {

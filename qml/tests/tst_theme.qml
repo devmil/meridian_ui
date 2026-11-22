@@ -20,6 +20,15 @@ TestCase {
         compare(Theme.colors.ground.toString(), Tokens.palettes.crossproton.dark.ground)
     }
 
+    function test_on_colours_are_readable_roles() {
+        // `onAccent` would be a signal-handler name in QML; the roles are
+        // exposed as inkOn… and must carry the brand's values.
+        compare(Theme.colors.inkOnAccent.toString(), "#ffffff")
+        compare(Theme.colors.inkOnAccentMuted.toString(), Tokens.palettes.crossproton.light.inkOnAccentMuted)
+        verify(Theme.colors.inkOnDanger.a > 0)
+        verify(Theme.colors.inkOnAttention.a > 0)
+    }
+
     function test_system_mode_follows_platform_scheme() {
         Theme.mode = Theme.System
         Theme.systemDark = true
@@ -30,7 +39,7 @@ TestCase {
 
     function test_every_brand_resolves_every_role() {
         const roles = ["ground", "pane", "paneAlt", "raised", "ink", "inkMuted", "inkFaint", "line",
-                       "lineStrong", "controlEdge", "accent", "onAccent", "accentSoft", "accentInk",
+                       "lineStrong", "controlEdge", "accent", "inkOnAccent", "accentSoft", "accentInk",
                        "focus", "danger", "dangerBg", "success", "warning", "attention"]
         for (const id of Tokens.brandIds) {
             for (const mode of [Theme.Light, Theme.Dark]) {

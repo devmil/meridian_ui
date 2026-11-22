@@ -29,7 +29,7 @@ T.AbstractButton {
         if (!enabled)
             return c.inkFaint
         if (onAccent)
-            return hovered ? c.onAccent : c.onAccentMuted
+            return hovered ? c.inkOnAccent : c.inkOnAccentMuted
         if (active)
             return c.accentInk
         return hovered || down ? c.ink : c.inkMuted

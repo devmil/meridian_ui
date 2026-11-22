@@ -20,7 +20,9 @@
   The release also adds a gallery, 69 Qt Quick Tests (including a gallery
   layout matrix at 390 px and 1280 px),
   `tool/verify_qml.sh`, a QML guide (`design/project/guides/50-qml.md`) and a
-  CI job.
+  CI job. The `on-…` colour roles are `inkOnAccent`, `inkOnAccentMuted`,
+  `inkOnDanger` and `inkOnAttention` in QML, where `onAccent` would read as a
+  signal handler.
 
 ## 2.0.3 - 2026-11-21
 
