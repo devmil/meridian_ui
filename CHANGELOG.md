@@ -20,10 +20,17 @@
 - `MeridianPagination` (QML) gains Flutter's direct page field: `jumpLabel`,
   `pageCountLabel` and `jumpAccessibleName`; Enter selects the typed page,
   clamped to the range. Its groups sit 8 px apart, as in Flutter.
-- `MeridianWheelScroll`: desktop wheel scrolling for Qt Quick views. A notch
-  moves `wheelScrollLines` lines and fast notches add up, instead of Qt's
-  velocity-capped flick; touchpads follow one to one and keep their momentum.
-  Meridian's dialogs, menus and lists use it.
+- `MeridianWheelScroll`: one wheel and touchpad scroller for Qt Quick views
+  on Linux, macOS and Windows, after KDE Kirigami's WheelHandler (VLC uses
+  it too). A wheel notch moves `verticalStepSize` (`wheelScrollLines`
+  lines, growing with the viewport as in GTK) and ignores Qt Wayland's
+  ~15 px pixel delta; it animates for at most 200 ms and the next notch
+  extends the target, so notches add up and the content stops when the
+  wheel stops. Touchpad gestures follow their pixel delta one to one;
+  macOS momentum is followed, and only Qt Wayland, which sends none,
+  continues a lifted gesture. `smoothScroll`, `syntheticMomentum`,
+  `animating`, `stop()`. Meridian's dialogs, menus and lists use it.
+  `qml/tools/scroll_lab.qml` compares it with Qt's handling on real devices.
 - Meridian for Qt Quick: the `Meridian` QML module in `qml/Meridian` for
   Rust + Qt Quick desktop apps (MailLama's QML port first).
   `tool/generate_qml.py` generates its tokens, colour and type roles, layout
