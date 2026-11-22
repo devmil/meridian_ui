@@ -19,7 +19,8 @@ Item {
     readonly property bool hasName: group !== null && !!group.name && group.name.length > 0
 
     Accessible.role: Accessible.Button
-    Accessible.name: strip.groupLabel.arg(name).arg(count)
+    Accessible.name: typeof strip.groupLabel === "function" ? strip.groupLabel(name, count)
+                                                            : String(strip.groupLabel).arg(name).arg(count)
     Accessible.onPressAction: strip.groupToggled(group.id)
 
     HoverHandler { id: hover }

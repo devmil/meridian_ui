@@ -38,8 +38,9 @@ Item {
     property string moveRightLabel: "Move right"
     property string collapseGroupLabel: "Collapse %1"
     property string expandGroupLabel: "Expand %1"
-    /// The chip's announced name: %1 group, %2 tab count.
-    property string groupLabel: "%1, tab group, %2 tabs"
+    /// The chip's announced name: a template (%1 group, %2 tab count) or a
+    /// function (name, count) for plural-aware wording.
+    property var groupLabel: "%1, tab group, %2 tabs"
     property string unnamedGroupLabel: "Unnamed group"
     property string renameTabLabel: "Tab name"
     property string renameGroupLabel: "Group name"
