@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Templates as T
 import QtTest
 import Meridian
 
@@ -13,6 +14,7 @@ Item {
         model: 500
         delegate: Rectangle { width: 400; height: 20 }
         MeridianWheelScroll { id: scroller; flickable: view }
+        T.ScrollBar.vertical: MeridianScrollBar { id: bar }
     }
 
     ListView {
@@ -38,6 +40,14 @@ Item {
         function test_a_notch_moves_wheel_scroll_lines() {
             mouseWheel(host, 50, 50, 0, -120)
             compare(view.contentY, Application.styleHints.wheelScrollLines * scroller.lineHeight)
+        }
+
+        function test_the_scrollbar_shows_while_the_wheel_scrolls() {
+            tryCompare(bar.contentItem, "opacity", 0)
+            mouseWheel(host, 50, 50, 0, -120)
+            verify(bar.scrolled)
+            tryCompare(bar.contentItem, "opacity", 1)
+            tryCompare(bar.contentItem, "opacity", 0, 3000)
         }
 
         function test_fast_notches_add_up() {
