@@ -213,6 +213,8 @@ def gen_type_scale(core) -> str:
            "// Theme.type.bodyLineHeight.\n",
            "QtObject {\n",
            "    property bool touch: false\n",
+           "    /// The platform's text scale (GTK's text-scaling-factor on Linux).\n",
+           "    property real scale: 1\n",
            "    property string sansFamily: \"\"\n",
            "    property string monoFamily: \"JetBrains Mono\"\n",
            "    property string readingFamily: \"\"\n",
@@ -240,10 +242,10 @@ def gen_type_scale(core) -> str:
         out.append(f"    /// {first}\n")
         out.append(
             f"    readonly property font {name}: Qt.font({{ family: {family}, "
-            f"pixelSize: touch ? {num(ts)} : {num(ds)}, weight: touch ? {t['fontWeight']} : {s['fontWeight']}, "
-            f"letterSpacing: touch ? {num(spacing(t))} : {num(spacing(s))}"
+            f"pixelSize: (touch ? {num(ts)} : {num(ds)}) * scale, weight: touch ? {t['fontWeight']} : {s['fontWeight']}, "
+            f"letterSpacing: (touch ? {num(spacing(t))} : {num(spacing(s))}) * scale"
             + (", capitalization: Font.AllUppercase" if base == "overline" else "") + " })\n")
-        out.append(f"    readonly property real {name}LineHeight: touch ? {num(tl)} : {num(dl)}\n")
+        out.append(f"    readonly property real {name}LineHeight: Math.round((touch ? {num(tl)} : {num(dl)}) * scale)\n")
     out.append("}\n")
     return "".join(out)
 
