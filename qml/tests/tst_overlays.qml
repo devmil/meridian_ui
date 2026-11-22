@@ -9,6 +9,22 @@ Item {
 
     Component { id: spyComponent; SignalSpy {} }
     Component {
+        id: busyComponent
+        Item {
+            anchors.fill: parent
+            property int clicks: 0
+            property alias overlay: overlay
+            property alias cancel: cancel
+            MouseArea { anchors.fill: parent; onClicked: parent.clicks++ }
+            MeridianBusyOverlay {
+                id: overlay
+                anchors.fill: parent
+                message: "Merging…"
+                MeridianButton { id: cancel; text: "Cancel"; variant: MeridianButton.Quiet }
+            }
+        }
+    }
+    Component {
         id: settingsComponent
         MeridianSettingsDialog {
             title: "Settings"
@@ -70,6 +86,19 @@ Item {
 
         function spy(target, signal) {
             return createTemporaryObject(spyComponent, testCase, { target: target, signalName: signal })
+        }
+
+        function test_busy_overlay_blocks_at_once_and_shows_after_the_delay() {
+            const page = createTemporaryObject(busyComponent, host)
+            const content = findChild(page.overlay, "busyOverlayContent")
+            compare(content.opacity, 0)
+            mouseClick(page, 5, 5)
+            compare(page.clicks, 0) // input stops before anything shows
+            tryCompare(content, "opacity", 1, Motion.spinnerDelay + Motion.quick + 500)
+            const clicked = spy(page.cancel, "clicked")
+            mouseClick(page.cancel)
+            compare(clicked.count, 1) // the action still works
+            compare(page.overlay.Accessible.name, "Merging…")
         }
 
         function test_settings_dialog_sizes_the_shown_page_and_hides_an_empty_footer() {

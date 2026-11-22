@@ -181,6 +181,21 @@ MeridianGround {
                     }
                 }
                 Section {
+                    title: "Busy overlay"
+                    Rectangle {
+                        width: 360
+                        height: 120
+                        color: Theme.colors.pane
+                        radius: Theme.radius.md
+                        MeridianText { x: Theme.space.s5; y: Theme.space.s5; text: "Repository content" }
+                        MeridianBusyOverlay {
+                            anchors.fill: parent
+                            message: "Merging…"
+                            MeridianButton { text: "Cancel"; variant: MeridianButton.Quiet }
+                        }
+                    }
+                }
+                Section {
                     title: "Shortcut field"
                     MeridianShortcutField {
                         id: galleryShortcut
