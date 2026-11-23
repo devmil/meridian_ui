@@ -367,6 +367,19 @@ Item {
             verify(Qt.colorEqual(zone.inkColor, Theme.colors.danger))
         }
 
+        function test_drop_zone_marches_only_while_active_and_shown() {
+            Theme.reducedMotion = false
+            const zone = createTemporaryObject(dropComponent, host)
+            verify(!zone.marching)
+            zone.dropState = MeridianDropZone.Active
+            verify(zone.marching)
+            // A hidden zone runs no animation, so the window renders no frames for it.
+            zone.visible = false
+            verify(!zone.marching)
+            zone.visible = true
+            verify(zone.marching)
+        }
+
         function test_date_picker_keyboard_and_range() {
             const picker = createTemporaryObject(dateComponent, host, {
                 locale: Qt.locale("de_DE"),
