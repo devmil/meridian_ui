@@ -211,6 +211,29 @@ MeridianGround {
                     }
                 }
                 Section {
+                    title: "Pulse"
+                    Row {
+                        spacing: Theme.space.s8
+                        MeridianPulse {
+                            id: continuePulse
+                            spread: Theme.space.s4
+                            once: true
+                            radius: Theme.radius.md
+                            MeridianButton {
+                                text: "Continue"
+                                variant: MeridianButton.Primary
+                                onClicked: { continuePulse.active = false; continuePulse.active = true }
+                            }
+                        }
+                        MeridianPulse {
+                            anchors.verticalCenter: parent.verticalCenter
+                            active: true
+                            size: 10
+                            Rectangle { width: 10; height: 10; radius: 5; color: Theme.colors.accent }
+                        }
+                    }
+                }
+                Section {
                     title: "Panel"
                     MeridianPanel {
                         width: Math.min(320, parent.width)

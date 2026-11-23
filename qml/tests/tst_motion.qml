@@ -93,4 +93,35 @@ TestCase {
         tryVerify(() => live.opacity === 1 && live.y === 0)
     }
 
+
+    Component {
+        id: pulseComponent
+        MeridianPulse {
+            width: 80
+            height: 28
+            spread: 12
+            once: true
+            Rectangle { width: 80; height: 28 }
+        }
+    }
+
+    function test_pulse_plays_once_and_rests() {
+        const pulse = createTemporaryObject(pulseComponent, motionCase)
+        compare(pulse.progress, 0)
+        compare(pulse.implicitWidth, 80)
+        pulse.active = true
+        tryVerify(() => pulse.progress > 0 && pulse.progress < 1)
+        tryVerify(() => pulse.progress === 1, 3000)
+    }
+
+    function test_reduced_pulse_shows_a_static_disc_only_when_looping() {
+        Theme.reducedMotion = true
+        const pulse = createTemporaryObject(pulseComponent, motionCase, { spread: -1, once: false })
+        pulse.active = true
+        compare(pulse.progress, 0)
+        verify(pulse.staticHalo)
+        compare(pulse.children[0].opacity, Metrics.opacityStaticHalo)
+        pulse.once = true
+        verify(!pulse.staticHalo)
+    }
 }
