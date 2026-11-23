@@ -4,6 +4,12 @@
 
 **Added**
 
+- `MeridianTextMenu` (QML), Flutter's native text menu: every
+  `MeridianTextField`, `MeridianTextArea` and `MeridianSelectableText` now
+  offers Cut, Copy, Paste and Select All, each only when it applies, in the
+  platform's own menu on a secondary click, the Menu key or Shift+F10.
+  Password fields never offer Cut or Copy; read-only text offers Copy and
+  Select All. `Theme.textMenuLabels` localizes the labels.
 - `MeridianScrollBar` (QML), Flutter's scrollbar thumb: a `line-strong`
   pill that fades in while the view scrolls and out 600 ms after it stops,
   thickening to 8 px in `control-edge` under the pointer or while dragged.

@@ -147,6 +147,11 @@ MeridianGround {
                     MeridianTextField { width: 260; placeholderText: "Host name"; Accessible.name: "Host name" }
                     MeridianTextField {
                         width: 260
+                        text: "Right-click or press Shift+F10"
+                        Accessible.name: "Text menu"
+                    }
+                    MeridianTextField {
+                        width: 260
                         variant: MeridianTextField.Search
                         placeholderText: "Search mail"
                         clearLabel: "Clear search"

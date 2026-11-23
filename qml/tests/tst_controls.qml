@@ -469,6 +469,68 @@ TestCase {
         tryCompare(column.children[3], "opacity", 1, 2000)
     }
 
+    Component {
+        id: textMenuFieldComponent
+        MeridianTextField { width: 260; text: "feature/login" }
+    }
+    Component {
+        id: textMenuSelectableComponent
+        MeridianSelectableText { width: 260; text: "8660cbd549" }
+    }
+
+    function textMenuOf(item) {
+        for (let i = 0; i < item.children.length; ++i)
+            if (item.children[i].actions !== undefined && item.children[i].openAtCursor !== undefined)
+                return item.children[i]
+        return null
+    }
+
+    function test_text_menu_offers_only_what_applies() {
+        const field = createTemporaryObject(textMenuFieldComponent, testCase)
+        const menu = textMenuOf(field)
+        verify(menu !== null)
+        field.forceActiveFocus()
+        field.deselect()
+        verify(menu.actions().indexOf("cut") < 0, "nothing selected: no cut")
+        verify(menu.actions().indexOf("copy") < 0, "nothing selected: no copy")
+        compare(menu.actions()[menu.actions().length - 1], "selectAll")
+        field.select(0, 7)
+        compare(menu.actions().slice(0, 2), ["cut", "copy"])
+        field.selectAll()
+        verify(menu.actions().indexOf("selectAll") < 0, "all selected: no select all")
+        field.echoMode = TextInput.Password
+        verify(menu.actions().indexOf("copy") < 0, "a password never copies")
+        verify(menu.actions().indexOf("cut") < 0, "a password never cuts")
+    }
+
+    function test_text_menu_runs_the_editing_action() {
+        const field = createTemporaryObject(textMenuFieldComponent, testCase)
+        const menu = textMenuOf(field)
+        field.forceActiveFocus()
+        field.deselect()
+        menu.run("selectAll")
+        compare(field.selectedText, "feature/login")
+        menu.run("cut")
+        compare(field.text, "")
+        verify(field.canPaste, "the cut text is on the clipboard")
+        menu.run("paste")
+        compare(field.text, "feature/login")
+    }
+
+    function test_selectable_text_menu_is_read_only() {
+        const label = createTemporaryObject(textMenuSelectableComponent, testCase)
+        const menu = textMenuOf(label)
+        verify(menu.readOnly)
+        label.selectAll()
+        compare(menu.actions(), ["copy"])
+        label.deselect()
+        compare(menu.actions(), ["selectAll"])
+    }
+
+    function test_text_menu_labels_are_localizable() {
+        compare(Theme.textMenuLabels.selectAll, "Select All")
+    }
+
     function test_banner_dismiss_and_collapse() {
         const banner = createTemporaryObject(bannerComponent, host)
         const dismissed = spy(banner, "dismissed")
