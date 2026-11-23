@@ -4,6 +4,11 @@
 
 **Added**
 
+- `MeridianEntrance` and `MeridianMotionMemory` (QML), Flutter's one-time
+  entrance: a keyed item fades and rises `rise-content` over `motion-select`
+  the first time its key appears, staggered by `order` and after `delay`;
+  the memory keeps seen keys for the session, so recycled rows and
+  re-created views show their content at rest. Off under reduce motion.
 - `MeridianTextField` and `MeridianTextArea` (QML) gain `keyFilter`, which
   sees every key press first, for suggestion lists under the caret.
 - `MeridianDialogSurface` (QML), Flutter's custom-layout dialog surface:

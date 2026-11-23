@@ -239,6 +239,36 @@ MeridianGround {
                     }
                 }
                 Section {
+                    title: "Entrance"
+                    Column {
+                        id: entranceDemo
+                        spacing: Theme.space.s3
+                        property int round: 0
+                        MeridianButton {
+                            text: "Enter again"
+                            onClicked: entranceDemo.round += 1
+                        }
+                        Row {
+                            spacing: Theme.space.s4
+                            Repeater {
+                                model: 4
+                                MeridianEntrance {
+                                    id: entranceItem
+                                    required property int index
+                                    entranceKey: "gallery-entrance|" + entranceDemo.round + "|" + entranceItem.index
+                                    order: entranceItem.index
+                                    MeridianSurface {
+                                        implicitWidth: 72
+                                        implicitHeight: 40
+                                        radius: Theme.radius.md
+                                        MeridianText { anchors.centerIn: parent; text: String(entranceItem.index + 1) }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Section {
                     title: "Panel"
                     MeridianPanel {
                         width: Math.min(320, parent.width)

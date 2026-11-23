@@ -55,6 +55,43 @@ TestCase {
     }
 
     Component {
+        id: entranceComponent
+        MeridianEntrance {
+            Rectangle { implicitWidth: 40; implicitHeight: 10 }
+        }
+    }
+
+    function test_motion_memory_remembers_each_key_once() {
+        MeridianMotionMemory.clear()
+        verify(MeridianMotionMemory.markSeen("open|1"))
+        verify(!MeridianMotionMemory.markSeen("open|1"))
+        verify(MeridianMotionMemory.seen("open|1"))
+        verify(!MeridianMotionMemory.seen("open|2"))
+    }
+
+    function test_entrance_plays_once_per_key() {
+        MeridianMotionMemory.clear()
+        Theme.reducedMotion = false
+        const first = createTemporaryObject(entranceComponent, motionCase, { entranceKey: "row|a" })
+        compare(first.implicitWidth, 40)
+        verify(first._t < 1)
+        tryCompare(first, "_t", 1)
+        // A recycled row with a key already seen shows its content at rest.
+        const again = createTemporaryObject(entranceComponent, motionCase, { entranceKey: "row|a" })
+        compare(again._t, 1)
+        // No key: at rest.
+        const unkeyed = createTemporaryObject(entranceComponent, motionCase)
+        compare(unkeyed._t, 1)
+    }
+
+    function test_entrance_is_off_under_reduced_motion() {
+        MeridianMotionMemory.clear()
+        Theme.reducedMotion = true
+        const entrance = createTemporaryObject(entranceComponent, motionCase, { entranceKey: "row|b" })
+        compare(entrance._t, 1)
+    }
+
+    Component {
         id: revealComponent
         MeridianReveal {
             axis: MeridianReveal.Horizontal
