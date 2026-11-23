@@ -134,6 +134,21 @@ TestCase {
         MeridianRollingNumber { value: 9 }
     }
 
+    property int rollingSource: 0
+
+    function test_rolling_number_follows_a_binding() {
+        Theme.reducedMotion = false
+        motionCase.rollingSource = 0
+        const number = createTemporaryObject(rollingComponent, motionCase)
+        number.value = Qt.binding(() => motionCase.rollingSource)
+        motionCase.rollingSource = 2
+        tryCompare(number, "_from", "")
+        compare(number._to, "2")
+        motionCase.rollingSource = 12
+        tryCompare(number, "_from", "")
+        compare(number._to, "12")
+    }
+
     function test_rolling_number_rolls_to_the_new_value() {
         Theme.reducedMotion = false
         const number = createTemporaryObject(rollingComponent, motionCase)
