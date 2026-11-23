@@ -270,8 +270,9 @@ MeridianGround {
                 }
                 Section {
                     title: "Attention, shake, rolling number, resize"
-                    Row {
+                    Flow {
                         id: motionDemo
+                        width: sections.width
                         spacing: Theme.space.s6
                         property int round: 0
                         MeridianButton {
@@ -291,12 +292,10 @@ MeridianGround {
                             MeridianText { anchors.centerIn: parent; text: "Invalid" }
                         }
                         MeridianRollingNumber {
-                            anchors.verticalCenter: parent.verticalCenter
                             value: 98 + motionDemo.round
                             popOnIncrease: true
                         }
                         MeridianResize {
-                            anchors.verticalCenter: parent.verticalCenter
                             MeridianButton { text: motionDemo.round % 2 === 0 ? "Commit" : "Commit and push" }
                         }
                     }
