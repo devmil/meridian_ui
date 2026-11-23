@@ -181,6 +181,25 @@ MeridianGround {
                     }
                 }
                 Section {
+                    title: "Colour choice"
+                    Column {
+                        width: Math.min(472, parent.width)
+                        spacing: Theme.space.s5
+                        MeridianColorChoiceRow {
+                            width: parent.width
+                            allowNone: true
+                            value: ({ series: 0 })
+                            onChosen: choice => value = choice
+                        }
+                        MeridianColorPicker {
+                            width: parent.width
+                            color: "#18304f"
+                            original: "#2f6fbf"
+                            groups: [{ title: "Recent", colors: ["#e5484d", "#30a46c", "#f5a524"] }]
+                        }
+                    }
+                }
+                Section {
                     title: "Find bar"
                     MeridianFindBar {
                         width: Math.min(420, parent.width)

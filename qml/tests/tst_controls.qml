@@ -96,6 +96,14 @@ TestCase {
     }
     Component { id: spyComponent; SignalSpy {} }
     Component {
+        id: pickerComponent
+        MeridianColorPicker { width: 440; color: "#18304f"; original: "#ff0000" }
+    }
+    Component {
+        id: choiceComponent
+        MeridianColorChoiceRow { width: 400; allowNone: true; value: ({ series: 2 }) }
+    }
+    Component {
         id: findComponent
         MeridianFindBar { width: 400; closable: true; caseSensitiveShown: true }
     }
@@ -110,6 +118,63 @@ TestCase {
 
     function spy(target, signal) {
         return createTemporaryObject(spyComponent, testCase, { target: target, signalName: signal })
+    }
+
+    function test_color_picker_edits_by_hex_slider_wheel_and_restore() {
+        const picker = createTemporaryObject(pickerComponent, host)
+        const edits = spy(picker, "edited")
+        const ends = spy(picker, "editFinished")
+        compare(picker.hexOf(picker.shown), "#18304F")
+        const hex = findChild(picker, "meridian-color-hex")
+        compare(hex.text, "#18304F")
+        hex.forceActiveFocus()
+        hex.selectAll()
+        keyClick(Qt.Key_Delete)
+        for (const key of "00ff00")
+            keyClick(key)
+        verify(edits.count > 0)
+        compare(picker.hexOf(picker.shown), "#00FF00")
+        compare(Math.round(picker.hue), 120)
+        keyClick(Qt.Key_Return)
+        compare(ends.count, 1)
+        // An invalid value says so and keeps the colour.
+        hex.selectAll()
+        keyClick(Qt.Key_Delete)
+        keyClick("1")
+        keyClick(Qt.Key_Return)
+        verify(picker.hexError.length > 0)
+        compare(picker.hexOf(picker.shown), "#00FF00")
+        // The wheel steps the hue and saturation from the keyboard.
+        picker.stepWheel(10, -0.5)
+        compare(Math.round(picker.hue), 130)
+        compare(Math.round(picker.saturation * 100), 50)
+        // A grey keeps the hue the wheel was turned to.
+        picker.choose("#808080")
+        compare(Math.round(picker.hue), 130)
+        // The original restores.
+        picker.choose(picker.original)
+        compare(picker.hexOf(picker.shown), "#FF0000")
+        picker.model = "rgb"
+        verify(findChild(picker, "meridian-color-r") !== null)
+    }
+
+    function test_color_choice_row_offers_none_series_and_a_custom_well() {
+        const row = createTemporaryObject(choiceComponent, host)
+        const chosen = spy(row, "chosen")
+        verify(findChild(row, "meridian-color-series-2").selected)
+        mouseClick(findChild(row, "meridian-color-series-0"))
+        compare(chosen.signalArguments[0][0].series, 0)
+        mouseClick(findChild(row, "meridian-color-none"))
+        compare(chosen.signalArguments[1][0], null)
+        const well = findChild(row, "meridian-color-custom")
+        verify(!well.hasColor)
+        well.edited("#123456")
+        compare(chosen.signalArguments[2][0].custom, "#123456")
+        compare(row.custom, "#123456")
+        // A palette colour keeps the custom colour in the well.
+        row.value = { series: 1 }
+        verify(well.hasColor)
+        verify(!well.selected)
     }
 
     function test_find_bar_counts_steps_and_closes_on_escape() {
