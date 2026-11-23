@@ -49,7 +49,6 @@ Item {
     MeridianReveal {
         id: reveal
         axis: root.axis
-        enabled: false
         onHidden: root.removed()
     }
 }

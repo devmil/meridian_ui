@@ -255,8 +255,9 @@ TestCase {
         id: removingComponent
         MeridianRemovingRow {
             property int removedCount: 0
+            property alias inner: removingInner
             onRemoved: removedCount += 1
-            Rectangle { implicitWidth: 40; implicitHeight: 10 }
+            Rectangle { id: removingInner; implicitWidth: 40; implicitHeight: 10 }
         }
     }
 
@@ -264,6 +265,8 @@ TestCase {
         Theme.reducedMotion = false
         const row = createTemporaryObject(removingComponent, motionCase)
         compare(row.implicitHeight, 10)
+        // Its content takes input until the removal starts.
+        verify(row.inner.enabled)
         tryVerify(() => row.removing)
         tryCompare(row, "removedCount", 1, 2000)
         compare(row.implicitHeight, 0)
