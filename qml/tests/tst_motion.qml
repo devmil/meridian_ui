@@ -250,4 +250,117 @@ TestCase {
         pulse.once = true
         verify(!pulse.staticHalo)
     }
+
+    Component {
+        id: removingComponent
+        MeridianRemovingRow {
+            property int removedCount: 0
+            onRemoved: removedCount += 1
+            Rectangle { implicitWidth: 40; implicitHeight: 10 }
+        }
+    }
+
+    function test_removing_row_fades_collapses_and_reports() {
+        Theme.reducedMotion = false
+        const row = createTemporaryObject(removingComponent, motionCase)
+        compare(row.implicitHeight, 10)
+        tryVerify(() => row.removing)
+        tryCompare(row, "removedCount", 1, 2000)
+        compare(row.implicitHeight, 0)
+        // Started by its owner, after a delay.
+        const later = createTemporaryObject(removingComponent, motionCase, { autoStart: false, delay: 40 })
+        verify(!later.removing)
+        wait(60)
+        compare(later.implicitHeight, 10)
+        later.start()
+        later.start()
+        tryCompare(later, "removedCount", 1, 2000)
+        wait(50)
+        compare(later.removedCount, 1)
+    }
+
+    function test_removing_row_is_instant_under_reduced_motion() {
+        Theme.reducedMotion = true
+        const row = createTemporaryObject(removingComponent, motionCase, { delay: 5000 })
+        tryCompare(row, "removedCount", 1, 500)
+    }
+
+    Component {
+        id: liftComponent
+        MeridianLift {
+            Rectangle { implicitWidth: 40; implicitHeight: 10 }
+        }
+    }
+
+    function test_lift_scales_and_settles() {
+        Theme.reducedMotion = false
+        const lift = createTemporaryObject(liftComponent, motionCase, { lifted: true })
+        compare(lift.implicitWidth, 40)
+        tryCompare(lift, "progress", 1)
+        compare(lift.scale, Tokens.scales.lift)
+        lift.lifted = false
+        tryCompare(lift, "progress", 0)
+        compare(lift.scale, 1)
+        // Reduce motion keeps the shadow, not the scale.
+        Theme.reducedMotion = true
+        lift.lifted = true
+        tryCompare(lift, "progress", 1)
+        compare(lift.scale, 1)
+    }
+
+    Component {
+        id: strokeIconComponent
+        MeridianStrokeIcon { name: "check" }
+    }
+
+    function test_stroke_icon_draws_and_erases() {
+        Theme.reducedMotion = false
+        const icon = createTemporaryObject(strokeIconComponent, motionCase)
+        compare(icon.progress, 1)
+        icon.drawn = false
+        tryCompare(icon, "progress", 0)
+        icon.drawn = true
+        verify(icon.progress < 1)
+        tryCompare(icon, "progress", 1)
+        const appearing = createTemporaryObject(strokeIconComponent, motionCase, { appear: true, duration: 200 })
+        verify(appearing.progress < 1)
+        tryCompare(appearing, "progress", 1)
+        Theme.reducedMotion = true
+        const reduced = createTemporaryObject(strokeIconComponent, motionCase, { appear: true })
+        compare(reduced.progress, 1)
+    }
+
+    Component {
+        id: glideComponent
+        ListView {
+            id: glideView
+            property alias glide: bar
+            width: 100
+            height: 100
+            model: 40
+            delegate: Item { width: 100; height: 10 }
+            MeridianSelectionGlide { id: bar; view: glideView; itemExtent: 10 }
+        }
+    }
+
+    function test_selection_glide_springs_near_and_jumps_far() {
+        Theme.reducedMotion = false
+        const view = createTemporaryObject(glideComponent, motionCase)
+        const glide = view.glide
+        glide.selectedIndex = 2
+        compare(glide.y, 20)
+        // Near and on screen: springs.
+        glide.selectedIndex = 4
+        verify(glide.y < 40)
+        tryCompare(glide, "y", 40)
+        compare(glide.opacity, 1)
+        // Far: placed at once and faded in.
+        glide.selectedIndex = 30
+        compare(glide.y, 300)
+        verify(glide.opacity < 1)
+        tryCompare(glide, "opacity", 1)
+        Theme.reducedMotion = true
+        glide.selectedIndex = 31
+        compare(glide.y, 310)
+    }
 }

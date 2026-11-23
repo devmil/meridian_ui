@@ -1,9 +1,18 @@
 # Changelog
 
-## 2.1.0 - 2026-11-22
+## 2.2.0 - 2026-11-23
 
 **Added**
 
+- `MeridianRemovingRow`, `MeridianLift`, `MeridianStroke`,
+  `MeridianStrokeIcon`, `MeridianSelectionGlide` and `MeridianTravel` (QML),
+  Flutter's leaving row (fade, collapse, `removed`; `start()` from
+  `ListView.onRemove`), drag lift (`lift-scale`, `shadow-float`,
+  `spring-gentle`), progressive strokes on `ShapePath.trim`, the list
+  selection bar that springs between rows and crossfades long jumps, and the
+  snapshot flight between two places of one item.
+- `MeridianListRow.selectionGlided` (QML) paints the selected fill clear
+  under a `MeridianSelectionGlide`.
 - `MeridianAttention`, `MeridianShake`, `MeridianRollingNumber` and
   `MeridianResize` (QML), Flutter's tint that fades back over
   `motion-attention` (once per memory key and trigger), the field and
@@ -25,6 +34,16 @@
   platform's own menu on a secondary click, the Menu key or Shift+F10.
   Password fields never offer Cut or Copy; read-only text offers Copy and
   Select All. `Theme.textMenuLabels` localizes the labels.
+
+**Fixed**
+
+- `MeridianReveal` (QML) fades and collapses again instead of hiding at once:
+  its animated values no longer start as bindings that jumped to the end.
+
+## 2.1.0 - 2026-11-22
+
+**Added**
+
 - `MeridianScrollBar` (QML), Flutter's scrollbar thumb: a `line-strong`
   pill that fades in while the view scrolls and out 600 ms after it stops,
   thickening to 8 px in `control-edge` under the pointer or while dragged.

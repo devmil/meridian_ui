@@ -301,6 +301,111 @@ MeridianGround {
                     }
                 }
                 Section {
+                    title: "Stroke, lift, removing row"
+                    Flow {
+                        id: strokeDemo
+                        width: sections.width
+                        spacing: Theme.space.s6
+                        property bool on: true
+                        property int removals: 0
+                        MeridianButton {
+                            text: "Toggle"
+                            onClicked: strokeDemo.on = !strokeDemo.on
+                        }
+                        MeridianStrokeIcon {
+                            name: "check"
+                            drawn: strokeDemo.on
+                            color: Theme.colors.success
+                        }
+                        MeridianStroke {
+                            width: 96
+                            height: Theme.size.control
+                            pathData: "M 0 " + height / 2 + " L " + width + " " + height / 2
+                            progress: strokeDemo.on ? 1 : 0
+                            Behavior on progress { NumberAnimation { duration: Motion.quick } }
+                            strokeWidth: Metrics.hairline
+                            color: Theme.colors.inkMuted
+                        }
+                        MeridianLift {
+                            lifted: !strokeDemo.on
+                            radius: Theme.radius.md
+                            MeridianSurface {
+                                implicitWidth: 96
+                                implicitHeight: Theme.size.control
+                                radius: Theme.radius.md
+                                MeridianText { anchors.centerIn: parent; text: "Lift" }
+                            }
+                        }
+                        MeridianButton {
+                            text: "Remove row"
+                            onClicked: strokeDemo.removals += 1
+                        }
+                        Loader {
+                            id: removalLoader
+                            active: true
+                            sourceComponent: MeridianRemovingRow {
+                                autoStart: false
+                                property int round: strokeDemo.removals
+                                onRoundChanged: start()
+                                onRemoved: { removalLoader.active = false; removalLoader.active = true }
+                                MeridianListRow { implicitWidth: 160; text: "Leaving row" }
+                            }
+                        }
+                    }
+                }
+                Section {
+                    title: "Selection glide, travel"
+                    Flow {
+                        id: travelDemo
+                        width: sections.width
+                        spacing: Theme.space.s6
+                        property int selected: 0
+                        property bool onRight: false
+                        ListView {
+                            id: glideList
+                            width: 140
+                            height: 5 * Theme.size.row
+                            interactive: false
+                            model: 5
+                            MeridianSelectionGlide { view: glideList; selectedIndex: travelDemo.selected }
+                            delegate: MeridianListRow {
+                                required property int index
+                                width: glideList.width
+                                text: "Row " + (index + 1)
+                                selectionGlided: true
+                                selected: travelDemo.selected === index
+                                onClicked: travelDemo.selected = index
+                            }
+                        }
+                        Repeater {
+                            model: 2
+                            Rectangle {
+                                id: travelColumn
+                                required property int index
+                                width: 100
+                                height: 5 * Theme.size.row
+                                radius: Theme.radius.md
+                                color: Theme.colors.paneAlt
+                                MeridianTravel {
+                                    id: traveller
+                                    visible: travelDemo.onRight === (travelColumn.index === 1)
+                                    y: travelColumn.index === 1 ? 3 * Theme.size.row : 0
+                                    width: parent.width
+                                    travelKey: visible ? "gallery-travel" : ""
+                                    MeridianListRow { width: parent.width; text: "Moving file" }
+                                    TapHandler {
+                                        onTapped: {
+                                            traveller.capture()
+                                            flipTimer.start()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        Timer { id: flipTimer; interval: 30; onTriggered: travelDemo.onRight = !travelDemo.onRight }
+                    }
+                }
+                Section {
                     title: "Panel"
                     MeridianPanel {
                         width: Math.min(320, parent.width)

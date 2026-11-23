@@ -112,10 +112,26 @@ Springs (`Motion.snappy`, `.gentle`, `.pop`) are `{ duration, curve }` for
 `easing.type: Easing.BezierSpline`. The curve is a 10-segment cubic fit of the
 spring, with the same settle time as the web rendition.
 
+The motion helpers mirror Flutter's: `MeridianReveal`, `MeridianEntrance`
+(with `MeridianMotionMemory`), `MeridianAttention`, `MeridianShake`,
+`MeridianRollingNumber`, `MeridianResize`, `MeridianSwap`, `MeridianPulse`, and:
+
+| QML | Notes |
+|---|---|
+| `MeridianRemovingRow` | Fades and collapses a leaving row, then emits `removed`. In a ListView delegate set `autoStart: false`, call `start()` from `ListView.onRemove` with `ListView.delayRemove` set, and clear it on `removed`. `delay` staggers a short batch |
+| `MeridianLift` | Drag feedback: `lift-scale` and `shadow-float` while `lifted`, settling on `spring-gentle`. Wrap the drag proxy (created lifted) or the dragged row |
+| `MeridianStroke`, `MeridianStrokeIcon` | Draw a path or a Lucide icon progressively with `ShapePath.trim` (Qt 6.10+): check marks, strike-throughs, connectors. `drawn`, `appear`, `duration`, `delay` |
+| `MeridianSelectionGlide` | Declare inside a fixed-extent ListView; it sits under the rows in the view's content and springs to `selectedIndex`, crossfading jumps over `glide-max-rows` or off screen. Rows set `selectionGlided` (MeridianListRow) and paint their selected fill clear |
+| `MeridianTravel` | `capture()` on the source before the move; the next instance with the same `travelKey` flies a snapshot (`grabToImage`) from there on `spring-gentle`, one flight per window. Captures older than `motion-celebrate` are dropped |
+
 Rules that the tests enforce:
 
 - A zero duration must land on the terminal state. Animate the property
   itself (a `Behavior` or a `to:` value). Never scale a reveal by the duration.
+- Give an animated value a plain initial value, set once in
+  `Component.onCompleted`, never a binding to the state it animates towards:
+  the binding re-evaluates first and the value jumps to its end before the
+  animation runs (`MeridianReveal` hid at once until 2.2.0).
 - Keep `Easing.BezierSpline` lists short. Qt 6.12 corrupted its heap with
   45–70-segment splines. The generator emits 10, and `tst_motion` guards it.
 - Publish a delegate's geometry to its owner with `Binding { when: … }`
