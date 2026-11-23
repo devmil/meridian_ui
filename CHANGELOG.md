@@ -4,6 +4,8 @@
 
 **Added**
 
+- `MeridianTextField` and `MeridianTextArea` (QML) gain `keyFilter`, which
+  sees every key press first, for suggestion lists under the caret.
 - `MeridianDialogSurface` (QML), Flutter's custom-layout dialog surface:
   the dialog's scrim, surface, entrance and Escape without a title or
   footer; `fillWindow` fills the window for workflows.

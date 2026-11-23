@@ -62,7 +62,7 @@ style a stock Qt Quick Controls control in an app: add or extend a primitive her
 |---|---|---|
 | `MeridianButton` | `MeridianButton` | Variants Primary, Secondary, Quiet, Danger, DangerQuiet; `loading`, `success`, `iconOnly`. Connect commands to `activated`, which does not fire while `loading` |
 | `MeridianIconButton` | `MeridianIconButton` | `text` is the accessible name; `active`, `surfaceColor`, `turns`, `nudgeDirection` |
-| `MeridianTextField` | `MeridianTextField` | Default, Search, Plain; `clearLabel`, `error`, `rejectCount` shake. The label stays outside |
+| `MeridianTextField` | `MeridianTextField` | Default, Search, Plain; `clearLabel`, `error`, `rejectCount` shake. The label stays outside. `keyFilter` sees every key press first and consumes it by returning true (a suggestion list under the caret); `MeridianTextArea` has the same |
 | `MeridianTextMenu` | `MeridianTextMenuRequest` with the native text menu builder | The text editing menu inside every `MeridianTextField`, `MeridianTextArea` and `MeridianSelectableText`: Cut, Copy, Paste, Select All, each only when it applies (none of Cut or Copy for a password; Copy and Select All for read-only text), in the platform's own menu at the pointer on a secondary click or at the cursor on the Menu key or Shift+F10. It takes no focus. Localize with `Theme.textMenuLabels` |
 | `MeridianSwitch` | `MeridianSwitch` | `description`, `showLabel`, `labelFirst` |
 | `MeridianSegmented` | `MeridianSegmented` | Arrow, Home and End keys skip disabled segments; `manualActivation`; shares width when narrow |

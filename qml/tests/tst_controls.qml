@@ -527,6 +527,19 @@ TestCase {
         compare(menu.actions(), ["selectAll"])
     }
 
+    function test_key_filter_sees_keys_first() {
+        const field = createTemporaryObject(textMenuFieldComponent, testCase)
+        const seen = []
+        field.keyFilter = event => { seen.push(event.key); return event.key === Qt.Key_Down }
+        field.forceActiveFocus()
+        field.cursorPosition = 3
+        keyClick(Qt.Key_Down)
+        compare(field.cursorPosition, 3, "a consumed key does nothing else")
+        keyClick(Qt.Key_End)
+        compare(field.cursorPosition, field.length, "other keys still edit")
+        compare(seen, [Qt.Key_Down, Qt.Key_End])
+    }
+
     function test_text_menu_labels_are_localizable() {
         compare(Theme.textMenuLabels.selectAll, "Select All")
     }
