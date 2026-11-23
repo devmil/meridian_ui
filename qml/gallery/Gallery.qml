@@ -418,6 +418,21 @@ MeridianGround {
                         onActivated: actionMenu.popup(menuAnchor, 0, menuAnchor.height + Theme.space.s2)
                     }
                     MeridianButton {
+                        text: "Review…"
+                        onActivated: surface.open()
+                        MeridianDialogSurface {
+                            id: surface
+                            fillWindow: true
+                            label: "Review"
+                            Column {
+                                anchors.centerIn: parent
+                                spacing: Theme.space.s5
+                                MeridianText { role: MeridianText.Title; text: "A workflow fills the window" }
+                                MeridianButton { text: "Close"; onActivated: surface.close() }
+                            }
+                        }
+                    }
+                    MeridianButton {
                         id: popoverAnchor
                         text: "Snooze until…"
                         iconName: "clock"

@@ -4,6 +4,9 @@
 
 **Added**
 
+- `MeridianDialogSurface` (QML), Flutter's custom-layout dialog surface:
+  the dialog's scrim, surface, entrance and Escape without a title or
+  footer; `fillWindow` fills the window for workflows.
 - `MeridianTextMenu` (QML), Flutter's native text menu: every
   `MeridianTextField`, `MeridianTextArea` and `MeridianSelectableText` now
   offers Cut, Copy, Paste and Select All, each only when it applies, in the

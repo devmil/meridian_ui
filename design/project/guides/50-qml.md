@@ -73,6 +73,7 @@ style a stock Qt Quick Controls control in an app: add or extend a primitive her
 | `MeridianIsland`, `MeridianGround` | Island, Ground | `shadow-pane` edge; focus halo |
 | `MeridianToast` + `MeridianToastHost` | Toast | One at a time; `show()` returns an id that `actionTriggered` reports (Undo); hover or focus pauses the countdown |
 | `MeridianDialog`, `MeridianConfirm` | Dialog, showMeridianConfirm | Width classes Confirm/Form/Workflow; Enter submits or shakes when `submitDisabled`; a destructive confirm starts on Cancel |
+| `MeridianDialogSurface` | `MeridianDialogSurface` | A modal surface for a custom layout: the dialog's scrim, surface, entrance and Escape without title, padding or footer; `fillWindow` fills the window less `margin` (`space-3`) for workflows such as a review; set `label` for its accessible name |
 | `MeridianMenu`, `MeridianMenuItem`, `MeridianMenuSeparator` | Menu | Type-ahead, submenus, `danger`, `shortcut`, `hint`, `dotColor`; `nativeMenu: true` uses Qt's platform menu |
 | `MeridianPopover` | Popover | One task with fields or its own layout |
 | `MeridianNavRow` | NavRow | `current`, `sidebarFocused` (solid accent), `depth`, expand with ←/→, `dropState` |

@@ -61,6 +61,13 @@ Item {
         }
     }
     Component {
+        id: surfaceComponent
+        MeridianDialogSurface {
+            label: "Review"
+            Item { objectName: "surfaceBody"; anchors.fill: parent }
+        }
+    }
+    Component {
         id: confirmComponent
         MeridianConfirm {
             title: "Delete 3 messages"
@@ -197,6 +204,20 @@ Item {
             compare(dialog.rejectCount, 1)
             keyClick(Qt.Key_Escape)
             tryVerify(() => !dialog.visible)
+        }
+
+        function test_dialog_surface_fills_the_window_and_closes_on_escape() {
+            const surface = createTemporaryObject(surfaceComponent, host)
+            surface.fillWindow = true
+            surface.open()
+            tryVerify(() => surface.opened)
+            compare(surface.width, surface.parent.width - 2 * surface.margin)
+            compare(surface.height, surface.parent.height - 2 * surface.margin)
+            compare(surface.padding, 0)
+            compare(surface.header, null)
+            surface.contentItem.forceActiveFocus()
+            keyClick(Qt.Key_Escape)
+            tryVerify(() => !surface.visible)
         }
 
         function test_dialog_width_classes() {
