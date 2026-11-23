@@ -14,6 +14,9 @@ Item {
 
     property real _t: 1
     property int _previous: 0
+    /// The horizontal offset now, for an item that shakes without being inside the shake.
+    readonly property real offset: offsetAt(_t, strength === MeridianShake.Field
+        ? Motion.shakeFieldDistance : Motion.shakeSurfaceDistance)
 
     implicitWidth: holder.childrenRect.width
     implicitHeight: holder.childrenRect.height
@@ -42,9 +45,6 @@ Item {
     Item {
         id: holder
         anchors.fill: parent
-        transform: Translate {
-            x: root.offsetAt(root._t, root.strength === MeridianShake.Field
-                ? Motion.shakeFieldDistance : Motion.shakeSurfaceDistance)
-        }
+        transform: Translate { x: root.offset }
     }
 }
