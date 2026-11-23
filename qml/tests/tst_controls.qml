@@ -95,6 +95,10 @@ TestCase {
         MeridianBanner { width: 400; message: "Sync paused."; tone: MeridianBanner.Attention; dismissible: true; dismissLabel: "Dismiss" }
     }
     Component { id: spyComponent; SignalSpy {} }
+    Component {
+        id: findComponent
+        MeridianFindBar { width: 400; closable: true; caseSensitiveShown: true }
+    }
     Component { id: spinnerComponent; MeridianSpinner {} }
 
     function init() {
@@ -106,6 +110,45 @@ TestCase {
 
     function spy(target, signal) {
         return createTemporaryObject(spyComponent, testCase, { target: target, signalName: signal })
+    }
+
+    function test_find_bar_counts_steps_and_closes_on_escape() {
+        const bar = createTemporaryObject(findComponent, host)
+        const next = spy(bar, "next")
+        const previous = spy(bar, "previous")
+        const closes = spy(bar, "closeRequested")
+        const edits = spy(bar, "edited")
+        bar.searchField.forceActiveFocus()
+        keyClick(Qt.Key_A)
+        compare(edits.count, 1)
+        compare(bar.counter, "No matches")
+        // Enter searches before there are matches; the buttons wait for some.
+        keyClick(Qt.Key_Return)
+        compare(next.count, 1)
+        keyClick(Qt.Key_Return, Qt.ShiftModifier)
+        compare(previous.count, 1)
+        verify(!findChild(bar, "meridian-find-next").enabled)
+        bar.matchCount = 12
+        compare(bar.counter, "12 matches")
+        bar.currentMatch = 2
+        compare(bar.counter, "3 of 12")
+        verify(findChild(bar, "meridian-find-next").enabled)
+        verify(findChild(bar, "meridian-find-case").visible)
+        // Escape clears first, then asks to close.
+        keyClick(Qt.Key_Escape)
+        compare(bar.text, "")
+        compare(edits.signalArguments[edits.count - 1][0], "")
+        compare(closes.count, 0)
+        keyClick(Qt.Key_Escape)
+        compare(closes.count, 1)
+    }
+
+    function test_find_bar_stacks_when_narrow() {
+        const bar = createTemporaryObject(findComponent, host)
+        verify(!bar.stacked)
+        bar.width = 150
+        verify(bar.stacked)
+        compare(bar.searchField.width, 150)
     }
 
     function test_radios_in_one_parent_are_exclusive() {

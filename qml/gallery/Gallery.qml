@@ -181,6 +181,17 @@ MeridianGround {
                     }
                 }
                 Section {
+                    title: "Find bar"
+                    MeridianFindBar {
+                        width: Math.min(420, parent.width)
+                        text: "hunk"
+                        matchCount: 12
+                        currentMatch: 2
+                        caseSensitiveShown: true
+                        closable: true
+                    }
+                }
+                Section {
                     title: "Panel"
                     MeridianPanel {
                         width: Math.min(320, parent.width)
