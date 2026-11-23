@@ -92,6 +92,80 @@ TestCase {
     }
 
     Component {
+        id: attentionComponent
+        MeridianAttention {
+            width: 40; height: 10
+            Rectangle { anchors.fill: parent; color: "transparent" }
+        }
+    }
+
+    function test_attention_tints_and_fades_back_once_per_trigger() {
+        MeridianMotionMemory.clear()
+        Theme.reducedMotion = false
+        const attention = createTemporaryObject(attentionComponent, motionCase, { memoryKey: "row" })
+        compare(attention.progress, 0)
+        attention.trigger = 1
+        tryVerify(() => attention.progress > 0)
+        tryCompare(attention, "progress", 0, 3000)
+        // A recycled row with the same key and trigger does not replay.
+        const again = createTemporaryObject(attentionComponent, motionCase, { memoryKey: "row", trigger: 1 })
+        compare(again.progress, 0)
+        wait(50)
+        compare(again.progress, 0)
+    }
+
+    Component {
+        id: shakeComponent
+        MeridianShake { width: 40; height: 10 }
+    }
+
+    function test_shake_moves_and_rests() {
+        Theme.reducedMotion = false
+        const shake = createTemporaryObject(shakeComponent, motionCase)
+        compare(shake.offsetAt(0, 3), 0)
+        compare(shake.offsetAt(1 / 6, 3), -3)
+        compare(shake.offsetAt(1, 3), 0)
+        shake.trigger = 1
+        tryCompare(shake, "_t", 1)
+    }
+
+    Component {
+        id: rollingComponent
+        MeridianRollingNumber { value: 9 }
+    }
+
+    function test_rolling_number_rolls_to_the_new_value() {
+        Theme.reducedMotion = false
+        const number = createTemporaryObject(rollingComponent, motionCase)
+        compare(number.text, "9")
+        number.value = 10
+        compare(number.text, "10")
+        verify(number._from === "9")
+        tryCompare(number, "_from", "")
+        Theme.reducedMotion = true
+        number.value = 11
+        compare(number._from, "")
+    }
+
+    Component {
+        id: resizeComponent
+        MeridianResize {
+            property alias inner: box
+            Rectangle { id: box; implicitWidth: 40; implicitHeight: 10 }
+        }
+    }
+
+    function test_resize_follows_its_content() {
+        Theme.reducedMotion = false
+        const resize = createTemporaryObject(resizeComponent, motionCase)
+        compare(resize.implicitWidth, 40)
+        wait(20)
+        resize.inner.implicitWidth = 80
+        verify(resize.implicitWidth < 80)
+        tryCompare(resize, "implicitWidth", 80)
+    }
+
+    Component {
         id: revealComponent
         MeridianReveal {
             axis: MeridianReveal.Horizontal

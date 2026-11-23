@@ -4,6 +4,11 @@
 
 **Added**
 
+- `MeridianAttention`, `MeridianShake`, `MeridianRollingNumber` and
+  `MeridianResize` (QML), Flutter's tint that fades back over
+  `motion-attention` (once per memory key and trigger), the field and
+  surface shakes, the digit-by-digit rolling number with its pop on
+  increase, and the size that follows its content over `motion-layout`.
 - `MeridianEntrance` and `MeridianMotionMemory` (QML), Flutter's one-time
   entrance: a keyed item fades and rises `rise-content` over `motion-select`
   the first time its key appears, staggered by `order` and after `delay`;

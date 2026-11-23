@@ -269,6 +269,39 @@ MeridianGround {
                     }
                 }
                 Section {
+                    title: "Attention, shake, rolling number, resize"
+                    Row {
+                        id: motionDemo
+                        spacing: Theme.space.s6
+                        property int round: 0
+                        MeridianButton {
+                            text: "Play"
+                            onClicked: motionDemo.round += 1
+                        }
+                        MeridianAttention {
+                            width: 120
+                            height: Theme.size.control
+                            trigger: motionDemo.round
+                            MeridianText { anchors.centerIn: parent; text: "Changed row" }
+                        }
+                        MeridianShake {
+                            width: 120
+                            height: Theme.size.control
+                            trigger: motionDemo.round
+                            MeridianText { anchors.centerIn: parent; text: "Invalid" }
+                        }
+                        MeridianRollingNumber {
+                            anchors.verticalCenter: parent.verticalCenter
+                            value: 98 + motionDemo.round
+                            popOnIncrease: true
+                        }
+                        MeridianResize {
+                            anchors.verticalCenter: parent.verticalCenter
+                            MeridianButton { text: motionDemo.round % 2 === 0 ? "Commit" : "Commit and push" }
+                        }
+                    }
+                }
+                Section {
                     title: "Panel"
                     MeridianPanel {
                         width: Math.min(320, parent.width)
