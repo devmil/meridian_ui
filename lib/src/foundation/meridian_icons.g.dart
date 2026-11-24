@@ -263,6 +263,20 @@ abstract final class MeridianIcons {
   static const stepForward = 'step-forward';
   static const volume2 = 'volume-2';
   static const volumeX = 'volume-x';
+  static const timer = 'timer';
+  static const video = 'video';
+  static const film = 'film';
+  static const mic = 'mic';
+  static const micOff = 'mic-off';
+  static const webcam = 'webcam';
+
+  // Actions
+  static const scanText = 'scan-text';
+  static const scrollText = 'scroll-text';
+  static const mousePointerClick = 'mouse-pointer-click';
+  static const squareDashed = 'square-dashed';
+  static const proportions = 'proportions';
+  static const crosshair = 'crosshair';
 
   /// Every icon name.
   static const all = <String>[
@@ -508,5 +522,17 @@ abstract final class MeridianIcons {
     stepForward,
     volume2,
     volumeX,
+    timer,
+    video,
+    film,
+    mic,
+    micOff,
+    webcam,
+    scanText,
+    scrollText,
+    mousePointerClick,
+    squareDashed,
+    proportions,
+    crosshair,
   ];
 }

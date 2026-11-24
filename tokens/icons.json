@@ -970,6 +970,54 @@
   {
    "name": "volume-x",
    "group": "Media"
+  },
+  {
+   "name": "timer",
+   "group": "Media"
+  },
+  {
+   "name": "video",
+   "group": "Media"
+  },
+  {
+   "name": "film",
+   "group": "Media"
+  },
+  {
+   "name": "mic",
+   "group": "Media"
+  },
+  {
+   "name": "mic-off",
+   "group": "Media"
+  },
+  {
+   "name": "webcam",
+   "group": "Media"
+  },
+  {
+   "name": "scan-text",
+   "group": "Actions"
+  },
+  {
+   "name": "scroll-text",
+   "group": "Actions"
+  },
+  {
+   "name": "mouse-pointer-click",
+   "group": "Actions"
+  },
+  {
+   "name": "square-dashed",
+   "group": "Actions"
+  },
+  {
+   "name": "proportions",
+   "group": "Actions"
+  },
+  {
+   "name": "crosshair",
+   "group": "Actions"
   }
  ]
 }
