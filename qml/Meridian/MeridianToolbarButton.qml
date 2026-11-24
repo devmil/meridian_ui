@@ -12,6 +12,9 @@ Item {
     property string text
     property string iconName
     property bool selected: false
+    /// A shared indicator (a toolbar's selection glide) paints the selected
+    /// fill; the button's own rest fill stays clear.
+    property bool glided: false
     property bool showLabel: true
     property string tooltip
     property string disabledReason
@@ -100,7 +103,7 @@ Item {
                 id: fill
                 anchors.fill: parent
                 radius: root.radius
-                readonly property color rest: root.selected ? Theme.colors.accentSoft : Theme.clear(Theme.colors.groundHover)
+                readonly property color rest: root.selected && !root.glided ? Theme.colors.accentSoft : Theme.clear(Theme.colors.groundHover)
                 readonly property color hover: root.selected ? Theme.pressed(Theme.colors.accentSoft) : Theme.colors.groundHover
                 color: !face.enabled ? rest : face.down ? Theme.pressed(hover) : face.hovered ? hover : rest
                 Behavior on color { ColorAnimation { duration: Motion.hoverFor(face.hovered || face.down) } }
