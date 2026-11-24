@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.2.1 - 2026-11-24
+
+**Changed**
+
+- QML live loops (`MeridianSpinner`, indeterminate `MeridianProgressBar`,
+  live `MeridianStatusDot`, looping `MeridianPulse`, `MeridianIconButton`
+  spin) hold still while the application is inactive, following the new
+  `Motion.loopsActive`, so an unfocused or hidden window renders no frames
+  at rest. They continue when the application is active again.
+
 ## 2.2.0 - 2026-11-23
 
 **Added**

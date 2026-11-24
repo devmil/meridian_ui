@@ -112,6 +112,14 @@ Springs (`Motion.snappy`, `.gentle`, `.pop`) are `{ duration, curve }` for
 `easing.type: Easing.BezierSpline`. The curve is a 10-segment cubic fit of the
 spring, with the same settle time as the web rendition.
 
+Live loops (the spinner, indeterminate progress, the live status halo,
+`MeridianPulse`, the icon button spin) run only while `Motion.loopsActive`,
+which follows `Application.state`. An unfocused, hidden or minimized window
+holds them still, so it renders no frames at rest and wakes no CPU; they
+continue when the application is active again. App loops of their own, such
+as a skeleton pulse, gate their `running` on `Motion.loopsActive` too. Tests
+may set it and restore the binding afterwards.
+
 The motion helpers mirror Flutter's: `MeridianReveal`, `MeridianEntrance`
 (with `MeridianMotionMemory`), `MeridianAttention`, `MeridianShake`,
 `MeridianRollingNumber`, `MeridianResize`, `MeridianSwap`, `MeridianPulse`, and:

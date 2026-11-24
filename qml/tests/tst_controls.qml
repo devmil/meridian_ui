@@ -441,6 +441,33 @@ TestCase {
         tryVerify(() => spinner.shown, Motion.spinnerDelay + 1000)
     }
 
+    // Live loops hold while the application is inactive (an unfocused or hidden
+    // window renders no frames at rest) and continue when it is active again.
+    function test_live_loops_hold_while_inactive() {
+        const restore = () => Motion.loopsActive = Qt.binding(() => Application.state === Qt.ApplicationActive)
+        Theme.reducedMotion = false
+        Motion.loopsActive = true
+        const spinner = createTemporaryObject(spinnerComponent, host, { immediate: true })
+        const loop = findChild(spinner, "spinnerLoop")
+        tryVerify(() => loop.running)
+        Motion.loopsActive = false
+        verify(!loop.running)
+        Motion.loopsActive = true
+        verify(loop.running)
+
+        const button = createTemporaryObject(badgeButton, host)
+        button.spinning = true
+        tryVerify(() => button._spin > 0.1, 3000)
+        Motion.loopsActive = false
+        const held = button._spin
+        wait(Motion.spinner / 2)
+        compare(button._spin, held)
+        Motion.loopsActive = true
+        tryVerify(() => button._spin > held, 3000)
+        button.spinning = false
+        restore()
+    }
+
     function test_progress_bar_determinate_and_completion_fade() {
         const bar = createTemporaryObject(progressComponent, host, { value: 0.5 })
         const fill = findChild(bar, "progressFill")
