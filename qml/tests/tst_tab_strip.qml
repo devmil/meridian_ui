@@ -23,6 +23,25 @@ Item {
         }
     }
     Component { id: spyComponent; SignalSpy {} }
+    Component {
+        id: boundedStripComponent
+        Item {
+            property real maxW: 900
+            property alias strip: bounded
+            width: 900
+            height: 40
+            MeridianTabStrip {
+                id: bounded
+                width: Math.min(implicitWidth, parent.maxW)
+                tabs: [
+                    { id: 1, label: "alpha" },
+                    { id: 2, label: "beta" },
+                    { id: 3, label: "gamma" },
+                ]
+                activeTab: 3
+            }
+        }
+    }
 
     TestCase {
         id: stripCase
@@ -89,6 +108,30 @@ Item {
             // The active tab indicator updates immediately with zero duration on width resize.
             compare(strip._total < 420 + 1, true)
             Theme.reducedMotion = true
+        }
+
+        function test_dragging_and_widening_do_not_ratchet_tab_width() {
+            Theme.reducedMotion = true
+            const box = createTemporaryObject(boundedStripComponent, host)
+            const strip = box.strip
+            settle(strip)
+            compare(strip.tabWidth, Metrics.tabLabelMaxWidth)
+            // Dragging the last tab left must not shrink implicitWidth or tabWidth.
+            const startX = strip._total - strip.tabWidth
+            strip._startDrag("tab:3", startX + 20, startX)
+            strip._updateDrag(40)
+            settle(strip)
+            compare(strip.tabWidth, Metrics.tabLabelMaxWidth)
+            strip._endDrag(false)
+            settle(strip)
+            compare(strip.tabWidth, Metrics.tabLabelMaxWidth)
+            // Narrowing then widening restores full tabWidth.
+            box.maxW = 360
+            settle(strip)
+            verify(strip.tabWidth < Metrics.tabLabelMaxWidth)
+            box.maxW = 900
+            settle(strip)
+            compare(strip.tabWidth, Metrics.tabLabelMaxWidth)
         }
     }
 }
