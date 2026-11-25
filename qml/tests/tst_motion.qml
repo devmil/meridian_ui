@@ -366,4 +366,19 @@ TestCase {
         glide.selectedIndex = 31
         compare(glide.y, 310)
     }
+
+    function test_selection_glide_follows_scrolled_rows() {
+        Theme.reducedMotion = true
+        const view = createTemporaryObject(glideComponent, motionCase)
+        const glide = view.glide
+        verify(glide.parent === view.contentItem)
+        view.contentY = 120
+        glide.selectedIndex = 15
+        const row = view.itemAtIndex(15)
+        verify(row !== null)
+        compare(glide.mapToItem(view, 0, 0).y, row.mapToItem(view, 0, 0).y)
+        // Scrolling further keeps the bar aligned with the row.
+        view.contentY = 140
+        compare(glide.mapToItem(view, 0, 0).y, row.mapToItem(view, 0, 0).y)
+    }
 }
