@@ -76,5 +76,19 @@ Item {
             settle(strip)
             verify(strip._total < 2 * strip.tabWidth + 100)
         }
+
+        function test_width_resize_snaps_without_layout_animation() {
+            Theme.reducedMotion = false
+            const strip = createTemporaryObject(stripComponent, host)
+            settle(strip)
+            const before = strip.tabWidth
+            strip.width = 420
+            wait(1)
+            verify(strip.tabWidth < before)
+            verify(strip._layoutAnimated)
+            // The active tab indicator updates immediately with zero duration on width resize.
+            compare(strip._total < 420 + 1, true)
+            Theme.reducedMotion = true
+        }
     }
 }
