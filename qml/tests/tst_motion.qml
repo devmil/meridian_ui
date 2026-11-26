@@ -288,6 +288,23 @@ TestCase {
         tryCompare(row, "removedCount", 1, 500)
     }
 
+    function test_removing_row_reset_restores_reused_delegate() {
+        Theme.reducedMotion = false
+        const row = createTemporaryObject(removingComponent, motionCase, { autoStart: false })
+        compare(row.implicitHeight, 10)
+        row.start()
+        tryCompare(row, "removedCount", 1, 2000)
+        compare(row.implicitHeight, 0)
+        verify(row.removing)
+        row.reset()
+        verify(!row.removing)
+        compare(row.implicitHeight, 10)
+        // Can be removed again after being reused.
+        row.start()
+        tryCompare(row, "removedCount", 2, 2000)
+        compare(row.implicitHeight, 0)
+    }
+
     Component {
         id: liftComponent
         MeridianLift {
