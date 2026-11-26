@@ -1,5 +1,14 @@
 # Changelog
 
+## Unreleased
+
+**Added**
+
+- `MeridianWheelScroll.scrollSideways(change)`: sideways wheel and touchpad
+  motion the flickable cannot scroll itself (Shift+wheel, the horizontal part
+  of a diagonal gesture) is offered to the view instead of being dropped, so
+  a view that moves its content sideways its own way scrolls with it.
+
 ## 2.2.1 - 2026-11-24
 
 **Changed**
