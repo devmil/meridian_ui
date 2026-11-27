@@ -289,9 +289,14 @@ Item {
             tryVerify(() => menu.opened)
             const first = menu.itemAt(0)
             const inside = first.mapToItem(host, first.width / 2, first.height / 2)
-            // Hover reaches the scene once per frame: wait for each position.
-            mouseMove(host, inside.x, inside.y)
-            tryVerify(() => first.hovered)
+            // Hover reaches the scene once per frame, and a pointer that only
+            // arrives with the move may need another event at the same place
+            // (Qt 6.11): repeat the resting position, which never arms the menu.
+            for (let attempt = 0; attempt < 50 && !first.hovered; ++attempt) {
+                mouseMove(host, inside.x, inside.y)
+                wait(20)
+            }
+            verify(first.hovered, "the pointer rests on the first row")
             wait(50)
             verify(!first.highlightedRow, "highlighted before the pointer moved")
             mouseMove(host, inside.x + 8, inside.y)
