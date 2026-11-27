@@ -58,6 +58,14 @@ Item {
         }
     }
     Component {
+        id: filledIslandComponent
+        MeridianIsland {
+            width: 200
+            height: 120
+            Rectangle { anchors.fill: parent; color: "#ff0000" }
+        }
+    }
+    Component {
         id: paginationComponent
         MeridianPagination { previousLabel: "Previous page"; nextLabel: "Next page"; pageLabel: "Page %1" }
     }
@@ -445,6 +453,27 @@ Item {
                     stack.push(item.children[i])
             }
             verify(styled, "the matched word is underlined")
+        }
+
+        function test_island_content_keeps_the_rounded_corners() {
+            const island = createTemporaryObject(filledIslandComponent, host)
+            waitForRendering(island)
+            const image = grabImage(island)
+            const ground = Theme.colors.ground
+            const last = [island.width - 1, island.height - 1]
+            for (const [x, y] of [[0, 0], [last[0], 0], [0, last[1]], [last[0], last[1]]]) {
+                const pixel = image.pixel(x, y)
+                verify(Qt.colorEqual(pixel, ground), "corner " + x + "," + y + " is " + pixel)
+            }
+            verify(Qt.colorEqual(image.pixel(island.width / 2, island.height / 2), "#ff0000"))
+            // Along the sides away from the corners the content reaches the edge,
+            // and inside each rounding too.
+            for (const [x, y] of [[0, island.height / 2], [last[0], island.height / 2],
+                                  [island.width / 2, 0], [island.width / 2, last[1]]])
+                verify(Qt.colorEqual(image.pixel(x, y), "#ff0000"), "side " + x + "," + y)
+            const inset = Theme.radius.lg - 2
+            for (const [x, y] of [[inset, inset], [last[0] - inset, inset], [inset, last[1] - inset], [last[0] - inset, last[1] - inset]])
+                verify(Qt.colorEqual(image.pixel(x, y), "#ff0000"), "inside the rounding at " + x + "," + y)
         }
 
         function test_island_header_sits_above_the_content() {

@@ -9,6 +9,15 @@
   of a diagonal gesture) is offered to the view instead of being dropped, so
   a view that moves its content sideways its own way scrolls with it.
 
+**Fixed**
+
+- QML `MeridianIsland` keeps its rounded corners when its content paints its
+  own background (a header strip, a pane colour). The surface's clip is
+  rectangular, so such content covered the corners and an island looked
+  rounded or square depending on what it showed. The island now covers the
+  corners outside its rounding with `groundColor` (default `ground`) above
+  its content.
+
 ## 2.2.1 - 2026-11-24
 
 **Changed**
