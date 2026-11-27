@@ -639,6 +639,34 @@ void main() {
       expect(action.dy, moreOrLessEquals(banner760.center.dy, epsilon: 1));
     });
 
+    testWidgets('an empty state shows an illustration in place of its icon', (
+      tester,
+    ) async {
+      await tester.pumpWidget(
+        host(
+          const MeridianEmptyState(
+            icon: 'inbox',
+            illustration: SizedBox(key: Key('art'), width: 160, height: 90),
+            title: 'Moved without content changes',
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(find.byKey(const Key('art')), findsOneWidget);
+      expect(find.byType(MeridianIcon), findsNothing);
+      await tester.pumpWidget(
+        host(
+          const MeridianEmptyState(
+            illustration: SizedBox(key: Key('art'), width: 160, height: 90),
+            title: 'Loading',
+            progress: true,
+          ),
+        ),
+      );
+      expect(find.byKey(const Key('art')), findsNothing);
+      expect(find.byType(MeridianSpinner), findsOneWidget);
+    });
+
     testWidgets('an empty state scrolls in a short space', (tester) async {
       await tester.pumpWidget(
         host(

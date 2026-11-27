@@ -4,6 +4,10 @@
 
 **Added**
 
+- `MeridianEmptyState.illustration` (QML `Component`, Flutter `Widget`): an
+  app's own artwork in place of the icon, for its mascot in a scene that says
+  what is true in a detail pane. `progress` still shows the spinner. The
+  guideline no longer rules out mascots there.
 - `MeridianWheelScroll.scrollSideways(change)`: sideways wheel and touchpad
   motion the flickable cannot scroll itself (Shift+wheel, the horizontal part
   of a diagonal gesture) is offered to the view instead of being dropped, so

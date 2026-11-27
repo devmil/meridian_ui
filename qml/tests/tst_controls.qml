@@ -94,6 +94,13 @@ TestCase {
         id: bannerComponent
         MeridianBanner { width: 400; message: "Sync paused."; tone: MeridianBanner.Attention; dismissible: true; dismissLabel: "Dismiss" }
     }
+    Component {
+        id: illustratedEmptyComponent
+        MeridianEmptyState {
+            width: 400; height: 300; title: "Moved"; iconName: "inbox"
+            illustration: Component { Rectangle { objectName: "art"; implicitWidth: 160; implicitHeight: 90; color: "red" } }
+        }
+    }
     Component { id: spyComponent; SignalSpy {} }
     Component {
         id: pickerComponent
@@ -486,6 +493,30 @@ TestCase {
             if (part.visible)
                 tryCompare(part, "opacity", 1, 1000)
         }
+    }
+
+    function test_empty_state_shows_an_illustration_in_place_of_its_icon() {
+        const state = createTemporaryObject(illustratedEmptyComponent, host)
+        const art = findChild(state, "art")
+        verify(art !== null && art.visible)
+        const holder = state.children[0].children[0]
+        compare(holder.height, 90, "the art takes its own height")
+        for (const icon of findChildrenOfType(state, "MeridianIcon"))
+            verify(!icon.visible, "no icon beside the art")
+        state.progress = true
+        tryVerify(() => findChild(state, "art") === null, 1000, "loading shows the spinner")
+    }
+    function findChildrenOfType(item, name) {
+        const found = []
+        const visit = node => {
+            for (const child of node.children) {
+                if (String(child).startsWith(name))
+                    found.push(child)
+                visit(child)
+            }
+        }
+        visit(item)
+        return found
     }
 
     function test_empty_state_reaches_terminal_opacity_with_motion() {
