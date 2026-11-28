@@ -15,6 +15,9 @@
 
 **Fixed**
 
+- QML `MeridianTabStrip` scrolls a tab that becomes active into view when the
+  tabs are wider than the strip. A tab opened past the right edge stayed
+  hidden, with nothing showing that the strip scrolls.
 - QML `MeridianProgressBar`: the fill follows the bar's width at once and only a
   new `value` animates. Resizing a window no longer animates every bar in it,
   which kept frames coming for the whole resize.

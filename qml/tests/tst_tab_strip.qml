@@ -52,6 +52,25 @@ Item {
             wait(Motion.layout + 50)
         }
 
+        function test_a_newly_active_tab_scrolls_into_view() {
+            Theme.reducedMotion = true
+            const tabs = []
+            for (let id = 1; id <= 12; ++id)
+                tabs.push({ id: id, label: "repository " + id })
+            const strip = createTemporaryObject(stripComponent, host, { tabs: tabs, groups: [], activeTab: 1 })
+            settle(strip)
+            const flick = findChild(strip, "tabStripFlick")
+            verify(flick.contentWidth > flick.width, "the tabs overflow the strip")
+            compare(flick.contentX, 0)
+            strip.activeTab = 12
+            settle(strip)
+            verify(flick.contentX > 0)
+            fuzzyCompare(flick.contentX + flick.width, flick.contentWidth, 1)
+            strip.activeTab = 1
+            settle(strip)
+            compare(flick.contentX, 0)
+        }
+
         function test_group_chip_stands_before_its_tabs() {
             Theme.reducedMotion = true
             const strip = createTemporaryObject(stripComponent, host)
