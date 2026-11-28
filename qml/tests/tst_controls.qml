@@ -485,6 +485,23 @@ TestCase {
         verify(bar.indeterminate)
     }
 
+    function test_progress_bar_follows_its_width_without_animating() {
+        const previous = Theme.reducedMotion
+        Theme.reducedMotion = false
+        const bar = createTemporaryObject(progressComponent, host, { value: 0.5 })
+        const fill = findChild(bar, "progressFill")
+        tryCompare(fill, "width", 100, 2000)
+        // A resized bar (a window resize) shows the new fill at once: animating it would
+        // keep frames coming for the whole resize.
+        bar.width = 300
+        compare(fill.width, 150)
+        // A new value still animates towards its fill.
+        bar.value = 1
+        verify(fill.width < 300)
+        tryCompare(fill, "width", 300, 2000)
+        Theme.reducedMotion = previous
+    }
+
     function test_empty_state_reaches_terminal_opacity_with_reduced_motion() {
         const state = createTemporaryObject(emptyComponent, host)
         const column = state.children[0]

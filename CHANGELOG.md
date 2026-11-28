@@ -15,6 +15,9 @@
 
 **Fixed**
 
+- QML `MeridianProgressBar`: the fill follows the bar's width at once and only a
+  new `value` animates. Resizing a window no longer animates every bar in it,
+  which kept frames coming for the whole resize.
 - QML `MeridianIsland` keeps its rounded corners when its content paints its
   own background (a header strip, a pane colour). The surface's clip is
   rectangular, so such content covered the corners and an island looked
