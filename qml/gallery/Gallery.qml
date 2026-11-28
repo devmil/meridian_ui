@@ -147,6 +147,11 @@ MeridianGround {
                     MeridianTextField { width: 260; placeholderText: "Host name"; Accessible.name: "Host name" }
                     MeridianTextField {
                         width: 260
+                        text: "Right-click or press Shift+F10"
+                        Accessible.name: "Text menu"
+                    }
+                    MeridianTextField {
+                        width: 260
                         variant: MeridianTextField.Search
                         placeholderText: "Search mail"
                         clearLabel: "Clear search"
@@ -163,6 +168,302 @@ MeridianGround {
                     MeridianTextField { width: 200; text: "f4b34279b4"; monospace: true; Accessible.name: "Commit" }
                 }
 
+                Section {
+                    title: "Radios"
+                    Column {
+                        MeridianRadio { text: "All changes"; checked: true }
+                        MeridianRadio { text: "Selected files"; description: "Choose the files to stash" }
+                        MeridianRadio { text: "Unavailable"; enabled: false }
+                    }
+                }
+                Section {
+                    title: "Keys"
+                    Row {
+                        spacing: Theme.space.s5
+                        MeridianKbd { keys: ["⌘", "K"] }
+                        MeridianKbd { keys: ["esc"] }
+                        MeridianKbd { keys: ["Ctrl", "Shift", "P"]; pressed: true }
+                    }
+                }
+                Section {
+                    title: "Colour choice"
+                    Column {
+                        width: Math.min(472, parent.width)
+                        spacing: Theme.space.s5
+                        MeridianColorChoiceRow {
+                            width: parent.width
+                            allowNone: true
+                            value: ({ series: 0 })
+                            onChosen: choice => value = choice
+                        }
+                        MeridianColorPicker {
+                            width: parent.width
+                            color: "#18304f"
+                            original: "#2f6fbf"
+                            groups: [{ title: "Recent", colors: ["#e5484d", "#30a46c", "#f5a524"] }]
+                        }
+                    }
+                }
+                Section {
+                    title: "Find bar"
+                    MeridianFindBar {
+                        width: Math.min(420, parent.width)
+                        text: "hunk"
+                        matchCount: 12
+                        currentMatch: 2
+                        caseSensitiveShown: true
+                        closable: true
+                    }
+                }
+                Section {
+                    title: "Pulse"
+                    Row {
+                        spacing: Theme.space.s8
+                        MeridianPulse {
+                            id: continuePulse
+                            spread: Theme.space.s4
+                            once: true
+                            radius: Theme.radius.md
+                            MeridianButton {
+                                text: "Continue"
+                                variant: MeridianButton.Primary
+                                onClicked: { continuePulse.active = false; continuePulse.active = true }
+                            }
+                        }
+                        MeridianPulse {
+                            anchors.verticalCenter: parent.verticalCenter
+                            active: true
+                            size: 10
+                            Rectangle { width: 10; height: 10; radius: 5; color: Theme.colors.accent }
+                        }
+                    }
+                }
+                Section {
+                    title: "Entrance"
+                    Column {
+                        id: entranceDemo
+                        spacing: Theme.space.s3
+                        property int round: 0
+                        MeridianButton {
+                            text: "Enter again"
+                            onClicked: entranceDemo.round += 1
+                        }
+                        Row {
+                            spacing: Theme.space.s4
+                            Repeater {
+                                model: 4
+                                MeridianEntrance {
+                                    id: entranceItem
+                                    required property int index
+                                    entranceKey: "gallery-entrance|" + entranceDemo.round + "|" + entranceItem.index
+                                    order: entranceItem.index
+                                    MeridianSurface {
+                                        implicitWidth: 72
+                                        implicitHeight: 40
+                                        radius: Theme.radius.md
+                                        MeridianText { anchors.centerIn: parent; text: String(entranceItem.index + 1) }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Section {
+                    title: "Attention, shake, rolling number, resize"
+                    Flow {
+                        id: motionDemo
+                        width: sections.width
+                        spacing: Theme.space.s6
+                        property int round: 0
+                        MeridianButton {
+                            text: "Play"
+                            onClicked: motionDemo.round += 1
+                        }
+                        MeridianAttention {
+                            width: 120
+                            height: Theme.size.control
+                            trigger: motionDemo.round
+                            MeridianText { anchors.centerIn: parent; text: "Changed row" }
+                        }
+                        MeridianShake {
+                            width: 120
+                            height: Theme.size.control
+                            trigger: motionDemo.round
+                            MeridianText { anchors.centerIn: parent; text: "Invalid" }
+                        }
+                        MeridianRollingNumber {
+                            value: 98 + motionDemo.round
+                            popOnIncrease: true
+                        }
+                        MeridianResize {
+                            MeridianButton { text: motionDemo.round % 2 === 0 ? "Commit" : "Commit and push" }
+                        }
+                    }
+                }
+                Section {
+                    title: "Stroke, lift, removing row"
+                    Flow {
+                        id: strokeDemo
+                        width: sections.width
+                        spacing: Theme.space.s6
+                        property bool on: true
+                        property int removals: 0
+                        MeridianButton {
+                            text: "Toggle"
+                            onClicked: strokeDemo.on = !strokeDemo.on
+                        }
+                        MeridianStrokeIcon {
+                            name: "check"
+                            drawn: strokeDemo.on
+                            color: Theme.colors.success
+                        }
+                        MeridianStroke {
+                            width: 96
+                            height: Theme.size.control
+                            pathData: "M 0 " + height / 2 + " L " + width + " " + height / 2
+                            progress: strokeDemo.on ? 1 : 0
+                            Behavior on progress { NumberAnimation { duration: Motion.quick } }
+                            strokeWidth: Metrics.hairline
+                            color: Theme.colors.inkMuted
+                        }
+                        MeridianLift {
+                            lifted: !strokeDemo.on
+                            radius: Theme.radius.md
+                            MeridianSurface {
+                                implicitWidth: 96
+                                implicitHeight: Theme.size.control
+                                radius: Theme.radius.md
+                                MeridianText { anchors.centerIn: parent; text: "Lift" }
+                            }
+                        }
+                        MeridianButton {
+                            text: "Remove row"
+                            onClicked: strokeDemo.removals += 1
+                        }
+                        Loader {
+                            id: removalLoader
+                            active: true
+                            sourceComponent: MeridianRemovingRow {
+                                autoStart: false
+                                property int round: strokeDemo.removals
+                                onRoundChanged: start()
+                                onRemoved: { removalLoader.active = false; removalLoader.active = true }
+                                MeridianListRow { implicitWidth: 160; text: "Leaving row" }
+                            }
+                        }
+                    }
+                }
+                Section {
+                    title: "Selection glide, travel"
+                    Flow {
+                        id: travelDemo
+                        width: sections.width
+                        spacing: Theme.space.s6
+                        property int selected: 0
+                        property bool onRight: false
+                        ListView {
+                            id: glideList
+                            width: 140
+                            height: 5 * Theme.size.row
+                            interactive: false
+                            model: 5
+                            MeridianSelectionGlide { view: glideList; selectedIndex: travelDemo.selected }
+                            delegate: MeridianListRow {
+                                required property int index
+                                width: glideList.width
+                                text: "Row " + (index + 1)
+                                selectionGlided: true
+                                selected: travelDemo.selected === index
+                                onClicked: travelDemo.selected = index
+                            }
+                        }
+                        Repeater {
+                            model: 2
+                            Rectangle {
+                                id: travelColumn
+                                required property int index
+                                width: 100
+                                height: 5 * Theme.size.row
+                                radius: Theme.radius.md
+                                color: Theme.colors.paneAlt
+                                MeridianTravel {
+                                    id: traveller
+                                    visible: travelDemo.onRight === (travelColumn.index === 1)
+                                    y: travelColumn.index === 1 ? 3 * Theme.size.row : 0
+                                    width: parent.width
+                                    travelKey: visible ? "gallery-travel" : ""
+                                    MeridianListRow { width: parent.width; text: "Moving file" }
+                                    TapHandler {
+                                        onTapped: {
+                                            traveller.capture()
+                                            flipTimer.start()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        Timer { id: flipTimer; interval: 30; onTriggered: travelDemo.onRight = !travelDemo.onRight }
+                    }
+                }
+                Section {
+                    title: "Panel"
+                    MeridianPanel {
+                        width: Math.min(320, parent.width)
+                        title: "Logbook"
+                        MeridianText { width: parent.width; text: "Fetch origin · 1.2 s"; color: Theme.colors.inkMuted }
+                    }
+                }
+                Section {
+                    title: "Steps"
+                    Column {
+                        width: parent.width
+                        spacing: Theme.space.s4
+                        MeridianSteps { width: Math.min(implicitWidth, parent.width); steps: ["Pick", "Review", "Resolve", "Continue"]; current: 1 }
+                        MeridianSteps { width: Math.min(220, parent.width); steps: ["Pick", "Review", "Resolve", "Continue"]; current: 2 }
+                        MeridianSteps { width: Math.min(implicitWidth, parent.width); steps: ["Pick", "Review", "Resolve", "Continue"]; current: 4 }
+                    }
+                }
+                Section {
+                    title: "Busy overlay"
+                    Rectangle {
+                        width: 360
+                        height: 120
+                        color: Theme.colors.pane
+                        radius: Theme.radius.md
+                        MeridianText { x: Theme.space.s5; y: Theme.space.s5; text: "Repository content" }
+                        MeridianBusyOverlay {
+                            anchors.fill: parent
+                            message: "Merging…"
+                            MeridianButton { text: "Cancel"; variant: MeridianButton.Quiet }
+                        }
+                    }
+                }
+                Section {
+                    title: "Shortcut field"
+                    MeridianShortcutField {
+                        id: galleryShortcut
+                        width: 280
+                        showLabel: false
+                        label: "Command palette"
+                        emptyLabel: "Not set"
+                        recordingLabel: "Press a key combination…"
+                        preparingLabel: "Preparing…"
+                        clearLabel: "Clear shortcut"
+                        keys: ["Ctrl", "Shift", "P"]
+                        onRecordRequested: recording = true
+                        onCancelRecording: recording = false
+                        onRecorded: (key, modifiers) => { recording = false }
+                        onCleared: keys = []
+                    }
+                }
+                Section {
+                    title: "Text area"
+                    MeridianTextArea {
+                        width: Math.min(420, parent.width)
+                        placeholderText: "Description"
+                        Accessible.name: "Description"
+                    }
+                }
                 Section {
                     title: "Selection"
                     MeridianSwitch { text: "Check mail automatically"; checked: true }
@@ -284,6 +585,21 @@ MeridianGround {
                         onActivated: actionMenu.popup(menuAnchor, 0, menuAnchor.height + Theme.space.s2)
                     }
                     MeridianButton {
+                        text: "Review…"
+                        onActivated: surface.open()
+                        MeridianDialogSurface {
+                            id: surface
+                            fillWindow: true
+                            label: "Review"
+                            Column {
+                                anchors.centerIn: parent
+                                spacing: Theme.space.s5
+                                MeridianText { role: MeridianText.Title; text: "A workflow fills the window" }
+                                MeridianButton { text: "Close"; onActivated: surface.close() }
+                            }
+                        }
+                    }
+                    MeridianButton {
                         id: popoverAnchor
                         text: "Snooze until…"
                         iconName: "clock"
@@ -301,6 +617,18 @@ MeridianGround {
                     }
                 }
 
+                Section {
+                    title: "Breadcrumbs"
+                    MeridianBreadcrumbs {
+                        width: Math.min(420, parent.width)
+                        crumbs: [
+                            { label: "Fix the parser", icon: "git-commit-horizontal", prefix: "1a2b3c4d5e", enabled: true },
+                            { label: "src", enabled: true },
+                            { label: "parser", enabled: true },
+                            { label: "lexer.rs", emphasis: true },
+                        ]
+                    }
+                }
                 Section {
                     title: "Rows"
                     Column {

@@ -1155,7 +1155,10 @@ class _ToastHostState extends State<_ToastHost> with TickerProviderStateMixin {
 }
 
 /// What an empty list or screen says: an icon, a headline, one sentence on
-/// what to do, and at most one action. Never a mascot or emoji.
+/// what to do, and at most one action. Never an emoji.
+///
+/// An app may show its own [illustration] (its mascot in a scene that says
+/// what is true) in place of the icon in its detail panes.
 ///
 /// With [progress] it says what is loading instead: a spinner takes the
 /// icon's place (it waits `motion-spinner-delay` before it shows, so quick
@@ -1168,6 +1171,7 @@ class MeridianEmptyState extends StatelessWidget {
     required this.title,
     super.key,
     this.icon,
+    this.illustration,
     this.message,
     this.action,
     this.headline = false,
@@ -1178,6 +1182,10 @@ class MeridianEmptyState extends StatelessWidget {
 
   final String title;
   final String? icon;
+
+  /// The app's own artwork in place of [icon]; [progress] still shows the
+  /// spinner.
+  final Widget? illustration;
   final String? message;
   final Widget? action;
 
@@ -1218,6 +1226,8 @@ class MeridianEmptyState extends StatelessWidget {
             size: MeridianLayout.emptyStateIconSize,
             color: colors.inkMuted,
           )
+        : illustration != null
+        ? ExcludeSemantics(child: illustration)
         : icon == null
         ? null
         : MeridianIcon(

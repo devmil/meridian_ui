@@ -25,6 +25,47 @@ Item {
         }
     }
     Component {
+        id: slotsComponent
+        MeridianListRow {
+            width: 400
+            text: "main"
+            meta: "3"
+            leading: Rectangle { objectName: "leadingMark"; width: 20; height: 12 }
+            titleTrailing: Rectangle { objectName: "titleMark"; width: 8; height: 8 }
+            trailing: Rectangle { objectName: "trailingMark"; width: 30; height: 10 }
+        }
+    }
+    Component {
+        id: crumbsComponent
+        MeridianBreadcrumbs {
+            width: 600
+            crumbs: [
+                { label: "Fix the parser", icon: "git-commit-horizontal", prefix: "1a2b3c4d5e", enabled: true },
+                { label: "src", enabled: true },
+                { label: "parser", enabled: true },
+                { label: "lexer.rs", emphasis: true },
+            ]
+        }
+    }
+    Component {
+        id: islandComponent
+        MeridianIsland {
+            width: 400
+            height: 200
+            title: "Recent repositories"
+            count: 3
+            Item { objectName: "islandContent"; anchors.fill: parent }
+        }
+    }
+    Component {
+        id: filledIslandComponent
+        MeridianIsland {
+            width: 200
+            height: 120
+            Rectangle { anchors.fill: parent; color: "#ff0000" }
+        }
+    }
+    Component {
         id: paginationComponent
         MeridianPagination { previousLabel: "Previous page"; nextLabel: "Next page"; pageLabel: "Page %1" }
     }
@@ -119,6 +160,37 @@ Item {
             row.islandFocused = true
             verify(Qt.colorEqual(row.inkColor, Theme.colors.inkOnAccent))
             verify(Qt.colorEqual(action.iconColor, Theme.colors.inkOnAccentMuted) || Qt.colorEqual(action.iconColor, Theme.colors.inkOnAccent))
+        }
+
+        function test_list_row_slots_frame_the_title() {
+            const row = createTemporaryObject(slotsComponent, host)
+            const leading = findChild(row, "leadingMark")
+            const titleMark = findChild(row, "titleMark")
+            const trailing = findChild(row, "trailingMark")
+            verify(leading && titleMark && trailing)
+            const leadingEnd = leading.mapToItem(row, leading.width, 0).x
+            const markStart = titleMark.mapToItem(row, 0, 0).x
+            const trailingStart = trailing.mapToItem(row, 0, 0).x
+            const trailingEnd = trailing.mapToItem(row, trailing.width, 0).x
+            verify(markStart > leadingEnd + Theme.space.s4)
+            verify(trailingStart > markStart)
+            fuzzyCompare(trailingEnd, row.width - row.rightPadding, 0.5)
+        }
+
+        function test_breadcrumbs_fold_middle_crumbs_when_narrow() {
+            const trail = createTemporaryObject(crumbsComponent, host)
+            compare(trail.folded, 0)
+            const activated = createTemporaryObject(spyComponent, testCase, { target: trail, signalName: "activated" })
+            const overflow = createTemporaryObject(spyComponent, testCase, { target: trail, signalName: "overflowRequested" })
+            trail.width = 200
+            tryVerify(() => trail.folded > 0)
+            verify(trail.folded <= trail.count - 2)
+            trail.width = 600
+            tryCompare(trail, "folded", 0)
+            mouseClick(trail, 20, trail.height / 2)
+            compare(activated.count, 1)
+            compare(activated.signalArguments[0][0], 0)
+            compare(overflow.count, 0)
         }
 
         function test_list_row_heights_follow_density() {
@@ -303,6 +375,19 @@ Item {
             verify(Qt.colorEqual(zone.inkColor, Theme.colors.danger))
         }
 
+        function test_drop_zone_marches_only_while_active_and_shown() {
+            Theme.reducedMotion = false
+            const zone = createTemporaryObject(dropComponent, host)
+            verify(!zone.marching)
+            zone.dropState = MeridianDropZone.Active
+            verify(zone.marching)
+            // A hidden zone runs no animation, so the window renders no frames for it.
+            zone.visible = false
+            verify(!zone.marching)
+            zone.visible = true
+            verify(zone.marching)
+        }
+
         function test_date_picker_keyboard_and_range() {
             const picker = createTemporaryObject(dateComponent, host, {
                 locale: Qt.locale("de_DE"),
@@ -348,6 +433,56 @@ Item {
             row.width = 700
             verify(row.stacked)
             Theme.density = -1
+        }
+    }
+
+    TestCase {
+        name: "RowsHeaderAndMatch"
+        when: windowShown
+
+        function test_list_row_highlights_its_match() {
+            const row = createTemporaryObject(listComponent, host, { match: "report" })
+            verify(row.match === "report")
+            let styled = false
+            const stack = [row.contentItem]
+            while (stack.length > 0) {
+                const item = stack.pop()
+                if (item.textFormat === Text.StyledText && String(item.text).indexOf("<u>report</u>") >= 0)
+                    styled = true
+                for (let i = 0; i < item.children.length; ++i)
+                    stack.push(item.children[i])
+            }
+            verify(styled, "the matched word is underlined")
+        }
+
+        function test_island_content_keeps_the_rounded_corners() {
+            const island = createTemporaryObject(filledIslandComponent, host)
+            waitForRendering(island)
+            const image = grabImage(island)
+            const ground = Theme.colors.ground
+            const last = [island.width - 1, island.height - 1]
+            for (const [x, y] of [[0, 0], [last[0], 0], [0, last[1]], [last[0], last[1]]]) {
+                const pixel = image.pixel(x, y)
+                verify(Qt.colorEqual(pixel, ground), "corner " + x + "," + y + " is " + pixel)
+            }
+            verify(Qt.colorEqual(image.pixel(island.width / 2, island.height / 2), "#ff0000"))
+            // Along the sides away from the corners the content reaches the edge,
+            // and inside each rounding too.
+            for (const [x, y] of [[0, island.height / 2], [last[0], island.height / 2],
+                                  [island.width / 2, 0], [island.width / 2, last[1]]])
+                verify(Qt.colorEqual(image.pixel(x, y), "#ff0000"), "side " + x + "," + y)
+            const inset = Theme.radius.lg - 2
+            for (const [x, y] of [[inset, inset], [last[0] - inset, inset], [inset, last[1] - inset], [last[0] - inset, last[1] - inset]])
+                verify(Qt.colorEqual(image.pixel(x, y), "#ff0000"), "inside the rounding at " + x + "," + y)
+        }
+
+        function test_island_header_sits_above_the_content() {
+            const island = createTemporaryObject(islandComponent, host)
+            verify(island.hasHeader)
+            const content = findChild(island, "islandContent")
+            const top = content.mapToItem(island, 0, 0).y
+            compare(top, Theme.size.islandHeader + Metrics.hairline)
+            compare(content.height, island.height - top)
         }
     }
 }

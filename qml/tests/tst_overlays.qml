@@ -8,6 +8,49 @@ Item {
     height: 700
 
     Component { id: spyComponent; SignalSpy {} }
+    Component {
+        id: panelComponent
+        MeridianPanel {
+            title: "Logbook"
+            width: 300
+            Rectangle { objectName: "panelBody"; width: 280; height: 120 }
+        }
+    }
+    Component {
+        id: busyComponent
+        Item {
+            anchors.fill: parent
+            property int clicks: 0
+            property alias overlay: overlay
+            property alias cancel: cancel
+            MouseArea { anchors.fill: parent; onClicked: parent.clicks++ }
+            MeridianBusyOverlay {
+                id: overlay
+                anchors.fill: parent
+                message: "Merging…"
+                MeridianButton { id: cancel; text: "Cancel"; variant: MeridianButton.Quiet }
+            }
+        }
+    }
+    Component {
+        id: settingsComponent
+        MeridianSettingsDialog {
+            title: "Settings"
+            pages: [{ label: "One" }, { label: "Two" }]
+            property alias failureText: failure
+            footerShown: failure.text.length > 0
+            footerContent: [Text { id: failure }]
+            Item { objectName: "short"; height: 40 }
+            Item { objectName: "tall"; height: 900 }
+        }
+    }
+    Component {
+        id: licenseComponent
+        MeridianLicenseDialog {
+            packages: [{ name: "Beta", licenses: ["B1", "B2"] }, { name: "alpha", licenses: ["A"] }]
+            applicationName: "App"
+        }
+    }
     Component { id: toastHostComponent; MeridianToastHost { anchors.fill: parent } }
     Component {
         id: dialogComponent
@@ -15,6 +58,13 @@ Item {
             title: "Rename notebook"
             description: "The new name shows everywhere."
             MeridianTextField { objectName: "nameField"; width: 200; Accessible.name: "Name" }
+        }
+    }
+    Component {
+        id: surfaceComponent
+        MeridianDialogSurface {
+            label: "Review"
+            Item { objectName: "surfaceBody"; anchors.fill: parent }
         }
     }
     Component {
@@ -51,6 +101,62 @@ Item {
 
         function spy(target, signal) {
             return createTemporaryObject(spyComponent, testCase, { target: target, signalName: signal })
+        }
+
+        function test_panel_enters_closes_on_escape_and_reports_its_exit() {
+            const panel = createTemporaryObject(panelComponent, host)
+            tryCompare(panel, "opacity", 1)
+            compare(panel.height, panel.headerHeight + 120 + panel.bottomPadding)
+            const closes = spy(panel, "closeRequested")
+            panel.forceActiveFocus()
+            keyClick(Qt.Key_Escape)
+            compare(closes.count, 1)
+            const hidden = spy(panel, "hidden")
+            panel.shown = false
+            tryCompare(hidden, "count", 1)
+            compare(panel.opacity, 0)
+        }
+
+        function test_busy_overlay_blocks_at_once_and_shows_after_the_delay() {
+            const page = createTemporaryObject(busyComponent, host)
+            const content = findChild(page.overlay, "busyOverlayContent")
+            compare(content.opacity, 0)
+            mouseClick(page, 5, 5)
+            compare(page.clicks, 0) // input stops before anything shows
+            tryCompare(content, "opacity", 1, Motion.spinnerDelay + Motion.quick + 500)
+            const clicked = spy(page.cancel, "clicked")
+            mouseClick(page.cancel)
+            compare(clicked.count, 1) // the action still works
+            compare(page.overlay.Accessible.name, "Merging…")
+            verify(page.overlay.hasAction)
+            page.cancel.visible = false
+            verify(!page.overlay.hasAction)
+        }
+
+        function test_settings_dialog_sizes_the_shown_page_and_hides_an_empty_footer() {
+            const dialog = createTemporaryObject(settingsComponent, host)
+            dialog.open()
+            tryVerify(() => dialog.opened)
+            const body = findChild(dialog.contentItem, "settingsBody")
+            compare(body.contentHeight, 40 + body.pageTop + 2 * dialog.inset)
+            dialog.currentPage = 1
+            tryCompare(body, "contentHeight", 900 + body.pageTop + 2 * dialog.inset)
+            const footer = findChild(dialog.contentItem, "settingsFooter")
+            verify(!footer.visible)
+            dialog.failureText.text = "Could not save"
+            tryVerify(() => footer.visible)
+        }
+
+        function test_license_dialog_filters_and_counts_licenses() {
+            const dialog = createTemporaryObject(licenseComponent, host)
+            compare(dialog.selected, "Beta")
+            compare(dialog.countText(1), "1 license")
+            compare(dialog.countText(2), "2 licenses")
+            dialog.query = "ALP"
+            compare(dialog.visiblePackages.length, 1)
+            compare(dialog.visiblePackages[0].name, "alpha")
+            dialog.countText = count => count + " Lizenzen"
+            compare(dialog.countText(3), "3 Lizenzen")
         }
 
         function test_toast_replaces_pauses_and_reports_action() {
@@ -98,6 +204,20 @@ Item {
             compare(dialog.rejectCount, 1)
             keyClick(Qt.Key_Escape)
             tryVerify(() => !dialog.visible)
+        }
+
+        function test_dialog_surface_fills_the_window_and_closes_on_escape() {
+            const surface = createTemporaryObject(surfaceComponent, host)
+            surface.fillWindow = true
+            surface.open()
+            tryVerify(() => surface.opened)
+            compare(surface.width, surface.parent.width - 2 * surface.margin)
+            compare(surface.height, surface.parent.height - 2 * surface.margin)
+            compare(surface.padding, 0)
+            compare(surface.header, null)
+            surface.contentItem.forceActiveFocus()
+            keyClick(Qt.Key_Escape)
+            tryVerify(() => !surface.visible)
         }
 
         function test_dialog_width_classes() {
@@ -169,9 +289,14 @@ Item {
             tryVerify(() => menu.opened)
             const first = menu.itemAt(0)
             const inside = first.mapToItem(host, first.width / 2, first.height / 2)
-            // Hover reaches the scene once per frame: wait for each position.
-            mouseMove(host, inside.x, inside.y)
-            tryVerify(() => first.hovered)
+            // Hover reaches the scene once per frame, and a pointer that only
+            // arrives with the move may need another event at the same place
+            // (Qt 6.11): repeat the resting position, which never arms the menu.
+            for (let attempt = 0; attempt < 50 && !first.hovered; ++attempt) {
+                mouseMove(host, inside.x, inside.y)
+                wait(20)
+            }
+            verify(first.hovered, "the pointer rests on the first row")
             wait(50)
             verify(!first.highlightedRow, "highlighted before the pointer moved")
             mouseMove(host, inside.x + 8, inside.y)

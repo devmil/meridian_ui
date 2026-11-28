@@ -1,5 +1,83 @@
 # Changelog
 
+## Unreleased
+
+**Added**
+
+- `MeridianEmptyState.illustration` (QML `Component`, Flutter `Widget`): an
+  app's own artwork in place of the icon, for its mascot in a scene that says
+  what is true in a detail pane. `progress` still shows the spinner. The
+  guideline no longer rules out mascots there.
+- `MeridianWheelScroll.scrollSideways(change)`: sideways wheel and touchpad
+  motion the flickable cannot scroll itself (Shift+wheel, the horizontal part
+  of a diagonal gesture) is offered to the view instead of being dropped, so
+  a view that moves its content sideways its own way scrolls with it.
+
+**Fixed**
+
+- QML `MeridianTabStrip` scrolls a tab that becomes active into view when the
+  tabs are wider than the strip. A tab opened past the right edge stayed
+  hidden, with nothing showing that the strip scrolls.
+- QML `MeridianProgressBar`: the fill follows the bar's width at once and only a
+  new `value` animates. Resizing a window no longer animates every bar in it,
+  which kept frames coming for the whole resize.
+- QML `MeridianIsland` keeps its rounded corners when its content paints its
+  own background (a header strip, a pane colour). The surface's clip is
+  rectangular, so such content covered the corners and an island looked
+  rounded or square depending on what it showed. The island now covers the
+  corners outside its rounding with `groundColor` (default `ground`) above
+  its content.
+
+## 2.2.1 - 2026-11-24
+
+**Changed**
+
+- QML live loops (`MeridianSpinner`, indeterminate `MeridianProgressBar`,
+  live `MeridianStatusDot`, looping `MeridianPulse`, `MeridianIconButton`
+  spin) hold still while the application is inactive, following the new
+  `Motion.loopsActive`, so an unfocused or hidden window renders no frames
+  at rest. They continue when the application is active again.
+
+## 2.2.0 - 2026-11-23
+
+**Added**
+
+- `MeridianRemovingRow`, `MeridianLift`, `MeridianStroke`,
+  `MeridianStrokeIcon`, `MeridianSelectionGlide` and `MeridianTravel` (QML),
+  Flutter's leaving row (fade, collapse, `removed`; `start()` from
+  `ListView.onRemove`), drag lift (`lift-scale`, `shadow-float`,
+  `spring-gentle`), progressive strokes on `ShapePath.trim`, the list
+  selection bar that springs between rows and crossfades long jumps, and the
+  snapshot flight between two places of one item.
+- `MeridianListRow.selectionGlided` (QML) paints the selected fill clear
+  under a `MeridianSelectionGlide`.
+- `MeridianAttention`, `MeridianShake`, `MeridianRollingNumber` and
+  `MeridianResize` (QML), Flutter's tint that fades back over
+  `motion-attention` (once per memory key and trigger), the field and
+  surface shakes, the digit-by-digit rolling number with its pop on
+  increase, and the size that follows its content over `motion-layout`.
+- `MeridianEntrance` and `MeridianMotionMemory` (QML), Flutter's one-time
+  entrance: a keyed item fades and rises `rise-content` over `motion-select`
+  the first time its key appears, staggered by `order` and after `delay`;
+  the memory keeps seen keys for the session, so recycled rows and
+  re-created views show their content at rest. Off under reduce motion.
+- `MeridianTextField` and `MeridianTextArea` (QML) gain `keyFilter`, which
+  sees every key press first, for suggestion lists under the caret.
+- `MeridianDialogSurface` (QML), Flutter's custom-layout dialog surface:
+  the dialog's scrim, surface, entrance and Escape without a title or
+  footer; `fillWindow` fills the window for workflows.
+- `MeridianTextMenu` (QML), Flutter's native text menu: every
+  `MeridianTextField`, `MeridianTextArea` and `MeridianSelectableText` now
+  offers Cut, Copy, Paste and Select All, each only when it applies, in the
+  platform's own menu on a secondary click, the Menu key or Shift+F10.
+  Password fields never offer Cut or Copy; read-only text offers Copy and
+  Select All. `Theme.textMenuLabels` localizes the labels.
+
+**Fixed**
+
+- `MeridianReveal` (QML) fades and collapses again instead of hiding at once:
+  its animated values no longer start as bindings that jumped to the end.
+
 ## 2.1.0 - 2026-11-22
 
 **Added**

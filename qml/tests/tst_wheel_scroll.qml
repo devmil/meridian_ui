@@ -31,6 +31,19 @@ Item {
         MeridianWheelScroll { id: stripScroller; flickable: strip; onWheel: strip.observed++ }
     }
 
+    ListView {
+        id: own
+        y: 250
+        x: 210
+        width: 180
+        height: 40
+        model: 50
+        delegate: Rectangle { width: 180; height: 20 }
+        property real offset: 0
+        // Sideways motion the view cannot scroll goes to its own handler.
+        MeridianWheelScroll { id: ownScroller; flickable: own; smoothScroll: false; onScrollSideways: change => own.offset -= change }
+    }
+
     Flickable {
         id: tall
         visible: false
@@ -184,6 +197,23 @@ Item {
             mouseWheel(strip, 50, 20, 0, -120)
             compare(strip.contentX, stripScroller.horizontalStepSize)
             compare(strip.observed, 1)
+        }
+
+        function test_shift_wheel_offers_sideways_motion_the_view_cannot_take() {
+            own.offset = 0
+            own.contentY = 0
+            mouseWheel(own, 50, 20, 0, -120, Qt.NoButton, Qt.ShiftModifier)
+            compare(own.offset, ownScroller.horizontalStepSize)
+            compare(own.contentY, 0)
+        }
+
+        function test_a_diagonal_gesture_keeps_its_sideways_part() {
+            own.offset = 0
+            own.contentY = 0
+            ownScroller.handleWheel({ angleDelta: Qt.point(-120, -24), pixelDelta: Qt.point(-10, -2),
+                                      phase: Qt.ScrollUpdate, modifiers: Qt.NoModifier })
+            compare(own.offset, 10)
+            compare(own.contentY, 2)
         }
 
         function test_stops_at_the_ends() {

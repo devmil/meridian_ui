@@ -717,8 +717,9 @@ add("EmptyState", "Feedback", 265, """
 
 What an empty list or screen says. Flutter: `MeridianEmptyState`.
 
-- The consumer provides `title` (what is true: "No messages match “invoice 2025”"), an optional `icon`, `message` (one sentence on what to do), one `action`, and `headline` for first-run and welcome screens (the `display` style).
-- `heading` title, `ink-muted` message, 24px `ink-muted` icon, centred at most 360px wide; it scrolls rather than overflows in a short space. No mascots, no emoji, no exclamation marks.
+- The consumer provides `title` (what is true: "No messages match “invoice 2025”"), an optional `icon` or `illustration`, `message` (one sentence on what to do), one `action`, and `headline` for first-run and welcome screens (the `display` style).
+- `heading` title, `ink-muted` message, 24px `ink-muted` icon, centred at most 360px wide; it scrolls rather than overflows in a short space. No emoji, no exclamation marks.
+- `illustration` is the app's own artwork in place of the icon: its mascot in a small scene that says what is true (a file moved without changes, nothing selected). Use it in an app's detail panes, in theme colours, with the same scene for the same state everywhere; lists and dialogs keep the icon. `progress` still shows the spinner.
 - `progress` is the loading state of the same place: a 24px Spinner in `ink-muted` replaces the icon (it waits 150ms, so quick loads never flash), the title says what is loading ("Loading history…") and is announced politely. `progressValue` adds a determinate bar under the title when the share is known. Use it, not a bare centred text or spinner, wherever a pane waits for its content.
 - `compact` is the in-pane size for small islands and detail panes: `body` title, `caption` message, `space-6` around it. Every empty, loading and failed state of one app uses the same size in the same kind of place.
 """, """
@@ -748,6 +749,7 @@ The rounded work surface. Flutter: `MeridianIsland` on a `MeridianGround`.
 - Islands sit on `ground` 6px (`space-3`) apart and 6px from the window edge: `pane`, `radius-lg`, `shadow-pane` (the shadow is the edge; no border). The gutter between islands is the divider and the splitter. Islands never nest.
 - The consumer provides `child`, optional `title` (`body-strong`), `icon` or `leading` (before the title), `count` (a quiet count after it), `subtitle` (metadata in `caption`, tabular figures), `actions` (small IconButtons and Buttons) for the 36px header (48px at touch density), `headerDivider` (the hairline under the header; off when the content starts with its own edge), `expandChild` for lists and editors, `padding`, and `color` to override `pane` (a document's paper). The header is a SectionHeader; never hand-build a 36px strip.
 - The island tracks keyboard focus: while focus is inside, it draws a 1px `accent-soft` halo and its rows paint the selection solid `accent`. Only one island has focus at a time.
+- The content keeps the island's rounded corners even when it paints its own background edge to edge; the consumer never rounds or insets content for them. QML covers the corners outside the rounding with `groundColor` (the `ground` it sits on), so an island placed on another surface sets it.
 - Chrome (sidebar, toolbar, tab strip, touch app bar) sits straight on `ground`, not in an island, so the islands read as the content.
 """, """
 mount(h('div', { className: 'mr-islands', style: { height: 220 } },

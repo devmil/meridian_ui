@@ -40,5 +40,14 @@ TestCase {
         const icon = createTemporaryObject(iconComponent, host, { name: "no-such-icon" })
         verify(!icon.known)
     }
+
+    function test_an_alias_resolves_to_its_lucide_icon() {
+        Theme.iconAliases = { "fetch": "arrow-down-to-line" }
+        const icon = createTemporaryObject(iconComponent, host, { name: "fetch" })
+        verify(icon.known)
+        compare(icon.resolvedName, "arrow-down-to-line")
+        Theme.iconAliases = ({})
+        verify(!icon.known)
+    }
 }
 }

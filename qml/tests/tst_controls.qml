@@ -15,6 +15,40 @@ TestCase {
     when: windowShown
 
     Component {
+        id: radiosComponent
+        Column {
+            property alias first: first
+            property alias second: second
+            MeridianRadio { id: first; text: "All changes"; checked: true }
+            MeridianRadio { id: second; text: "Selected files"; description: "Choose files below" }
+        }
+    }
+    Component {
+        id: shortcutComponent
+        MeridianShortcutField {
+            id: shortcutField
+            width: 260
+            showLabel: false
+            label: "Open palette"; emptyLabel: "Not set"; recordingLabel: "Press keys"
+            preparingLabel: "Preparing"; clearLabel: "Clear"
+            onRecordRequested: recording = true
+            onCancelRecording: recording = false
+            onRecorded: (key, modifiers) => { recording = false; keys = ["Ctrl", "K"] }
+        }
+    }
+    Component {
+        id: stepsComponent
+        MeridianSteps { steps: ["Pick", "Review", "Resolve", "Continue"]; current: 1 }
+    }
+    Component {
+        id: kbdComponent
+        MeridianKbd { keys: ["⌘", "K"] }
+    }
+    Component {
+        id: textAreaComponent
+        MeridianTextArea { width: 300; placeholderText: "Description"; minimumLines: 2; maximumLines: 4 }
+    }
+    Component {
         id: buttonComponent
         MeridianButton { text: "Move 3 messages to archive" }
     }
@@ -60,7 +94,26 @@ TestCase {
         id: bannerComponent
         MeridianBanner { width: 400; message: "Sync paused."; tone: MeridianBanner.Attention; dismissible: true; dismissLabel: "Dismiss" }
     }
+    Component {
+        id: illustratedEmptyComponent
+        MeridianEmptyState {
+            width: 400; height: 300; title: "Moved"; iconName: "inbox"
+            illustration: Component { Rectangle { objectName: "art"; implicitWidth: 160; implicitHeight: 90; color: "red" } }
+        }
+    }
     Component { id: spyComponent; SignalSpy {} }
+    Component {
+        id: pickerComponent
+        MeridianColorPicker { width: 440; color: "#18304f"; original: "#ff0000" }
+    }
+    Component {
+        id: choiceComponent
+        MeridianColorChoiceRow { width: 400; allowNone: true; value: ({ series: 2 }) }
+    }
+    Component {
+        id: findComponent
+        MeridianFindBar { width: 400; closable: true; caseSensitiveShown: true }
+    }
     Component { id: spinnerComponent; MeridianSpinner {} }
 
     function init() {
@@ -72,6 +125,169 @@ TestCase {
 
     function spy(target, signal) {
         return createTemporaryObject(spyComponent, testCase, { target: target, signalName: signal })
+    }
+
+    function test_color_picker_edits_by_hex_slider_wheel_and_restore() {
+        const picker = createTemporaryObject(pickerComponent, host)
+        const edits = spy(picker, "edited")
+        const ends = spy(picker, "editFinished")
+        compare(picker.hexOf(picker.shown), "#18304F")
+        const hex = findChild(picker, "meridian-color-hex")
+        compare(hex.text, "#18304F")
+        hex.forceActiveFocus()
+        hex.selectAll()
+        keyClick(Qt.Key_Delete)
+        for (const key of "00ff00")
+            keyClick(key)
+        verify(edits.count > 0)
+        compare(picker.hexOf(picker.shown), "#00FF00")
+        compare(Math.round(picker.hue), 120)
+        keyClick(Qt.Key_Return)
+        compare(ends.count, 1)
+        // An invalid value says so and keeps the colour.
+        hex.selectAll()
+        keyClick(Qt.Key_Delete)
+        keyClick("1")
+        keyClick(Qt.Key_Return)
+        verify(picker.hexError.length > 0)
+        compare(picker.hexOf(picker.shown), "#00FF00")
+        // The wheel steps the hue and saturation from the keyboard.
+        picker.stepWheel(10, -0.5)
+        compare(Math.round(picker.hue), 130)
+        compare(Math.round(picker.saturation * 100), 50)
+        // A grey keeps the hue the wheel was turned to.
+        picker.choose("#808080")
+        compare(Math.round(picker.hue), 130)
+        // The original restores.
+        picker.choose(picker.original)
+        compare(picker.hexOf(picker.shown), "#FF0000")
+        picker.model = "rgb"
+        verify(findChild(picker, "meridian-color-r") !== null)
+    }
+
+    function test_color_choice_row_offers_none_series_and_a_custom_well() {
+        const row = createTemporaryObject(choiceComponent, host)
+        const chosen = spy(row, "chosen")
+        verify(findChild(row, "meridian-color-series-2").selected)
+        mouseClick(findChild(row, "meridian-color-series-0"))
+        compare(chosen.signalArguments[0][0].series, 0)
+        mouseClick(findChild(row, "meridian-color-none"))
+        compare(chosen.signalArguments[1][0], null)
+        const well = findChild(row, "meridian-color-custom")
+        verify(!well.hasColor)
+        well.edited("#123456")
+        compare(chosen.signalArguments[2][0].custom, "#123456")
+        compare(row.custom, "#123456")
+        // A palette colour keeps the custom colour in the well.
+        row.value = { series: 1 }
+        verify(well.hasColor)
+        verify(!well.selected)
+    }
+
+    function test_find_bar_counts_steps_and_closes_on_escape() {
+        const bar = createTemporaryObject(findComponent, host)
+        const next = spy(bar, "next")
+        const previous = spy(bar, "previous")
+        const closes = spy(bar, "closeRequested")
+        const edits = spy(bar, "edited")
+        bar.searchField.forceActiveFocus()
+        keyClick(Qt.Key_A)
+        compare(edits.count, 1)
+        compare(bar.counter, "No matches")
+        // Enter searches before there are matches; the buttons wait for some.
+        keyClick(Qt.Key_Return)
+        compare(next.count, 1)
+        keyClick(Qt.Key_Return, Qt.ShiftModifier)
+        compare(previous.count, 1)
+        verify(!findChild(bar, "meridian-find-next").enabled)
+        bar.matchCount = 12
+        compare(bar.counter, "12 matches")
+        bar.currentMatch = 2
+        compare(bar.counter, "3 of 12")
+        verify(findChild(bar, "meridian-find-next").enabled)
+        verify(findChild(bar, "meridian-find-case").visible)
+        // Escape clears first, then asks to close.
+        keyClick(Qt.Key_Escape)
+        compare(bar.text, "")
+        compare(edits.signalArguments[edits.count - 1][0], "")
+        compare(closes.count, 0)
+        keyClick(Qt.Key_Escape)
+        compare(closes.count, 1)
+    }
+
+    function test_find_bar_stacks_when_narrow() {
+        const bar = createTemporaryObject(findComponent, host)
+        verify(!bar.stacked)
+        bar.width = 150
+        verify(bar.stacked)
+        compare(bar.searchField.width, 150)
+    }
+
+    function test_radios_in_one_parent_are_exclusive() {
+        const group = createTemporaryObject(radiosComponent, host)
+        verify(group.first.checked)
+        mouseClick(group.second, 4, group.second.height / 2)
+        verify(group.second.checked)
+        verify(!group.first.checked)
+        compare(group.second.Accessible.role, Accessible.RadioButton)
+    }
+
+    function test_shortcut_field_records_one_stroke_and_cancels_on_escape() {
+        const field = createTemporaryObject(shortcutComponent, host)
+        const recorded = spy(field, "recorded")
+        const cancelled = spy(field, "cancelRecording")
+        compare(field.valueText, "Not set")
+        mouseClick(field)
+        verify(field.recording)
+        compare(field.valueText, "Press keys")
+        keyPress(Qt.Key_Control)
+        compare(recorded.count, 0) // modifiers alone record nothing
+        keyClick(Qt.Key_K, Qt.ControlModifier)
+        compare(recorded.count, 1)
+        compare(recorded.signalArguments[0][0], Qt.Key_K)
+        verify(recorded.signalArguments[0][1] & Qt.ControlModifier)
+        verify(!field.recording)
+        compare(field.keys.length, 2)
+        mouseClick(field, 10, field.height / 2)
+        verify(field.recording)
+        keyClick(Qt.Key_Escape)
+        compare(cancelled.count, 1)
+        verify(!field.recording)
+        compare(recorded.count, 1)
+    }
+
+    function test_steps_show_every_label_or_only_the_current_one() {
+        const steps = createTemporaryObject(stepsComponent, host)
+        steps.width = steps.implicitWidth
+        verify(steps.allLabels)
+        steps.width = steps.fixedWidth + 40
+        verify(!steps.allLabels)
+        compare(steps.stateOf(0), 0)
+        compare(steps.stateOf(1), 1)
+        compare(steps.stateOf(3), 2)
+        steps.current = 4
+        compare(steps.stateOf(3), 0) // every step done
+    }
+
+    function test_kbd_draws_one_cap_per_key() {
+        const kbd = createTemporaryObject(kbdComponent, testCase)
+        compare(kbd.children.length - 1, 2) // the repeater and two caps
+        verify(kbd.implicitWidth >= 2 * Metrics.kbdMinWidth + Metrics.kbdGap)
+        verify(kbd.implicitHeight >= Metrics.kbdHeight)
+        kbd.keys = ["esc"]
+        tryCompare(kbd, "implicitWidth", kbd.children[0].implicitWidth)
+    }
+
+    function test_text_area_grows_between_its_line_limits() {
+        const area = createTemporaryObject(textAreaComponent, testCase)
+        const two = area.height
+        compare(two, area.chrome + 2 * area.lineHeight)
+        area.text = "one\ntwo\nthree"
+        tryCompare(area, "height", area.chrome + 3 * area.lineHeight)
+        area.text = "1\n2\n3\n4\n5\n6\n7"
+        tryCompare(area, "height", area.chrome + 4 * area.lineHeight)
+        area.forceActiveFocus()
+        verify(area.textArea.activeFocus)
     }
 
     function test_button_pointer_and_keyboard_activation() {
@@ -232,6 +448,33 @@ TestCase {
         tryVerify(() => spinner.shown, Motion.spinnerDelay + 1000)
     }
 
+    // Live loops hold while the application is inactive (an unfocused or hidden
+    // window renders no frames at rest) and continue when it is active again.
+    function test_live_loops_hold_while_inactive() {
+        const restore = () => Motion.loopsActive = Qt.binding(() => Application.state === Qt.ApplicationActive)
+        Theme.reducedMotion = false
+        Motion.loopsActive = true
+        const spinner = createTemporaryObject(spinnerComponent, host, { immediate: true })
+        const loop = findChild(spinner, "spinnerLoop")
+        tryVerify(() => loop.running)
+        Motion.loopsActive = false
+        verify(!loop.running)
+        Motion.loopsActive = true
+        verify(loop.running)
+
+        const button = createTemporaryObject(badgeButton, host)
+        button.spinning = true
+        tryVerify(() => button._spin > 0.1, 3000)
+        Motion.loopsActive = false
+        const held = button._spin
+        wait(Motion.spinner / 2)
+        compare(button._spin, held)
+        Motion.loopsActive = true
+        tryVerify(() => button._spin > held, 3000)
+        button.spinning = false
+        restore()
+    }
+
     function test_progress_bar_determinate_and_completion_fade() {
         const bar = createTemporaryObject(progressComponent, host, { value: 0.5 })
         const fill = findChild(bar, "progressFill")
@@ -240,6 +483,23 @@ TestCase {
         tryCompare(fill, "opacity", 0, Motion.progressHold + 1000)
         bar.value = -1
         verify(bar.indeterminate)
+    }
+
+    function test_progress_bar_follows_its_width_without_animating() {
+        const previous = Theme.reducedMotion
+        Theme.reducedMotion = false
+        const bar = createTemporaryObject(progressComponent, host, { value: 0.5 })
+        const fill = findChild(bar, "progressFill")
+        tryCompare(fill, "width", 100, 2000)
+        // A resized bar (a window resize) shows the new fill at once: animating it would
+        // keep frames coming for the whole resize.
+        bar.width = 300
+        compare(fill.width, 150)
+        // A new value still animates towards its fill.
+        bar.value = 1
+        verify(fill.width < 300)
+        tryCompare(fill, "width", 300, 2000)
+        Theme.reducedMotion = previous
     }
 
     function test_empty_state_reaches_terminal_opacity_with_reduced_motion() {
@@ -252,12 +512,111 @@ TestCase {
         }
     }
 
+    function test_empty_state_shows_an_illustration_in_place_of_its_icon() {
+        const state = createTemporaryObject(illustratedEmptyComponent, host)
+        const art = findChild(state, "art")
+        verify(art !== null && art.visible)
+        const holder = state.children[0].children[0]
+        compare(holder.height, 90, "the art takes its own height")
+        for (const icon of findChildrenOfType(state, "MeridianIcon"))
+            verify(!icon.visible, "no icon beside the art")
+        state.progress = true
+        tryVerify(() => findChild(state, "art") === null, 1000, "loading shows the spinner")
+    }
+    function findChildrenOfType(item, name) {
+        const found = []
+        const visit = node => {
+            for (const child of node.children) {
+                if (String(child).startsWith(name))
+                    found.push(child)
+                visit(child)
+            }
+        }
+        visit(item)
+        return found
+    }
+
     function test_empty_state_reaches_terminal_opacity_with_motion() {
         Theme.reducedMotion = false
         const state = createTemporaryObject(emptyComponent, host)
         const column = state.children[0]
         tryCompare(column.children[1], "opacity", 1, 2000)
         tryCompare(column.children[3], "opacity", 1, 2000)
+    }
+
+    Component {
+        id: textMenuFieldComponent
+        MeridianTextField { width: 260; text: "feature/login" }
+    }
+    Component {
+        id: textMenuSelectableComponent
+        MeridianSelectableText { width: 260; text: "8660cbd549" }
+    }
+
+    function textMenuOf(item) {
+        for (let i = 0; i < item.children.length; ++i)
+            if (item.children[i].actions !== undefined && item.children[i].openAtCursor !== undefined)
+                return item.children[i]
+        return null
+    }
+
+    function test_text_menu_offers_only_what_applies() {
+        const field = createTemporaryObject(textMenuFieldComponent, testCase)
+        const menu = textMenuOf(field)
+        verify(menu !== null)
+        field.forceActiveFocus()
+        field.deselect()
+        verify(menu.actions().indexOf("cut") < 0, "nothing selected: no cut")
+        verify(menu.actions().indexOf("copy") < 0, "nothing selected: no copy")
+        compare(menu.actions()[menu.actions().length - 1], "selectAll")
+        field.select(0, 7)
+        compare(menu.actions().slice(0, 2), ["cut", "copy"])
+        field.selectAll()
+        verify(menu.actions().indexOf("selectAll") < 0, "all selected: no select all")
+        field.echoMode = TextInput.Password
+        verify(menu.actions().indexOf("copy") < 0, "a password never copies")
+        verify(menu.actions().indexOf("cut") < 0, "a password never cuts")
+    }
+
+    function test_text_menu_runs_the_editing_action() {
+        const field = createTemporaryObject(textMenuFieldComponent, testCase)
+        const menu = textMenuOf(field)
+        field.forceActiveFocus()
+        field.deselect()
+        menu.run("selectAll")
+        compare(field.selectedText, "feature/login")
+        menu.run("cut")
+        compare(field.text, "")
+        verify(field.canPaste, "the cut text is on the clipboard")
+        menu.run("paste")
+        compare(field.text, "feature/login")
+    }
+
+    function test_selectable_text_menu_is_read_only() {
+        const label = createTemporaryObject(textMenuSelectableComponent, testCase)
+        const menu = textMenuOf(label)
+        verify(menu.readOnly)
+        label.selectAll()
+        compare(menu.actions(), ["copy"])
+        label.deselect()
+        compare(menu.actions(), ["selectAll"])
+    }
+
+    function test_key_filter_sees_keys_first() {
+        const field = createTemporaryObject(textMenuFieldComponent, testCase)
+        const seen = []
+        field.keyFilter = event => { seen.push(event.key); return event.key === Qt.Key_Down }
+        field.forceActiveFocus()
+        field.cursorPosition = 3
+        keyClick(Qt.Key_Down)
+        compare(field.cursorPosition, 3, "a consumed key does nothing else")
+        keyClick(Qt.Key_End)
+        compare(field.cursorPosition, field.length, "other keys still edit")
+        compare(seen, [Qt.Key_Down, Qt.Key_End])
+    }
+
+    function test_text_menu_labels_are_localizable() {
+        compare(Theme.textMenuLabels.selectAll, "Select All")
     }
 
     function test_banner_dismiss_and_collapse() {
@@ -270,5 +629,31 @@ TestCase {
         tryVerify(() => banner.height > 0)
         compare(dismissed.count, 0)
     }
+
+    Component { id: badgeButton; MeridianIconButton { text: "Operations"; iconName: "history" } }
+
+    function test_icon_button_badge_pops_in_and_leaves() {
+        const button = createTemporaryObject(badgeButton, host)
+        let dot = null
+        for (let i = 0; i < button.children.length; ++i)
+            if (button.children[i].hasOwnProperty("tone") && button.children[i].hasOwnProperty("count"))
+                dot = button.children[i]
+        verify(dot !== null, "the button has a badge")
+        verify(!dot.visible)
+        button.badge = 3
+        tryVerify(() => dot.visible && dot.opacity === 1)
+        button.badge = 0
+        tryVerify(() => !dot.visible)
+    }
+
+    function test_spinning_finishes_its_turn() {
+        const button = createTemporaryObject(badgeButton, host)
+        Theme.reducedMotion = false
+        button.spinning = true
+        tryVerify(() => button._spin > 0.1, 3000, "spin " + button._spin + " reduced " + Motion.reduced)
+        button.spinning = false
+        tryVerify(() => Math.abs(button._spin - Math.round(button._spin)) < 0.001, 3000, "end " + button._spin)
+    }
+
 }
 }
